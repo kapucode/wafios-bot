@@ -31,7 +31,7 @@ module.exports = async (msg, client) => {
     lastMsg?.timestamp || 0
   )
   
-  if (msg.author.id !== '1173408263920951356') return
+  if (msg.author.id !== '1173408263920951356' || msg.author.id !== '1005925645521534996') return
 
   if (!msg?.guild || msg?.guild?.id != '1325972840146800660') return
   if (!isValid) return

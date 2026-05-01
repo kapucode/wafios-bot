@@ -45,7 +45,7 @@ function CV2StarDrop(msg, userStar, disabled = false) {
     .setContent(`🌟 › ${msg.author}, você pode abrir seu **${toOpenAmount}° Star Drop da Mafios de hoje**!`)
 
   const midText = new TextDisplayBuilder()
-    .setContent(`🤖 › Não quer abrir agora? Use \`/star_drop abrir\`
+    .setContent(`🤖 › Não quer abrir agora? Use \`/stardrop abrir\`
 - Não acumula
 - Expira <t:${getNextMidnight() / 1000}:R>`)
 

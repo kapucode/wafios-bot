@@ -11,6 +11,8 @@ const path = require('path')
 
 const starJsonPath = path.join(__dirname, '../json/starDrops.json')
 
+const goalAdd = 100
+
 async function updateBrawlerRole({
   member,
   dataBrawlers,
@@ -81,7 +83,7 @@ module.exports = {
       newRoleId: brawler.roleId
     })
     userStar.info.notified = false
-    userStar.info.goal += 100
+    userStar.info.goal += goalAdd
     userStar.info.amountOpen++
     userStar.totalOpen++
 

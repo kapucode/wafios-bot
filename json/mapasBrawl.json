@@ -1,0 +1,162 @@
+[
+  {
+    "name": "brawlball",
+    "label": "Fute-brawl",
+    "emoji": "<:futebrawl:1480975484329394186>",
+    "type": "casual",
+    "maps": [
+      "Bocha",
+      "Driple triplo",
+      "Tiro de meta",
+      "Campos ardilosos",
+      "Superpraia",
+      "Pintando o pinball",
+      "Centro do palco",
+      "Bola na orla",
+      "Futebol ensolarado"
+    ]
+  },
+  {
+    "name": "gemgrab",
+    "label": "Pique-gema",
+    "emoji": "<:gemgrab:1480975089192403105>",
+    "type": "casual",
+    "maps": [
+      "Mina rochosa",
+      "Fliperama de cristal",
+      "Forte de gemas",
+      "Ilumina",
+      "Arco duplo",
+      "Espaço aberto"
+    ]
+  },
+  {
+    "name": "knockout",
+    "label": "Nocaute",
+    "emoji": "<:knockout:1480975538859278387>",
+    "type": "casual",
+    "maps": [
+      "Caverna do braço dourado",
+      "Rocha da belle",
+      "Fênix flamenjante",
+      "Fontes fartas",
+      "Descampado",
+      "Novos horizontes"
+    ]
+  },
+  {
+    "name": "bounty",
+    "label": "Caça-estrelas",
+    "emoji": "<:bounty:1480975686272286730>",
+    "type": "casual",
+    "maps": [
+      "Tocaia",
+      "Campo de tiro",
+      "Bolo em camadas",
+      "Estação seca",
+      "Sempre em frente",
+      "Lado a Lado",
+      "Impacto iminente"
+    ]
+  },
+  {
+    "name": "hotzone",
+    "label": "Zona estratégica",
+    "emoji": "<:hotzone:1480976229191651348>",
+    "type": "casual",
+    "maps": [
+      "Anel de fogo",
+      "Aberto",
+      "Jogadas paralelas",
+      "Besouros brigões",
+      "Zona livre",
+      "Canto de pesca"
+    ]
+  },
+  {
+    "name": "heist",
+    "label": "Roubo",
+    "emoji": "<:heist:1480976183716872337>",
+    "type": "casual",
+    "maps": [
+      "Zona segura",
+      "Ravina kabum",
+      "Batata quente",
+      "Ponte inalcançável" ,
+      "Pit stop",
+      "Tudo de ruim",
+      "Movimento perpétuo"
+    ]
+  },
+  {
+    "name": "showdown",
+    "label": "Combate",
+    "emoji": "<:showdown:1480981565906358455>",
+    "type": "tenplayers",
+    "maps": [
+      "Brawl do brô",
+      "Lago de ossos",
+      "Tudo ou nada",
+      "Lago ácidos",
+      "Fantasias voadoras",
+      "Centro seguro",
+      "Como uma onda",
+      "Castelo do olho de cristal"
+    ]
+  },
+  {
+    "name": "basketbrawl",
+    "label": "Basquete-brawl",
+    "emoji": "<:basketbrawl:1480975647215194164>",
+    "type": "special",
+    "maps": [
+      "Jogadas ensaiadas",
+      "Fominha",
+      "Passe em drible",
+      "Com estilo",
+      "Virada de jogo",
+      "Enterrada",
+      "Jogador em destaque"
+    ]
+  },
+  {
+    "name": "wipeout",
+    "label": "Extermínio",
+    "emoji": "<:wipeout:1480975607410983023>",
+    "type": "special",
+    "maps": [
+      "Uma trinta e cinco",
+      "O tempo voa",
+      "Massa pesada",
+      "País das maravilhas",
+      "Olá e adeus"
+    ]
+  },
+  {
+    "name": "hockeybrawl",
+    "label": "Hóquei-brawl",
+    "emoji": "<:hockeybrawl:1480980377341267979>",
+    "type": "special",
+    "maps": [
+      "Slap escorregadio",
+      "Supercentro",
+      "Campeonato saltitante",
+      "Abaixo de Zero",
+      "Hóquei festivo",
+      "Disputa nas montanhas"
+    ]
+  },
+  {
+    "name": "treasurehunt",
+    "label": "Caça ao tesouro",
+    "emoji": "<:treasurehunt:1480977681884512488>",
+    "type": "special",
+    "maps": [
+      "A meio caminho",
+      "Bem debaixo do nariz",
+      "Marcação de tesouros",
+      "Tesouro antigo",
+      "Menos é mais"
+    ]
+  }
+]

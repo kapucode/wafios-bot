@@ -1,0 +1,32 @@
+{
+  "1173408263920951356": {
+    "actual": null,
+    "info": {
+      "messages": 2,
+      "goal": 100,
+      "date": "04-29-26",
+      "amountOpen": 0
+    },
+    "totalOpen": 0
+  },
+  "913877217388404816": {
+    "actual": null,
+    "info": {
+      "messages": 3,
+      "goal": 100,
+      "date": "04-29-26",
+      "amountOpen": 0
+    },
+    "totalOpen": 0
+  },
+  "1005925645521534996": {
+    "actual": null,
+    "info": {
+      "messages": 3,
+      "goal": 100,
+      "date": "04-29-26",
+      "amountOpen": 0
+    },
+    "totalOpen": 0
+  }
+}

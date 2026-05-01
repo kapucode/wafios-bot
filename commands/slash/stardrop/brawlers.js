@@ -9,26 +9,35 @@ module.exports = {
   name: 'star_drop.brawlers',
   
   async execute(interaction, client) {
-    let msgBrawlersInfo = ''
+    let msgBrawlersInfo = []
     
     
     for (const category in dataBrawlers) {
       const brawlersList = dataBrawlers[category]
-      msgBrawlersInfo += `# 🌟 ${categoryDisplay[category]}\n`
-      msgBrawlersInfo += `- **Chance de brawler**: ${categoryChances[category]}%\n\n`
+      const objData = { title: '', text: '' }
+      objData.title = `🌟 ${categoryDisplay[category]}\n`
+      objData.text += `- **Chance de brawler**: ${categoryChances[category]}%\n\n`
       
       for (const brawler of brawlersList) {
-        msgBrawlersInfo += `<@&${brawler.roleId}> (${brawler.name})
+        objData.text += `<@&${brawler.roleId}> (${brawler.name})
 **O que dá:** ${brawler.gives}\n\n`
       }
+      
+      msgBrawlersInfo.push(objData)
     }
     
-    const embed = new EmbedBuilder()
-      .setDescription(msgBrawlersInfo)
-      .setColor(0x5db1ff)
+    let embeds = []
+    for (const objData of msgBrawlersInfo) {
+      embeds.push(
+        new EmbedBuilder()
+          .setTitle(objData.title)
+          .setDescription(objData.text)
+          .setColor(0xbf97ff)
+      )
+    }
     
     interaction.reply({
-      embeds: [embed],
+      embeds: [embeds],
       flags: MessageFlags.Ephemeral
     })
   }

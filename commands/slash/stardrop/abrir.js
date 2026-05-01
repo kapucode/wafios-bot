@@ -39,7 +39,7 @@ module.exports = {
         flags: MessageFlags.Ephemeral
       })
       return await interaction.editReply({
-        content: `${icon.error} **|** Para abrir um Star Drop você precisa enviar uma quantia específica de mensagens (${userStar.info.goal}), e faltam **${userStar.info.goal - userStar.info.messages}**!`,
+        content: `${icon.error} **|** Para abrir um Star Drop você precisa enviar uma quantia específica de mensagens (${userStar.info.goal}), e você só enviou **${userStar.info.messages}**!`,
       })
     } else if (
       userStar.info.messages >= userStar.info.goal &&

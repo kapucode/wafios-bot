@@ -11,6 +11,7 @@ module.exports = {
   async execute(interaction, client) {
     let msgBrawlersInfo = ''
     
+    
     for (const category in dataBrawlers) {
       const brawlersList = dataBrawlers[category]
       msgBrawlersInfo += `# 🌟 ${categoryDisplay[category]}\n`

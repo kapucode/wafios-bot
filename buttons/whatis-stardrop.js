@@ -27,7 +27,7 @@ module.exports = {
       .setContent(`## Como conseguir?`)
     const text2 = new TextDisplayBuilder()
       .setContent(`> Para abrir um Star Drop Mafios você precisa enviar uma meta de mensagens, que inicialmente é **100**, e cada Star Drop aberto, é somado 100 mensagens à meta.
-> Quando você atinge a meta, nosso bot próprio (Wafios) envia uma mensagem avisando que você pode abrir um Star Drop, mas se você quiser abrir em outro momento, há o comando \`/star_drop abrir\`.\n\n`)
+> Quando você atinge a meta, nosso bot próprio (Wafios) envia uma mensagem avisando que você pode abrir um Star Drop, mas se você quiser abrir em outro momento, há o comando \`/stardrop abrir\`.\n\n`)
     
     const title3 = new TextDisplayBuilder()
       .setContent(`## Há um limite diário?`)
@@ -37,7 +37,7 @@ module.exports = {
     const title4 = new TextDisplayBuilder()
       .setContent(`## Como são sorteados os brawlers?`)
     const text4 = new TextDisplayBuilder()
-      .setContent(`> Utilizamos um sistema totalmente aleatório para sortear os brawlers, e cada um é sorteado de acordo com a chance da categoria dos brawlers. Use \`/star_drop brawlers\` para ver suas chances.
+      .setContent(`> Utilizamos um sistema totalmente aleatório para sortear os brawlers, e cada um é sorteado de acordo com a chance da categoria dos brawlers. Use \`/stardrop brawlers\` para ver suas chances.
 > Quer saber mais? Fale com <@1173408263920951356>\n\n`)
     
     const title5 = new TextDisplayBuilder()

@@ -4,7 +4,7 @@ const {
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName('star_drop')
+    .setName('stardrop')
     .setDescription('Comando geral de Star Drop')
     .addSubcommand(sub =>
       sub

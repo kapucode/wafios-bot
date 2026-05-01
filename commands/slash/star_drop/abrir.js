@@ -52,7 +52,7 @@ module.exports = {
         flags: MessageFlags.Ephemeral
       })
       return await interaction.editReply({
-        content: `${icon.error} **|** Você já abriu **${userStar.info.amountOpen}** Star Drops hoje! Poderá abrir mais <t:${getNextMidnight() / 1000}:R>`,
+        content: `${icon.error} **|** Você já atingiu seu limite diário de **${userStar.info.amountOpen}** Star Drops abertos hoje! Mas relaxa, <t:${getNextMidnight() / 1000}:R> você poderá abrir mais!`,
       })
     }
   }

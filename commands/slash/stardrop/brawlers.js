@@ -37,7 +37,7 @@ module.exports = {
     }
     
     interaction.reply({
-      embeds: [embeds],
+      embeds: embeds,
       flags: MessageFlags.Ephemeral
     })
   }

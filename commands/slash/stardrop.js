@@ -17,6 +17,8 @@ module.exports = {
         .setDescription('「 Diversão 」Ver os Brawlers dos Star Drops Mafios')
     ),
   
+  test: true
+  
   async execute(interaction) {
     const sub = interaction.options.getSubcommand()
     const subcommand = interaction.client.subcommands.get(`star_drop.${sub}`)

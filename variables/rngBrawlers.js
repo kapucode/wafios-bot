@@ -2,7 +2,7 @@ const rngBrawlers = {
   inicial: [
     { 
       name: 'Shelly', 
-      gif: 'Não_identificado' 
+      gif: 'Não_identificado'
     }
   ],
 

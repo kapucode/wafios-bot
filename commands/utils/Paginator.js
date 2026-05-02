@@ -49,11 +49,12 @@ class Paginator {
   async start(interaction) {
     this.ownerId = interaction.user.id
 
-    const msg = await interaction.reply({
+    const response = await interaction.reply({
       embeds: [this.render()],
       components: [this.buildRow()],
       withResponse: true
     })
+    const msg = response.resource.message
 
     const collector = msg.createMessageComponentCollector({
       time: this.time

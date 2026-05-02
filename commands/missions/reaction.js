@@ -19,40 +19,39 @@ module.exports = {
       expiresAt: getNextMidnight(),
 
       // anti-farm seguro
-      reactedMessages: new Set()
+      reactedMessages: []
     }
   },
 
   handleReaction(reaction, user, mission, client) {
     client = reaction.client
-    
+  
     if (!mission) return false
     if (mission.status !== 'in_progress') return false
     if (!reaction.message || !reaction.message.guild) return false
-
-    // só conta o dono da missão
+  
     if (user.id !== mission.userId) return false
-
-    // não pode reagir na própria mensagem
     if (reaction.message.author?.id === user.id) return false
-
+  
     const messageId = reaction.message.id
-
-    // 🔥 anti duplicação REAL (Set é mais rápido e seguro)
-    if (mission.reactedMessages.has(messageId)) return false
-
-    mission.reactedMessages.add(messageId)
-
+  
+    // garantir array
+    const reacted = new Set(mission.reactedMessages || [])
+  
+    if (reacted.has(messageId)) return false
+  
+    reacted.add(messageId)
+    mission.reactedMessages = [...reacted]
+  
     mission.progress = Math.min(mission.progress + 1, mission.goal)
-
+  
     if (mission.progress >= mission.goal) {
       mission.progress = mission.goal
       mission.status = 'completed'
     }
-
-    // 🔥 render controlado (NUNCA direto)
+  
     scheduleRender(client, mission.userId)
-
+  
     return true
   },
 

@@ -38,7 +38,7 @@ class Paginator {
     // se for função → executa passando contexto
     if (typeof page === 'function') {
       return page({
-        actualPage: this.index,
+        actualPage: this.index + 1,
         totalPages: this.pages.length
       })
     }
@@ -52,7 +52,7 @@ class Paginator {
     const msg = await interaction.reply({
       embeds: [this.render()],
       components: [this.buildRow()],
-      fetchReply: true
+      withResponse: true
     })
 
     const collector = msg.createMessageComponentCollector({

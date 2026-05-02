@@ -2,7 +2,8 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-  EmbedBuilder
+  EmbedBuilder,
+  MessageFlags
 } = require('discord.js')
 
 const { getEmojis } = require('./getEmojis.js')
@@ -14,6 +15,7 @@ class Paginator {
     this.index = 0
     this.time = time
     this.ownerId = null
+    this.ended = false
   }
 
   buildRow() {
@@ -31,11 +33,17 @@ class Paginator {
   }
 
   render() {
-    const page = this.pages[this.index]
-
-    return typeof page === 'string'
-      ? new EmbedBuilder().setDescription(page)
-      : page
+  const page = this.pages[this.index]
+  
+    // se for função → executa passando contexto
+    if (typeof page === 'function') {
+      return page({
+        actualPage: this.index,
+        totalPages: this.pages.length
+      })
+    }
+  
+    return page
   }
 
   async start(interaction) {
@@ -56,8 +64,15 @@ class Paginator {
 
       if (i.user.id !== ownerId) {
         return i.reply({
-          content: 'Não é seu menu.',
-          ephemeral: true
+          content: `${icon.error} **|** Os botões não são seus!`,
+          flags: MessageFlags.Ephemeral
+        })
+      }
+      
+      if (this.ended) {
+        return i.reply({
+          content: `${icon.error} **|** Os dados da interação sumiram, use o comando novamente!`,
+          flags: MessageFlags.Ephemeral
         })
       }
 
@@ -75,6 +90,10 @@ class Paginator {
         embeds: [this.render()],
         components: [this.buildRow()]
       })
+    })
+    
+    collector.on('end', () => {
+      
     })
   }
 }

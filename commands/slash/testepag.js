@@ -13,10 +13,18 @@ module.exports = {
   
   async execute(interaction) {
     const pages = [
-      new EmbedBuilder()
-        .setDescription('teste'),
-      new EmbedBuilder()
-        .setDescription('outro teste')
+      ({ actualPage, totalPages }) => 
+        new EmbedBuilder()
+          .setTitle(`Página: ${actualPage}/${totalPages}`)
+          .setDescription(`sla teste aksksk1`),
+      ({ actualPage, totalPages }) => 
+        new EmbedBuilder()
+          .setTitle(`Página: ${actualPage}/${totalPages}`)
+          .setDescription(`sla teste 2ksjwj`),
+      ({ actualPage, totalPages }) => 
+        new EmbedBuilder()
+          .setTitle(`Página: ${actualPage}/${totalPages}`)
+          .setDescription(`sla teste 38383`)
     ]
     
     const paginator = new Paginator({ pages })

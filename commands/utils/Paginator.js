@@ -4,35 +4,43 @@ const {
   ButtonStyle,
   EmbedBuilder
 } = require('discord.js')
+
 const { getEmojis } = require('./getEmojis.js')
 const icon = getEmojis()
 
 class Paginator {
-  constructor({ pages, time=6000 }) {
+  constructor({ pages, time = 60000 }) {
     this.pages = pages
     this.index = 0
     this.time = time
+    this.ownerId = null
   }
-  
+
   buildRow() {
     return new ActionRowBuilder().addComponents(
       new ButtonBuilder()
-        .setCustomId('prev')
+        .setCustomId(`prev:${this.ownerId}`)
         .setEmoji(icon.leftarrow)
         .setStyle(ButtonStyle.Primary),
 
       new ButtonBuilder()
-        .setCustomId('next')
+        .setCustomId(`next:${this.ownerId}`)
         .setEmoji(icon.rightarrow)
         .setStyle(ButtonStyle.Primary)
     )
   }
-  
+
   render() {
-    return this.pages[this.index]
+    const page = this.pages[this.index]
+
+    return typeof page === 'string'
+      ? new EmbedBuilder().setDescription(page)
+      : page
   }
-  
+
   async start(interaction) {
+    this.ownerId = interaction.user.id
+
     const msg = await interaction.reply({
       embeds: [this.render()],
       components: [this.buildRow()],
@@ -44,15 +52,21 @@ class Paginator {
     })
 
     collector.on('collect', async i => {
-      if (i.user.id !== interaction.user.id)
-        return i.reply({ content: 'Não é seu menu.', ephemeral: true })
+      const [action, ownerId] = i.customId.split(':')
 
-      if (i.customId === 'prev') {
+      if (i.user.id !== ownerId) {
+        return i.reply({
+          content: 'Não é seu menu.',
+          ephemeral: true
+        })
+      }
+
+      if (action === 'prev') {
         this.index--
         if (this.index < 0) this.index = this.pages.length - 1
       }
 
-      if (i.customId === 'next') {
+      if (action === 'next') {
         this.index++
         if (this.index >= this.pages.length) this.index = 0
       }

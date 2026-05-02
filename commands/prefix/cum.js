@@ -45,13 +45,14 @@ module.exports = {
       embed.setColor(0xab0000)
     }
     
-    msg.reply({
+    const cumMsg = await msg.reply({
       embeds: [embed]
     })
     
     const msgWillExpire = await msg.reply(`⚠️ › Esse comando será deletado <t:${timestampSec}:R>! Aproveite os últimos dias de uso.`)
     setTimeout(async () => {
       await msgWillExpire.delete().catch(() => {})
-    }, 5000);
+      await cumMsg.delete().catch(() => {})
+    }, 10000);
   }
 }

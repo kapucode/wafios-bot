@@ -133,6 +133,22 @@ async function bootstrap(client) {
   
   console.log(`🌟 › Star Drops de usuários carregados: ${Object.keys(client.starDrops).length}`)
   
+  // =========================
+  // RNG BRAWLERS
+  // =========================
+  const rngJsonPath = path.join(__dirname, '../../json/rngBrawlers.json')
+  const rngJson = await safeJSON(
+    rngJsonPath,
+    {}
+  )
+  if (rngJsonPath) {
+    client.rngBrawlers = rngJson ?? {}
+  } else {
+    client.rngBrawlers = {}
+  }
+  
+  console.log(`🥷 › Brawlers de RNG de usuários carregados: ${Object.keys(client.rngJson).length}`)
+  
   // Last Messages
   client.lastMessages = {}
 }

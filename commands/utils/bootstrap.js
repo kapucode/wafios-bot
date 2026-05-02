@@ -147,7 +147,7 @@ async function bootstrap(client) {
     client.rngBrawlers = {}
   }
   
-  console.log(`🥷 › Brawlers de RNG de usuários carregados: ${Object.keys(client.rngJson).length}`)
+  console.log(`🥷 › Brawlers de RNG de usuários carregados: ${Object.keys(client.rngBrawlers).length}`)
   
   // Last Messages
   client.lastMessages = {}

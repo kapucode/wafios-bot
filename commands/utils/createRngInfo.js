@@ -18,12 +18,7 @@ function createRngInfo(client, userId) {
   const data = {
     brawlers: {},
     totalOpen: 0,
-    rebirths: 0,
-    finishGameInfo: {
-      hasFinished: false,
-      firstUseTimestamp: Date.now(),
-      finishUseTimestamp: null
-    }
+    rebirths: 0
   }
   
   const rngBrawlersPath = path.join(__dirname, '../../json/rngBrawlers.json');

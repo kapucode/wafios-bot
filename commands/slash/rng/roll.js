@@ -115,7 +115,7 @@ Use \`/rng rebirth\` para reiniciar sua progressão e ganhar bônus:
       }
 
       const list = [...ownedSet]
-      const repeated = list.length > 0 ? Math.random() < 0.3 : false
+      const repeated = list.length > 0 ? Math.random() < 0.7 : false
 
       let brawler
 
@@ -166,7 +166,7 @@ Use \`/rng rebirth\` para reiniciar sua progressão e ganhar bônus:
 - **Nome:** ${brawler.name}
 - **Classe:** ${rngDisplay[brawler.category] ?? 'Desconhecida'}`
         )
-        .setColor(0x00ff99)
+        .setColor(repeated ? 0x8925a2 : 0x00ff99)
         .setImage(brawler.gif ?? null)
 
       client.rngRolling.delete(userId)

@@ -29,8 +29,6 @@ module.exports = {
       saveRngInfo(client, rngBrawlersPath)
     }
     
-    console.log(userRng.brawlers)
-
     // Garante que existe
     if (!userRng.brawlers) {
       userRng.brawlers = {}
@@ -61,31 +59,8 @@ module.exports = {
     } else {
       // ✅ Loop seguro (controlado por categoryDisplay)
       for (const rarity in categoryDisplay) {
-        const brawlers = userRng.brawlers[rarity]
-
-        // pula se não existir ou estiver vazio
-        if (!Array.isArray(brawlers) || brawlers.length === 0) continue
-
-        let brawlersMsg = ''
-
-        for (const brawler of brawlers) {
-          brawlersMsg += `${brawler.emoji} ${brawler.name}\n`
-        }
-
-        const display = categoryDisplay[rarity]
-
-        // segurança extra (caso categoryDisplay esteja quebrado)
-        if (!display) {
-          console.log('Rarity sem display:', rarity)
-          continue
-        }
-
-        pages.push(({ actualPage, totalPages }) =>
-          new EmbedBuilder()
-            .setTitle(`🎒 | ${display.toUpperCase()} (${actualPage}/${totalPages})`)
-            .setDescription(brawlersMsg || 'Nenhum brawler nessa categoria.')
-            .setColor(0x924c19)
-        )
+        console.log('RARITY LOOP:', JSON.stringify(rarity))
+        console.log('USER VALUE:', userRng.brawlers[rarity])
       }
     }
     

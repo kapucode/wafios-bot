@@ -7,7 +7,7 @@ const { createRngInfo } = require('../../utils/createRngInfo.js')
 const { saveRngInfo } = require('../../utils/saveRngInfo.js')
 const Paginator = require('../../utils/Paginator.js')
 
-const { rngDisplay } = require('../../../variables/rngBrawlers.js')
+const { rngBrawlers, rngDisplay } = require('../../../variables/rngBrawlers.js')
 
 const path = require('path')
 const rngBrawlersPath = path.join(__dirname, '../../../json/rngBrawlers.json')
@@ -59,26 +59,43 @@ module.exports = {
       )
     } else {
       // ✅ Loop seguro (controlado por rngDisplay)
-      for (const rarity in rngDisplay) {
-        const brawlers = userRng.brawlers[rarity]
+      // for (const rarity in rngDisplay) {
+      //   const brawlers = userRng.brawlers[rarity]
 
-        // pula se não existir ou estiver vazio
-        if (!Array.isArray(brawlers) || brawlers.length === 0) continue
+      //   // pula se não existir ou estiver vazio
+      //   if (!Array.isArray(brawlers) || brawlers.length === 0) continue
 
+      //   let brawlersMsg = ''
+
+      //   for (const brawler of brawlers) {
+      //     brawlersMsg += `${brawler.emoji} ${brawler.name}\n`
+      //   }
+
+      //   const display = rngDisplay[rarity]
+
+      //   // segurança extra (caso rngDisplay esteja quebrado)
+      //   if (!display) {
+      //     console.log('Rarity sem display:', rarity)
+      //     continue
+      //   }
+
+      //   pages.push(({ actualPage, totalPages }) =>
+      //     new EmbedBuilder()
+      //       .setTitle(`🎒 | ${display.toUpperCase()} (${actualPage}/${totalPages})`)
+      //       .setDescription(brawlersMsg || 'Nenhum brawler nessa categoria.')
+      //       .setColor(0x924c19)
+      //   )
+      // }
+      for (const rarity in rngBrawlers) {
         let brawlersMsg = ''
-
-        for (const brawler of brawlers) {
-          brawlersMsg += `${brawler.emoji} ${brawler.name}\n`
+        
+        const userBrawlersRarity = userRng.brawlers[rarity]
+        
+        for (const brawler of rngBrawlers[rarity]) {
+          const has = userBrawlersRarity.some(b => b.name.toLowerCase() === brawler.name.toLowerCade())
+          brawlersMsg += `${has ? icon[brawler.name.toLowerCase()] : ':x:'} ${brawler.name}`
         }
-
-        const display = rngDisplay[rarity]
-
-        // segurança extra (caso rngDisplay esteja quebrado)
-        if (!display) {
-          console.log('Rarity sem display:', rarity)
-          continue
-        }
-
+        
         pages.push(({ actualPage, totalPages }) =>
           new EmbedBuilder()
             .setTitle(`🎒 | ${display.toUpperCase()} (${actualPage}/${totalPages})`)

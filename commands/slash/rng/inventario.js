@@ -28,6 +28,11 @@ module.exports = {
       
       saveRngInfo(client, rngBrawlersPath)
     }
+
+    // Garante que existe
+    if (!userRng.brawlers) {
+      userRng.brawlers = {}
+    }
     
     let pages = [
       ({ actualPage, totalPages }) =>
@@ -40,33 +45,49 @@ module.exports = {
 > Já zerou o jogo e quer jogar novamente? Dê rebirth (prestígio) usando \`/rng rebirth\``)
     ]
     
-    if (Object.keys(userRng.brawlers) <= 0) {
+    // ✅ Correção aqui
+    if (Object.keys(userRng.brawlers).length <= 0) {
       pages.push(
         ({ actualPage, totalPages }) =>
           new EmbedBuilder()
             .setTitle(`🎒 | Página vazia (${actualPage}/${totalPages})`)
-            .setDescription(`Ah, que pena! Você ainda não tem nenhum brawler! Para comecaçar a colecionar brawlers, você deve usar \`/rng roll\`!
+            .setDescription(`Ah, que pena! Você ainda não tem nenhum brawler! Para começar, use \`/rng roll\`!
 
 -# O jogo de RNG da Mafios não concebe nenhum benefício, é apenas um sistema para diversão.`)
             .setColor(0xc01b1b)
       )
     } else {
-      for (const rarity in userRng.brawlers) {
+      // ✅ Loop seguro (controlado por categoryDisplay)
+      for (const rarity in categoryDisplay) {
+        const brawlers = userRng.brawlers[rarity]
+
+        // pula se não existir ou estiver vazio
+        if (!Array.isArray(brawlers) || brawlers.length === 0) continue
+
         let brawlersMsg = ''
-        for (const brawler of userRng.brawlers[rarity]) {
+
+        for (const brawler of brawlers) {
           brawlersMsg += `${brawler.emoji} ${brawler.name}\n`
         }
-        
-        pages.push(({ actualPage, totalPages }) => {
-          return new EmbedBuilder()
-            .setTitle(`🎒 | ${categoryDisplay[rarity].toUpperCase()} (${actualPage}/${totalPages})`)
-            .setDescription(brawlersMsg)
+
+        const display = categoryDisplay[rarity]
+
+        // segurança extra (caso categoryDisplay esteja quebrado)
+        if (!display) {
+          console.log('Rarity sem display:', rarity)
+          continue
+        }
+
+        pages.push(({ actualPage, totalPages }) =>
+          new EmbedBuilder()
+            .setTitle(`🎒 | ${display.toUpperCase()} (${actualPage}/${totalPages})`)
+            .setDescription(brawlersMsg || 'Nenhum brawler nessa categoria.')
             .setColor(0x924c19)
-        })
+        )
       }
     }
     
     const paginator = new Paginator({ pages })
-    paginator.start(interaction)
+    await paginator.start(interaction)
   }
 }

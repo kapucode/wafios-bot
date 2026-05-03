@@ -133,6 +133,16 @@ const rngBrawlers = {
   ]
 };
 
+const categoryDisplay = {
+  inicial: 'Inicial',
+  raro: 'Raro',
+  super_raro: 'Super Raro',
+  epico: 'Épico',
+  mitico: 'Mítico',
+  lendario: 'Lendário',
+  ultra: 'Ultralendário'
+}
+
 const rngDisplay = {
   inicial: 'Inicial',
   raro: 'Raro',

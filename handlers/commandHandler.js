@@ -18,11 +18,16 @@ module.exports = async (msg, client) => {
     for (const p of prefixes) {
       if (content.startsWith(p)) {
         const sliced = content.slice(p.length).trim().split(/ +/)
+        
+        const normalize = (str) =>
+          str
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLowerCase()
 
-        const base = sliced.shift().toLowerCase()
-        const sub = sliced[0]?.toLowerCase()
-
-        // 🔥 suporte a "rng roll" -> "rng.roll"
+        const base = normalize(sliced.shift())
+        const sub = normalize(sliced[0])
+        
         const fullCmd = sub ? `${base}.${sub}` : base
 
         cmd = fullCmd

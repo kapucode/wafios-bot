@@ -2,15 +2,15 @@ const {
   EmbedBuilder
 } = require('discord.js')
 
-const { createRngInfo } = require('../../utils/createRngInfo.js')
-const { saveRngInfo } = require('../../utils/saveRngInfo.js')
-const { getEmojis } = require('../../utils/getEmojis.js')
-const Paginator = require('../../utils/Paginator.js')
+const { createRngInfo } = require('../utils/createRngInfo.js')
+const { saveRngInfo } = require('../utils/saveRngInfo.js')
+const { getEmojis } = require('../utils/getEmojis.js')
+const Paginator = require('../utils/Paginator.js')
 
-const { rngBrawlers, rngDisplay } = require('../../../variables/rngBrawlers.js')
+const { rngBrawlers, rngDisplay } = require('../../variables/rngBrawlers.js')
 
 const path = require('path')
-const rngBrawlersPath = path.join(__dirname, '../../../json/rngBrawlers.json')
+const rngBrawlersPath = path.join(__dirname, '../../json/rngBrawlers.json')
 
 module.exports = {
   name: 'rng.inventario',

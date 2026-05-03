@@ -10,7 +10,11 @@ const { getEmojis } = require('./getEmojis.js')
 const icon = getEmojis()
 
 class Paginator {
-  constructor({ pages, time = 60000, disabledBtn = false }) {
+  constructor({ 
+    pages, 
+    time = 3 * 60 * 1000, 
+    disabledBtn = false 
+  }) {
     this.pages = pages
     this.index = 0
     this.time = time
@@ -28,7 +32,7 @@ class Paginator {
         
       new ButtonBuilder()
         .setCustomId(`home:${this.ownerId}`)
-        .setLabel('Início')
+        .setEmoji(icon.home)
         .setStyle(ButtonStyle.Primary)
         .setDisabled(disabled),
 

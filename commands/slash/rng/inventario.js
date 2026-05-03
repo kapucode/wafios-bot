@@ -45,7 +45,6 @@ module.exports = {
 > Já zerou o jogo e quer jogar novamente? Dê rebirth (prestígio) usando \`/rng rebirth\``)
     ]
     
-    // ✅ Correção aqui
     if (Object.keys(userRng.brawlers).length <= 0) {
       pages.push(
         ({ actualPage, totalPages }) =>

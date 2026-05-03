@@ -10,11 +10,12 @@ const { getEmojis } = require('./getEmojis.js')
 const icon = getEmojis()
 
 class Paginator {
-  constructor({ pages, time = 60000 }) {
+  constructor({ pages, time = 60000, disabledBtn = false }) {
     this.pages = pages
     this.index = 0
     this.time = time
     this.ownerId = null
+    this.disabledBtn = disabledBtn
   }
 
   buildRow(disabled = false) {
@@ -51,9 +52,14 @@ class Paginator {
 
     const response = await interaction.reply({
       embeds: [this.render()],
-      components: [this.buildRow()],
+      components: [this.buildRow(disabledBtn)],
       withResponse: true
     })
+    
+    // Não adicionar collector se os botões forem desativados
+    if (disabledBtn) {
+      return
+    }
 
     const msg = response.resource.message
 

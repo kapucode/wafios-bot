@@ -40,8 +40,7 @@ module.exports = {
         userRng.brawlers[getBrawler.category] = []
       }
       
-      console.log(userRng.brawlers[getBrawler.category])
-      userRng.brawlers[getBrawler.category].append(
+      userRng.brawlers[getBrawler.category].push(
         {
           name: getBrawler.name,
           emoji: icon[getBrawler.name.toLowerCase()] || '❓'

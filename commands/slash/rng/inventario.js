@@ -44,6 +44,7 @@ module.exports = {
       ({ actualPage, totalPages }) =>
         new EmbedBuilder()
           .setTitle(`🏘️ | Página inicial (${actualPage}/${totalPages})`)
+          .setColor(0x51d4ff)
           .setDescription(
 `- Veja o inventário RNG de Brawlers de ${user}!
 

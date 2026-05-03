@@ -10,44 +10,57 @@ module.exports = async (msg, client) => {
   // 🔍 tenta encontrar comando com prefixo próprio primeiro
   for (const cmdData of client.prefixCommands.values()) {
     if (!cmdData.prefix) continue
-  
+
     const prefixes = Array.isArray(cmdData.prefix)
       ? cmdData.prefix
       : [cmdData.prefix]
-  
+
     for (const p of prefixes) {
       if (content.startsWith(p)) {
         const sliced = content.slice(p.length).trim().split(/ +/)
-        cmd = sliced.shift().toLowerCase()
-  
+
+        const base = sliced.shift().toLowerCase()
+        const sub = sliced[0]?.toLowerCase()
+
+        // 🔥 suporte a "rng roll" -> "rng.roll"
+        const fullCmd = sub ? `${base}.${sub}` : base
+
+        cmd = fullCmd
+
         if (cmd === cmdData.name || cmdData.aliases?.includes(cmd)) {
           command = cmdData
-          args = sliced
+          args = sliced.slice(1) // remove subcmd se existir
           break
         }
       }
     }
-  
+
     if (command) break
   }
 
-  // 🔁 se não achou comando com prefixo próprio, usa o padrão
+  // 🔁 fallback padrão
   if (!command) {
     if (!content.startsWith(defaultPrefix)) return
 
     const sliced = content.slice(defaultPrefix.length).trim().split(/ +/)
-    cmd = sliced.shift().toLowerCase()
+    const base = sliced.shift().toLowerCase()
+    const sub = sliced[0]?.toLowerCase()
 
-    command = client.prefixCommands.get(cmd)
-    args = sliced
+    const fullCmd = sub ? `${base}.${sub}` : base
+
+    command = client.prefixCommands.get(fullCmd)
 
     if (!command) return
+
+    args = sliced.slice(1)
   }
 
   // 🔒 comandos em teste
   if (command.test) {
     if (!client.managers?.some(m => m.id === msg.author.id)) {
-      const testMsg = await msg.reply(`🛠️ **|** Esse comando está em fase de teste!`).catch(() => null)
+      const testMsg = await msg
+        .reply(`🛠️ **|** Esse comando está em fase de teste!`)
+        .catch(() => null)
 
       setTimeout(() => {
         testMsg?.delete().catch(() => null)

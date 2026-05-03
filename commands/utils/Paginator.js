@@ -53,25 +53,25 @@ class Paginator {
     let response
     
     if (interaction.deferred || interaction.replied) {
-      response = await interaction.editReply({
+      await interaction.editReply({
         embeds: [this.render()],
-        components: [this.buildRow(this.disabledBtn)],
-        withResponse: true
+        components: [this.buildRow(this.disabledBtn)]
       })
     } else {
-      response = await interaction.reply({
+      await interaction.reply({
         embeds: [this.render()],
-        components: [this.buildRow(this.disabledBtn)],
-        withResponse: true
+        components: [this.buildRow(this.disabledBtn)]
       })
     }
+    
+    const msg = await interaction.fetchReply()
     
     // Não adicionar collector se os botões forem desativados
     if (this.disabledBtn) {
       return
     }
 
-    const msg = response.resource.message
+    const msg = await 
 
     const collector = msg.createMessageComponentCollector({
       time: this.time

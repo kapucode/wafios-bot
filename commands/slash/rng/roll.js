@@ -71,19 +71,19 @@ module.exports = {
       // 🚨 BLOQUEIO TOTAL (corrige teu bug do Leon)
       if (hasAll) {
         const embed = new EmbedBuilder()
-          .setTitle(`✨ | Zerou o jogo`)
+          .setTitle(`✨ | JOGO ZERADO`)
           .setDescription(
 `Você já possui todos os brawlers.
 
-Use /rng rebirth para reiniciar sua progressão e ganhar bônus:
+Use \`/rng rebirth\` para reiniciar sua progressão e ganhar bônus:
 - 2x mais sorte
-- cargos exclusivos
-- ranking de rebirths`
+- Cargos exclusivos
+- Ranking de rebirths (\`/rng rebirth ranking\`)`
           )
           .setColor(0xefff51)
 
         const rebirthBtn = new ButtonBuilder()
-          .setLabel('Rebirth')
+          .setLabel('Resetar')
           .setCustomId(`rebirth-rng:${interaction.user.id}`)
           .setEmoji('🎯')
           .setStyle(ButtonStyle.Danger)

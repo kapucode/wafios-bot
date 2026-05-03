@@ -61,27 +61,54 @@ module.exports = {
         client.rngBrawlers[userId] = userRng
       }
 
-      const allUserBrawlersBefore = Object.values(userRng.brawlers).flat()
+      const allUserBrawlers = Object.values(userRng.brawlers).flat()
 
       const totalBrawlers = Object.values(rngBrawlers)
         .reduce((acc, list) => acc + list.length, 0)
 
-      const hadAllBefore = allUserBrawlersBefore.length >= totalBrawlers
+      const hasAll = allUserBrawlers.length >= totalBrawlers
 
+      // 🚨 BLOQUEIO TOTAL (corrige teu bug do Leon)
+      if (hasAll) {
+        const embed = new EmbedBuilder()
+          .setTitle(`✨ | Zerou o jogo`)
+          .setDescription(
+`Você já possui todos os brawlers.
+
+Use /rng rebirth para reiniciar sua progressão e ganhar bônus:
+- 2x mais sorte
+- cargos exclusivos
+- ranking de rebirths`
+          )
+          .setColor(0xefff51)
+
+        const rebirthBtn = new ButtonBuilder()
+          .setLabel('Rebirth')
+          .setCustomId(`rebirth-rng:${interaction.user.id}`)
+          .setEmoji('🎯')
+          .setStyle(ButtonStyle.Danger)
+
+        const row = new ActionRowBuilder().addComponents(rebirthBtn)
+
+        return interaction.editReply({
+          embeds: [embed],
+          components: [row]
+        })
+      }
+
+      // 🎲 RNG normal
       const repeated =
-        allUserBrawlersBefore.length > 0
+        allUserBrawlers.length > 0
           ? Math.random() < 0.3
           : false
 
       let brawler = null
-      let embed = null
-      let row = null
 
       // 🔴 REPEATED MODE
       if (repeated) {
         brawler =
-          allUserBrawlersBefore[
-            Math.floor(Math.random() * allUserBrawlersBefore.length)
+          allUserBrawlers[
+            Math.floor(Math.random() * allUserBrawlers.length)
           ]
       }
 
@@ -97,34 +124,8 @@ module.exports = {
           }
         }
 
-        // 🔥 zerou o jogo (base real: pool vazio)
-        if (pool.length === 0) {
-          embed = new EmbedBuilder()
-            .setTitle(`✨ | Zerou o jogo`)
-            .setDescription(
-`Você zerou o jogo! Caso queira continuar jogando, você pode dar um rebirth.
-Os rebirths reiniciam todos seus brawlers do RNG, mas há benefícios:
-- A cada rebirth você ganha **2x mais sorte**
-- Cargos exclusivos
-- Você pode entrar no **ranking de rebirths** (\`/rng rebirth ranking\`)
-
-> Para dar rebirth, use o botão abaixo ou o comando \`/rng rebirth\``
-            )
-            .setColor(0xefff51)
-
-          const rebirthBtn = new ButtonBuilder()
-            .setLabel('Rebirth')
-            .setCustomId(`rebirth-rng:${interaction.user.id}`)
-            .setEmoji('🎯')
-            .setStyle(ButtonStyle.Danger)
-
-          row = new ActionRowBuilder().addComponents(rebirthBtn)
-
-          return interaction.editReply({
-            embeds: [embed],
-            components: [row]
-          })
-        }
+        // (segurança extra — nunca deveria acontecer por causa do bloqueio acima)
+        if (pool.length === 0) return
 
         brawler = pool[Math.floor(Math.random() * pool.length)]
       }
@@ -134,31 +135,18 @@ Os rebirths reiniciam todos seus brawlers do RNG, mas há benefícios:
         await updateNewBrawler(client, userRng, userId, brawler, icon)
       }
 
-      const allUserBrawlersAfter = Object.values(userRng.brawlers).flat()
-      const hasAllNow = allUserBrawlersAfter.length >= totalBrawlers
-
-      // 🔥 embed padrão do roll
-      embed = new EmbedBuilder()
+      const embed = new EmbedBuilder()
         .setTitle(`✨ | NOVO BRAWLER`)
-        .setDescription(`Você recebeu ganhou um novo brawler!
+        .setDescription(
+`Você ganhou um novo brawler!
+
 - **Nome:** ${brawler.name}
-- **Classe**: ${rngDisplay[brawler.category]}`)
+- **Classe:** ${rngDisplay[brawler.category] ?? 'Desconhecida'}`
+        )
         .setColor(0x00ff99)
         .setImage(brawler.gif)
 
-      // 🔥 já tinha tudo antes e continua tendo
-      if (hadAllBefore && hasAllNow) {
-        return interaction.editReply({
-          embeds: [embed]
-        })
-      }
-
-      // 🔥 acabou de completar agora
-      if (!hadAllBefore && hasAllNow) {
-        embed.setTitle(`✨ | PARABÉNS! Zerou o jogo`)
-      }
-
-      await interaction.editReply({
+      return interaction.editReply({
         embeds: [embed]
       })
 

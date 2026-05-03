@@ -36,6 +36,8 @@ module.exports = {
   name: 'rng.roll',
 
   async execute(interaction, client) {
+    if (interaction.user.id !== '1173408263920951356' && interaction.user.id !== '1005925645521534996') return
+    
     try {
       await interaction.deferReply()
 

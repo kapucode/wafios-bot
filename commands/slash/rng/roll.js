@@ -99,10 +99,28 @@ module.exports = {
             }
           }
         }
+        const embed = new EmbedBuilder()
+          .setTitle(`✨ | Zerou o jogo`)
+          .setDescription(`Você zerou o jogo! Caso queira continuar jogando, você pode dar um rebirth.
+Os rebirths reiniciam todos seus brawlers do RNG, mas há benefícios:
+- A cada rebirth você ganha **2x mais sorte**
+- Cargos exclusivos
+- Você pode entrar no **ranking de rebirths** (\`/rng rebirth ranking\`)
 
+> Para dar rebirth, use o botão abaixo ou o comando \`/rng rebirth\``)
+          .setColor(0xefff51)
+        
+        const rebirthBtn = new ButtonBuilder()
+          .setLabel('Rebirth')
+          .setCustomId(`rebirth-rng:${interaction.user.id}`)
+          .setEmoji('🎯')
+        
+        const row = new ActionRowBuilder()
+          .addComponent(rebirthBtn)
         if (pool.length === 0) {
           return interaction.editReply({
-            content: "Você já tem todos os brawlers."
+            embeds: [embed],
+            components: [row]
           })
         }
 
@@ -120,24 +138,6 @@ module.exports = {
       
       
       // 🔥 CASO 1: já tinha tudo antes e continua tendo
-      const embed = new EmbedBuilder()
-        .setTitle(`✨ | Zerou o jogo`)
-        .setDescription(`Você zerou o jogo! Caso queira continuar jogando, você pode dar um rebirth.
-Os rebirths reiniciam todos seus brawlers do RNG, mas há benefícios:
-- A cada rebirth você ganha **2x mais sorte**
-- Cargos exclusivos
-- Você pode entrar no **ranking de rebirths** (\`/rng rebirth ranking\`)
-
-> Para dar rebirth, use o botão abaixo ou o comando \`/rng rebirth\``)
-        .setColor(0xefff51)
-      
-      const rebirthBtn = new ButtonBuilder()
-        .setLabel('Rebirth')
-        .setCustomId(`rebirth-rng:${interaction.user.id}`)
-        .setEmoji('🎯')
-      
-      const row = new ActionRowBuilder()
-        .addComponent(rebirthBtn)
       
       if (hadAllBefore && hasAllNow) {
         return interaction.editReply({

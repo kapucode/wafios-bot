@@ -14,6 +14,7 @@ const rngBrawlersPath = path.join(__dirname, '../../../json/rngBrawlers.json')
 
 module.exports = {
   name: 'rng.inventario',
+  aliases: ['rng.inv'],
 
   async execute(msg, args) {
     const client = msg.client

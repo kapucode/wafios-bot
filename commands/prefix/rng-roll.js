@@ -52,7 +52,7 @@ async function updateNewBrawler(client, userRng, userId, brawler, icon) {
 
 module.exports = {
   name: 'rng.roll',
-  aliases: ['rr']
+  aliases: ['rr'],
 
   async execute(msg, args) {
     if (

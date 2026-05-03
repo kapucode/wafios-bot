@@ -8,6 +8,27 @@ const { rngBrawlers, rngChances } = require('../../../variables/rngBrawlers.js')
 const path = require('path')
 const rngBrawlersPath = path.join(__dirname, '../../../json/rngBrawlers.json')
 
+async function updateNewBrawler(userRng, newBrawler) {
+  if (!userRng?.brawlers[getBrawler.category]) {
+    userRng.brawlers[getBrawler.category] = []
+  }
+  
+  if (userRng.brawlers[getBrawler.category].some(
+    b => b.name.toLowerCase() === newBrawler.name.toLowerCase()
+  )) {
+    return
+  }
+  
+  userRng.brawlers[getBrawler.category].push(
+    {
+      name: getBrawler.name,
+      emoji: icon[getBrawler.name.toLowerCase()] || '❓'
+    }
+  )
+  
+  await saveRngInfo(client, rngBrawlersPath) // Salvar brawler
+}
+
 module.exports = {
   name: 'rng.roll',
   
@@ -36,18 +57,7 @@ module.exports = {
         })
       }
       
-      if (!userRng?.brawlers[getBrawler.category]) {
-        userRng.brawlers[getBrawler.category] = []
-      }
-      
-      userRng.brawlers[getBrawler.category].push(
-        {
-          name: getBrawler.name,
-          emoji: icon[getBrawler.name.toLowerCase()] || '❓'
-        }
-      )
-      
-      await saveRngInfo(client, rngBrawlersPath) // Salvar brawler
+      updateNewBrawler(userRng, getBrawler)
       
       console.log(userRng)
       await interaction.editReply({

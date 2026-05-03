@@ -51,7 +51,7 @@ async function updateNewBrawler(client, userRng, userId, brawler, icon) {
 }
 
 module.exports = {
-  name: 'rng roll',
+  name: 'rng-roll',
   aliases: ['roll rng'],
 
   async execute(msg, client) {

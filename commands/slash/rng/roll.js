@@ -14,7 +14,18 @@ const path = require('path')
 
 const rngBrawlersPath = path.join(__dirname, '../../../json/rngBrawlers.json')
 
-// 🔥 SET = mais seguro que array + some()
+// 🔥 catálogo rápido (evita undefined)
+function getFromCatalog(name) {
+  for (const cat in rngBrawlers) {
+    const found = rngBrawlers[cat].find(
+      b => b.name.toLowerCase() === name.toLowerCase()
+    )
+    if (found) return { ...found, category: cat }
+  }
+  return null
+}
+
+// 🔥 inventário seguro (só nomes)
 function getOwnedSet(userRng) {
   return new Set(
     Object.values(userRng.brawlers)
@@ -23,7 +34,7 @@ function getOwnedSet(userRng) {
   )
 }
 
-// 💾 salva + sincroniza corretamente
+// 💾 salva
 async function updateNewBrawler(client, userRng, userId, brawler, icon) {
 
   if (!userRng.brawlers[brawler.category]) {
@@ -55,12 +66,10 @@ module.exports = {
       const icon = getEmojis()
       const userId = interaction.user.id
 
-      // 🔒 trava anti spam/race condition
       client.rngRolling ??= new Set()
       if (client.rngRolling.has(userId)) return
       client.rngRolling.add(userId)
 
-      // 🔥 garante userRng
       let userRng = client.rngBrawlers[userId]
 
       if (!userRng) {
@@ -71,11 +80,11 @@ module.exports = {
       const ownedSet = getOwnedSet(userRng)
 
       const totalBrawlers = Object.values(rngBrawlers)
-        .reduce((acc, list) => acc + list.length, 0)
+        .reduce((a, b) => a + b.length, 0)
 
       const hasAll = ownedSet.size >= totalBrawlers
 
-      // 🚨 bloqueio TOTAL correto (evita bug do Gus / Leon / etc)
+      // 🚨 JOGO ZERADO (sem RNG)
       if (hasAll) {
         const embed = new EmbedBuilder()
           .setTitle(`✨ | JOGO ZERADO`)
@@ -91,7 +100,7 @@ Use \`/rng rebirth\` para reiniciar sua progressão e ganhar bônus:
 
         const rebirthBtn = new ButtonBuilder()
           .setLabel('Resetar')
-          .setCustomId(`rebirth-rng:${interaction.user.id}`)
+          .setCustomId(`rebirth-rng:${userId}`)
           .setEmoji('🎯')
           .setStyle(ButtonStyle.Danger)
 
@@ -105,32 +114,25 @@ Use \`/rng rebirth\` para reiniciar sua progressão e ganhar bônus:
         })
       }
 
-      // 🎲 RNG normal
-      const allUserBrawlers = [...ownedSet]
+      const list = [...ownedSet]
+      const repeated = list.length > 0 ? Math.random() < 0.3 : false
 
-      const repeated =
-        allUserBrawlers.length > 0
-          ? Math.random() < 0.3
-          : false
+      let brawler
 
-      let brawler = null
-
-      // 🔴 REPEATED MODE
+      // 🔴 REPEATED (AGORA CORRIGIDO)
       if (repeated) {
-        brawler =
-          allUserBrawlers[
-            Math.floor(Math.random() * allUserBrawlers.length)
-          ]
+        const name = list[Math.floor(Math.random() * list.length)]
+        brawler = getFromCatalog(name)
       }
 
       // 🔵 NORMAL MODE
       else {
         const pool = []
 
-        for (const category in rngBrawlers) {
-          for (const item of rngBrawlers[category]) {
+        for (const cat in rngBrawlers) {
+          for (const item of rngBrawlers[cat]) {
             if (!ownedSet.has(item.name.toLowerCase())) {
-              pool.push({ ...item, category })
+              pool.push({ ...item, category: cat })
             }
           }
         }
@@ -143,7 +145,15 @@ Use \`/rng rebirth\` para reiniciar sua progressão e ganhar bônus:
         brawler = pool[Math.floor(Math.random() * pool.length)]
       }
 
-      // 💾 salva só se não for repeated
+      // 🔥 proteção FINAL contra undefined
+      if (!brawler || !brawler.name) {
+        console.error('Brawler inválido:', brawler)
+        client.rngRolling.delete(userId)
+        return interaction.editReply({
+          content: 'Erro ao gerar brawler.'
+        })
+      }
+
       if (!repeated) {
         await updateNewBrawler(client, userRng, userId, brawler, icon)
       }
@@ -157,13 +167,11 @@ Use \`/rng rebirth\` para reiniciar sua progressão e ganhar bônus:
 - **Classe:** ${rngDisplay[brawler.category] ?? 'Desconhecida'}`
         )
         .setColor(0x00ff99)
-        .setImage(brawler.gif)
+        .setImage(brawler.gif ?? null)
 
       client.rngRolling.delete(userId)
 
-      return interaction.editReply({
-        embeds: [embed]
-      })
+      return interaction.editReply({ embeds: [embed] })
 
     } catch (err) {
       console.error(err)

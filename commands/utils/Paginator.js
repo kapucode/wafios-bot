@@ -25,6 +25,12 @@ class Paginator {
         .setEmoji(icon.leftarrow)
         .setStyle(ButtonStyle.Primary)
         .setDisabled(disabled),
+        
+      new ButtonBuilder()
+        .setCustomId(`home:${this.ownerId}`)
+        .setLabel('Início')
+        .setStyle(ButtonStyle.Primary)
+        .setDisabled(disabled),
 
       new ButtonBuilder()
         .setCustomId(`next:${this.ownerId}`)
@@ -89,6 +95,10 @@ class Paginator {
         if (action === 'prev') {
           this.index--
           if (this.index < 0) this.index = this.pages.length - 1
+        }
+        
+        if (action === 'home') {
+          this.index = 0
         }
 
         if (action === 'next') {

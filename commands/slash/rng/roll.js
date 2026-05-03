@@ -26,7 +26,6 @@ async function updateNewBrawler(client, userRng, userId, brawler, icon) {
     emoji: icon[brawler.name.toLowerCase()] || '❓'
   })
 
-  // 🔥 garante consistência global
   client.rngBrawlers[userId] = userRng
 
   await saveRngInfo(client, rngBrawlersPath)
@@ -36,15 +35,18 @@ module.exports = {
   name: 'rng.roll',
 
   async execute(interaction, client) {
-    if (interaction.user.id !== '1173408263920951356' && interaction.user.id !== '1005925645521534996') return
-    
+    if (
+      interaction.user.id !== '1173408263920951356' &&
+      interaction.user.id !== '1005925645521534996'
+    ) return
+
     try {
       await interaction.deferReply()
 
       const icon = getEmojis()
       const userId = interaction.user.id
 
-      // 🔥 SEMPRE sincroniza corretamente
+      // 🔥 garante userRng
       let userRng = client.rngBrawlers[userId]
 
       if (!userRng) {
@@ -52,26 +54,31 @@ module.exports = {
         client.rngBrawlers[userId] = userRng
       }
 
-      // 🔥 trava identidade (evita bug futuro)
       userRng.id = userId
 
-      const allUserBrawlers = Object.values(userRng.brawlers).flat()
+      // 📊 estado ANTES do roll
+      const allUserBrawlersBefore = Object.values(userRng.brawlers).flat()
 
-      // 🔥 repeated só existe se tiver inventário
-      const repeated = allUserBrawlers.length > 0
+      const totalBrawlers = Object.values(rngBrawlers)
+        .reduce((acc, list) => acc + list.length, 0)
+
+      const hadAllBefore = allUserBrawlersBefore.length >= totalBrawlers
+
+      // 🔥 repeated só se tiver inventário
+      const repeated = allUserBrawlersBefore.length > 0
         ? Math.random() < 0.3
         : false
 
       let brawler = null
 
-      // 🔴 REPEATED MODE (só o que já tem)
+      // 🔴 REPEATED MODE
       if (repeated) {
-        brawler = allUserBrawlers[
-          Math.floor(Math.random() * allUserBrawlers.length)
+        brawler = allUserBrawlersBefore[
+          Math.floor(Math.random() * allUserBrawlersBefore.length)
         ]
       }
 
-      // 🔵 NORMAL MODE (só o que NÃO tem)
+      // 🔵 NORMAL MODE
       else {
 
         const pool = []
@@ -97,15 +104,35 @@ module.exports = {
         brawler = pool[Math.floor(Math.random() * pool.length)]
       }
 
-      // 💾 salva só se NÃO for repetido
+      // 💾 salva só se não for repeated
       if (!repeated) {
         await updateNewBrawler(client, userRng, userId, brawler, icon)
+      }
+
+      // 📊 estado DEPOIS do roll
+      const allUserBrawlersAfter = Object.values(userRng.brawlers).flat()
+      const hasAllNow = allUserBrawlersAfter.length >= totalBrawlers
+
+      // 🔥 CASO 1: já tinha tudo antes e continua tendo
+      if (hadAllBefore && hasAllNow) {
+        return interaction.editReply({
+          content: "👑 Você já tinha todos os brawlers antes do roll."
+        })
+      }
+
+      // 🔥 CASO 2: acabou de completar agora
+      if (!hadAllBefore && hasAllNow) {
+        return interaction.followUp({
+          content: "🔥 PARABÉNS! Você acabou de completar TODOS os brawlers!"
+        })
       }
 
       console.log({
         userId,
         brawler,
-        repeated
+        repeated,
+        hadAllBefore,
+        hasAllNow
       })
 
       await interaction.editReply({

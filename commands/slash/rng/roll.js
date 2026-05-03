@@ -159,7 +159,7 @@ Use \`/rng rebirth\` para reiniciar sua progressão e ganhar bônus:
       }
 
       const embed = new EmbedBuilder()
-        .setTitle(`✨ | NOVO BRAWLER`)
+        .setTitle(repeated ? `👾 | BRAWLER REPETIDO` : `✨ | NOVO BRAWLER`)
         .setDescription(
 `Você ganhou um novo brawler!
 

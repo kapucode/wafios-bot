@@ -9,7 +9,7 @@ module.exports = async (msg, client) => {
 
   // 🔍 tenta encontrar comando com prefixo próprio primeiro
   for (const cmdData of client.prefixCommands.values()) {
-    if (!cmdData.prefix) continue
+    if (!cmdData.prefixes) continue
 
     const prefixes = Array.isArray(cmdData.prefixes)
       ? cmdData.prefixes

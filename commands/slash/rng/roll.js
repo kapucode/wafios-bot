@@ -54,8 +54,6 @@ module.exports = {
         client.rngBrawlers[userId] = userRng
       }
 
-      userRng.id = userId
-
       // 📊 estado ANTES do roll
       const allUserBrawlersBefore = Object.values(userRng.brawlers).flat()
 

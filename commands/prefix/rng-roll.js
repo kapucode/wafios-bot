@@ -54,11 +54,13 @@ module.exports = {
   name: 'rng-roll',
   aliases: ['roll rng'],
 
-  async execute(msg, client) {
+  async execute(msg, args) {
     if (
       msg.author.id !== '1173408263920951356' &&
       msg.author.id !== '1005925645521534996'
     ) return
+    
+    const client = msg.client
 
     try {
       const icon = getEmojis()

@@ -4,7 +4,7 @@ const {
 
 const { createRngInfo } = require('../../utils/createRngInfo.js')
 const { saveRngInfo } = require('../../utils/saveRngInfo.js')
-const { getEmojis } = requie('../../utils/getEmojis.js')
+const { getEmojis } = require('../../utils/getEmojis.js')
 const Paginator = require('../../utils/Paginator.js')
 
 const { rngBrawlers, rngDisplay } = require('../../../variables/rngBrawlers.js')
@@ -85,7 +85,7 @@ module.exports = {
             b => b.name.toLowerCase() === brawler.name.toLowerCase()
           )
 
-          brawlersMsg += `${has ? icon[brawler.nname.toLowerCase()] : '❌'} ${brawler.name}\n`
+          brawlersMsg += `${has ? icon[brawler.nname.toLowerCase()] || '❓' : '❌'} ${brawler.name}\n`
         }
 
         pages.push(({ actualPage, totalPages }) =>

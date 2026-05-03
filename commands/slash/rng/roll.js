@@ -68,12 +68,12 @@ module.exports = {
 
       const hasAll = allUserBrawlers.length >= totalBrawlers
 
-      // 🚨 BLOQUEIO TOTAL (corrige teu bug do Leon)
+      
       if (hasAll) {
         const embed = new EmbedBuilder()
           .setTitle(`✨ | JOGO ZERADO`)
           .setDescription(
-`Você já possui todos os brawlers.
+`Você já possui **todos** os brawlers.
 
 Use \`/rng rebirth\` para reiniciar sua progressão e ganhar bônus:
 - 2x mais sorte

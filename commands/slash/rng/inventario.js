@@ -28,6 +28,8 @@ module.exports = {
       
       saveRngInfo(client, rngBrawlersPath)
     }
+    
+    console.log(userRng.brawlers)
 
     // Garante que existe
     if (!userRng.brawlers) {

@@ -64,14 +64,12 @@ class Paginator {
       })
     }
     
-    const msg = await interaction.fetchReply()
-    
     // Não adicionar collector se os botões forem desativados
     if (this.disabledBtn) {
       return
     }
 
-    const msg = await 
+    const msg = await interaction.fetchReply()
 
     const collector = msg.createMessageComponentCollector({
       time: this.time

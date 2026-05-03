@@ -8,7 +8,7 @@ const { rngBrawlers, rngChances } = require('../../../variables/rngBrawlers.js')
 const path = require('path')
 const rngBrawlersPath = path.join(__dirname, '../../../json/rngBrawlers.json')
 
-async function updateNewBrawler(userRng, newBrawler, icon) {
+async function updateNewBrawler(client, userRng, newBrawler, icon) {
   if (!userRng?.brawlers[newBrawler.category]) {
     userRng.brawlers[newBrawler.category] = []
   }
@@ -57,7 +57,12 @@ module.exports = {
         })
       }
       
-      updateNewBrawler(userRng, getBrawler, icon)
+      updateNewBrawler(
+        client,
+        userRng,
+        getBrawler,
+        icon
+      )
       
       console.log(userRng)
       await interaction.editReply({

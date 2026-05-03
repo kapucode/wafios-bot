@@ -161,7 +161,7 @@ Use \`/rng rebirth\` para reiniciar sua progressão e ganhar bônus:
         .setTitle(repeated ? `👾 | BRAWLER REPETIDO` : `✨ | NOVO BRAWLER`)
         .setDescription(
 `${repeated ? 'Poxa! Você rolou um brawler repetido!' : 'Você rolou um brawler novo!'} Para verificar seu inventário, utilize o comando \`/rng inventário\`
--# Dica: quer rolar brawlers mais rápidos? Ao invés de \`&rng roll\`, use \`&rr\`
+-# Dica: quer rolar brawlers mais rápidos? Ao invés de &rng roll, use &rr
 
 - **Nome:** ${brawler.name}
 - **Classe:** ${rngDisplay[brawler.category] ?? 'Desconhecida'}`

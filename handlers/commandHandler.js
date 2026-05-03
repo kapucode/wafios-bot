@@ -11,9 +11,9 @@ module.exports = async (msg, client) => {
   for (const cmdData of client.prefixCommands.values()) {
     if (!cmdData.prefix) continue
 
-    const prefixes = Array.isArray(cmdData.prefix)
-      ? cmdData.prefix
-      : [cmdData.prefix]
+    const prefixes = Array.isArray(cmdData.prefixes)
+      ? cmdData.prefixes
+      : [cmdData.prefixes]
 
     for (const p of prefixes) {
       if (content.startsWith(p)) {

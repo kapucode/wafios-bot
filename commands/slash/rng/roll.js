@@ -25,7 +25,7 @@ async function updateNewBrawler(client, interaction, userRng, brawler, icon) {
     emoji: icon[brawler.name.toLowerCase()] || '❓'
   })
 
-  client.rngBrawlers[interacrion.user.id] = userRng
+  client.rngBrawlers[interaction.user.id] = userRng
 
   await saveRngInfo(client, rngBrawlersPath)
 }

@@ -1,6 +1,7 @@
 const {
   EmbedBuilder,
   ButtonBuilder,
+  ButtonStyle,
   ActionRowBuilder
 } = require('discord.js')
 
@@ -115,6 +116,7 @@ Os rebirths reiniciam todos seus brawlers do RNG, mas há benefícios:
             .setLabel('Rebirth')
             .setCustomId(`rebirth-rng:${interaction.user.id}`)
             .setEmoji('🎯')
+            .setStyle(ButtonStyle.Danger)
 
           row = new ActionRowBuilder().addComponents(rebirthBtn)
 

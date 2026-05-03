@@ -1,73 +1,107 @@
-const { getRandomBrawler } = require('../../utils/getRandomBrawler.js')
 const { saveRngInfo } = require('../../utils/saveRngInfo.js')
 const { createRngInfo } = require('../../utils/createRngInfo.js')
 const { getEmojis } = require('../../utils/getEmojis.js')
 
-const { rngBrawlers, rngChances } = require('../../../variables/rngBrawlers.js')
-
+const { rngBrawlers } = require('../../../variables/rngBrawlers.js')
 const path = require('path')
+
 const rngBrawlersPath = path.join(__dirname, '../../../json/rngBrawlers.json')
 
-async function updateNewBrawler(client, userRng, newBrawler, icon) {
-  if (!userRng?.brawlers[newBrawler.category]) {
-    userRng.brawlers[newBrawler.category] = []
-  }
-  
-  if (userRng.brawlers[newBrawler.category].some(
-    b => b.name.toLowerCase() === newBrawler.name.toLowerCase()
-  )) {
-    return
-  }
-  
-  userRng.brawlers[newBrawler.category].push(
-    {
-      name: newBrawler.name,
-      emoji: icon[newBrawler.name.toLowerCase()] || '❓'
-    }
+// 🔥 checa se já tem
+function hasBrawler(userRng, name) {
+  return Object.values(userRng.brawlers).flat().some(
+    b => b.name.toLowerCase() === name.toLowerCase()
   )
-  
-  await saveRngInfo(client, rngBrawlersPath) // Salvar brawler
+}
+
+async function updateNewBrawler(client, userRng, brawler, icon) {
+
+  if (!userRng.brawlers[brawler.category]) {
+    userRng.brawlers[brawler.category] = []
+  }
+
+  userRng.brawlers[brawler.category].push({
+    name: brawler.name,
+    emoji: icon[brawler.name.toLowerCase()] || '❓'
+  })
+
+  client.rngBrawlers[userRng.id] = userRng
+
+  await saveRngInfo(client, rngBrawlersPath)
 }
 
 module.exports = {
   name: 'rng.roll',
-  
+
   async execute(interaction, client) {
     try {
       await interaction.deferReply()
-      
-      // Emojis
+
       const icon = getEmojis()
-      
-      // Usuário que deu o roll
       const user = interaction.user
-      
-      // Objeto do usuário de rngBrawlers
+
       let userRng = client.rngBrawlers[user.id]
       if (!userRng) {
         userRng = createRngInfo(client, user.id)
       }
-      
-      // Brawler que o usuário pegou agora
-      const getBrawler = getRandomBrawler(rngBrawlers, rngChances, rng=true)
-      
-      if (!getBrawler) {
-        return await interaction.editReply({
-          content: `${icon.error} **|** Não consegui sortear um brawler para você! Tente novamente. Se o erro persistir, contate a equipe staff.`
-        })
+
+      const allUserBrawlers = Object.values(userRng.brawlers).flat()
+
+      // 🔥 regra correta: repeated só existe se tiver inventário
+      const canBeRepeated = allUserBrawlers.length > 0
+      const repeated = canBeRepeated
+        ? Math.random() < 0.3
+        : false
+
+      let brawler = null
+
+      // 🔴 REPEATED MODE
+      if (repeated) {
+        brawler = allUserBrawlers[
+          Math.floor(Math.random() * allUserBrawlers.length)
+        ]
       }
-      
-      updateNewBrawler(
-        client,
-        userRng,
-        getBrawler,
-        icon
-      )
-      
-      console.log(userRng)
+
+      // 🔵 NORMAL MODE (SEM REPETIR)
+      else {
+
+        const pool = []
+
+        for (const category in rngBrawlers) {
+          for (const item of rngBrawlers[category]) {
+
+            if (!hasBrawler(userRng, item.name)) {
+              pool.push({
+                ...item,
+                category
+              })
+            }
+          }
+        }
+
+        if (pool.length === 0) {
+          return interaction.editReply({
+            content: "Você já tem todos os brawlers."
+          })
+        }
+
+        brawler = pool[Math.floor(Math.random() * pool.length)]
+      }
+
+      // 💾 salva só se for novo
+      if (!repeated) {
+        await updateNewBrawler(client, userRng, brawler, icon)
+      }
+
+      console.log({
+        brawler,
+        repeated
+      })
+
       await interaction.editReply({
         content: 'foi, ve o console'
       })
+
     } catch (err) {
       console.error(err)
     }

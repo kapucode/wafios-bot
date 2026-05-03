@@ -16,9 +16,7 @@ module.exports = {
   name: 'rng.inventario',
   
   async execute(interaction, client) {
-    await interaction.deferReply({
-      flags: MessageFlags.Ephemeral
-    })
+    await interaction.deferReply()
     
     const user = interaction.user
     
@@ -47,7 +45,8 @@ module.exports = {
         ({ actualPage, totalPages }) =>
           new EmbedBuilder()
             .setTitle(`🎒 | Página vazia (${actualPage}/${totalPages})`)
-            .setDescription(`Ah, que pena! Você ainda não tem nenhum brawler! Para colecionar brawlers, você deve usar \`/rng roll\`!
+            .setDescription(`Ah, que pena! Você ainda não tem nenhum brawler! Para comecaçar a colecionar brawlers, você deve usar \`/rng roll\`!
+
 -# O jogo de RNG da Mafios não concebe nenhum benefício, é apenas um sistema para diversão.`)
             .setColor(0xc01b1b)
       )

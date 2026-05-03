@@ -15,7 +15,14 @@
     "winUseTimestamp": 1028293728379374
   },
   "1173408263920951356": {
-    "brawlers": {},
+    "brawlers": {
+      "inicial": [
+        {
+          "name": "Shelly",
+          "emoji": "emoji"
+        }
+      ]
+    },
     "totalOpen": 0,
     "rebirths": 0,
     "lastUseTimestamp": 1777786942991,

@@ -52,12 +52,12 @@ class Paginator {
 
     const response = await interaction.reply({
       embeds: [this.render()],
-      components: [this.buildRow(disabledBtn)],
+      components: [this.buildRow(this.disabledBtn)],
       withResponse: true
     })
     
     // Não adicionar collector se os botões forem desativados
-    if (disabledBtn) {
+    if (this.disabledBtn) {
       return
     }
 

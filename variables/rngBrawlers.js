@@ -2,133 +2,133 @@ const rngBrawlers = {
   inicial: [
     { 
       name: 'Shelly', 
-      gif: 'Não_identificado'
+      gif: 'https://c.tenor.com/hz6nT_Vupi8AAAAd/tenor.gif'
     }
   ],
 
   raro: [
     { 
       name: 'Nita', 
-      gif: 'Não_identificado' 
+      gif: 'https://c.tenor.com/r0Pp6p9cpXUAAAAd/tenor.gif' 
     },
     { 
       name: 'Colt', 
-      gif: 'Não_identificado' 
+      gif: 'https://c.tenor.com/euxSqje_shUAAAAd/tenor.gif' 
     },
     { 
       name: 'Poco', 
-      gif: 'Não_identificado' 
+      gif: 'https://c.tenor.com/veviTKS5tAcAAAAd/tenor.gif' 
     },
     { 
       name: 'Barley', 
-      gif: 'Não_identificado' 
+      gif: 'https://c.tenor.com/brJznhfPOFsAAAAd/tenor.gif' 
     },
     { 
       name: 'El Primo', 
-      gif: 'Não_identificado' 
+      gif: 'https://c.tenor.com/B29YvLiS53gAAAAd/tenor.gif' 
     }
   ],
 
   super_raro: [
     { 
       name: 'Jessie', 
-      gif: 'Não_identificado' 
+      gif: 'https://c.tenor.com/CIbFoXvmNcIAAAAd/tenor.gif' 
     },
     { 
       name: 'Rico', 
-      gif: 'Não_identificado' 
+      gif: 'https://c.tenor.com/jCtgovkYyAgAAAAd/tenor.gif' 
     },
     { 
       name: 'Darryl', 
-      gif: 'Não_identificado' 
+      gif: 'https://c.tenor.com/A9cOhNSXTc8AAAAd/tenor.gif' 
     },
     { 
       name: 'Jacky', 
-      gif: 'Não_identificado' 
+      gif: 'https://c.tenor.com/lesCTULdNAsAAAAd/tenor.gif' 
     },
     { 
       name: 'Gus', 
-      gif: 'Não_identificado' 
+      gif: 'https://c.tenor.com/1eYWjOpKeXMAAAAd/tenor.gif' 
     }
   ],
 
   epico: [
     { 
       name: 'Colette', 
-      gif: 'Não_identificado' 
+      gif: 'https://c.tenor.com/b-_QCkmSMOIAAAAd/tenor.gif' 
     },
     { 
       name: 'Frank', 
-      gif: 'Não_identificado' 
+      gif: 'https://c.tenor.com/zve8__XIFCkAAAAd/tenor.gif' 
     },
     { 
       name: 'Mandy', 
-      gif: 'Não_identificado' 
+      gif: 'https://c.tenor.com/PUh-93HUSz4AAAAd/tenor.gif' 
     },
     { 
       name: 'Bonnie', 
-      gif: 'Não_identificado' 
+      gif: 'https://c.tenor.com/iNrTgKXI3f0AAAAd/tenor.gif' 
     },
     { 
       name: 'Shade', 
-      gif: 'Não_identificado' 
+      gif: 'https://c.tenor.com/gPCYLlSLHHQAAAAd/tenor.gif' 
     }
   ],
 
   mitico: [
     { 
       name: 'Max', 
-      gif: 'Não_identificado' 
+      gif: 'https://c.tenor.com/qKSBoX1qHq8AAAAd/tenor.gif' 
     },
     { 
       name: 'Tara', 
-      gif: 'Não_identificado' 
+      gif: 'https://c.tenor.com/mMEuZQeAAgQAAAAd/tenor.gif' 
     },
     { 
       name: 'Mortis', 
-      gif: 'Não_identificado' 
+      gif: 'https://c.tenor.com/fTM4zDVu8VkAAAAd/tenor.gif' 
     },
     { 
       name: 'Buzz', 
-      gif: 'Não_identificado' 
+      gif: 'https://c.tenor.com/BKsKl3z2Q-MAAAAd/tenor.gif' 
     },
     { 
       name: 'Janet', 
-      gif: 'Não_identificado' 
+      gif: 'https://c.tenor.com/tv8MZ7Lr76kAAAAd/tenor.gif' 
     }
   ],
 
   lendario: [
     { 
       name: 'Leon', 
-      gif: 'Não_identificado' 
+      gif: 'https://c.tenor.com/IVHPB-pwdH8AAAAd/tenor.gif' 
     },
     { 
       name: 'Spike', 
-      gif: 'Não_identificado' 
+      gif: 'https://c.tenor.com/klTMyvrX81cAAAAd/tenor.gif' 
     },
     { 
       name: 'Sandy', 
-      gif: 'Não_identificado' 
+      gif: 'https://c.tenor.com/c6illGf50UQAAAAd/tenor.gif' 
     },
     { 
       name: 'Surge', 
-      gif: 'Não_identificado' 
+      gif: 'https://c.tenor.com/U1Ti7gnyPfsAAAAd/tenor.gif' 
     },
     { 
       name: 'Amber', 
-      gif: 'Não_identificado' 
+      gif: 'https://c.tenor.com/1awGxp5NnikAAAAd/tenor.gif' 
     }
   ],
 
   ultra: [
     { 
       name: 'Kaze', 
-      gif: 'Não_identificado' 
+      gif: 'https://c.tenor.com/h65dKkP7AMAAAAAd/tenor.gif' 
     },
     { 
       name: 'Sirius', 
-      gif: 'Não_identificado' 
+      gif: 'https://c.tenor.com/ZLOLu3a4qmQAAAAd/tenor.gif' 
     }
   ]
 };

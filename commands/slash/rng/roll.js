@@ -5,6 +5,9 @@ const { getEmojis } = require('../../utils/getEmojis.js')
 
 const { rngBrawlers, rngChances } = require('../../../variables/rngBrawlers.js')
 
+const path = require('path')
+const rngBrawlersPath = path.join(__dirname, '../../../json/rngBrawlers.json')
+
 module.exports = {
   name: 'rng.roll',
   
@@ -19,9 +22,9 @@ module.exports = {
       const user = interaction.user
       
       // Objeto do usuário de rngBrawlers
-      let userStar = client.rngBrawlers[user.id]
-      if (!userStar) {
-        userStar = createRngInfo(client, user.id)
+      let userRng = client.rngBrawlers[user.id]
+      if (!userRng) {
+        userRng = createRngInfo(client, user.id)
       }
       
       // Brawler que o usuário pegou agora
@@ -33,7 +36,20 @@ module.exports = {
         })
       }
       
-      console.log(getBrawler)
+      if (!userRng?.brawlers[getBrawler.category]) {
+        userRng.brawlers[getBrawler.category] = []
+      }
+      
+      userRng.brawlers[getBrawler.category].append(
+        {
+          name: getBrawler.name,
+          emoji: icon[getBrawler.name.toLowerCase()] || '❓'
+        }
+      )
+      
+      await saveRngInfo(client, rngBrawlersPath) // Salvar brawler
+      
+      console.log(userRng)
       await interaction.editReply({
         content: 'foi, ve o console'
       })

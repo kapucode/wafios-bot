@@ -156,7 +156,7 @@ module.exports = (client) => {
           embeds: [
             {
               title: '⏰ TEMPO ESGOTADO',
-              description: 'Ninguém conseguiu responder a tempo dessa vez.',
+              description: 'Ninguém conseguiu responder o desafio a tempo dessa vez.',
               color: 0xff4d4d,
               footer: {
                 text: 'Tente novamente no próximo desafio'
@@ -166,7 +166,7 @@ module.exports = (client) => {
           ]
         })
 
-      }, 40000)
+      }, 50000)
 
     } catch (err) {
 

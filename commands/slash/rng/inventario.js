@@ -49,8 +49,8 @@ module.exports = {
             .setTitle(`🎒 | Página vazia (${actualPage}/${totalPages})`)
             .setDescription(`Ah, que pena! Você ainda não tem nenhum brawler! Para colecionar brawlers, você deve usar \`/rng roll\`!
 -# O jogo de RNG da Mafios não concebe nenhum benefício, é apenas um sistema para diversão.`)
-      )
             .setColor(0xc01b1b)
+      )
     } else {
       for (const rarity in userRng.brawlers) {
         let brawlersMsg = ''

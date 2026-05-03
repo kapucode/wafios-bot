@@ -1,3 +1,10 @@
+const {
+  EmbedBuilder,
+  ButtonStyle,
+  ButtonBuilder,
+  ActionRowBuilder
+} = require('discord.js')
+
 const { saveRngInfo } = require('../../utils/saveRngInfo.js')
 const { createRngInfo } = require('../../utils/createRngInfo.js')
 const { getEmojis } = require('../../utils/getEmojis.js')
@@ -110,18 +117,42 @@ module.exports = {
       // 📊 estado DEPOIS do roll
       const allUserBrawlersAfter = Object.values(userRng.brawlers).flat()
       const hasAllNow = allUserBrawlersAfter.length >= totalBrawlers
-
+      
+      
       // 🔥 CASO 1: já tinha tudo antes e continua tendo
+      const embed = new EmbedBuilder()
+        .setTitle(`✨ | Zerou o jogo`)
+        .setDescription(`Você zerou o jogo! Caso queira continuar jogando, você pode dar um rebirth.
+Os rebirths reiniciam todos seus brawlers do RNG, mas há benefícios:
+- A cada rebirth você ganha **2x mais sorte**
+- Cargos exclusivos
+- Você pode entrar no **ranking de rebirths** (\`/rng rebirth ranking\`)
+
+> Para dar rebirth, use o botão abaixo ou o comando \`/rng rebirth\``)
+        .setColor(0xefff51)
+      
+      const rebirthBtn = new ButtonBuilder()
+        .setLabel('Rebirth')
+        .setCustomId(`rebirth-rng:${interaction.user.id}`)
+        .setEmoji('🎯')
+      
+      const row = new ActionRowBuilder()
+        .addComponent(rebirthBtn)
+      
       if (hadAllBefore && hasAllNow) {
         return interaction.editReply({
-          content: "👑 Você já tinha todos os brawlers antes do roll."
+          embeds: [embed],
+          components: [row]
         })
       }
 
       // 🔥 CASO 2: acabou de completar agora
+      embed.setTitle(`✨ | PARABÉNS! Zerou o jogo`)
+      
       if (!hadAllBefore && hasAllNow) {
         return interaction.followUp({
-          content: "🔥 PARABÉNS! Você acabou de completar TODOS os brawlers!"
+          embeds: [embed],
+          components: [row]
         })
       }
 

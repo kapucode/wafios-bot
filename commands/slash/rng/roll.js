@@ -7,14 +7,15 @@ const path = require('path')
 
 const rngBrawlersPath = path.join(__dirname, '../../../json/rngBrawlers.json')
 
-// 🔥 checa se já tem
+// 🔥 checa se já tem brawler
 function hasBrawler(userRng, name) {
   return Object.values(userRng.brawlers).flat().some(
     b => b.name.toLowerCase() === name.toLowerCase()
   )
 }
 
-async function updateNewBrawler(client, interaction, userRng, brawler, icon) {
+// 💾 salva + sincroniza corretamente
+async function updateNewBrawler(client, userRng, userId, brawler, icon) {
 
   if (!userRng.brawlers[brawler.category]) {
     userRng.brawlers[brawler.category] = []
@@ -25,7 +26,8 @@ async function updateNewBrawler(client, interaction, userRng, brawler, icon) {
     emoji: icon[brawler.name.toLowerCase()] || '❓'
   })
 
-  client.rngBrawlers[interaction.user.id] = userRng
+  // 🔥 garante consistência global
+  client.rngBrawlers[userId] = userRng
 
   await saveRngInfo(client, rngBrawlersPath)
 }
@@ -38,31 +40,36 @@ module.exports = {
       await interaction.deferReply()
 
       const icon = getEmojis()
-      const user = interaction.user
+      const userId = interaction.user.id
 
-      let userRng = client.rngBrawlers[user.id]
+      // 🔥 SEMPRE sincroniza corretamente
+      let userRng = client.rngBrawlers[userId]
+
       if (!userRng) {
-        userRng = createRngInfo(client, user.id)
+        userRng = createRngInfo(client, userId)
+        client.rngBrawlers[userId] = userRng
       }
+
+      // 🔥 trava identidade (evita bug futuro)
+      userRng.id = userId
 
       const allUserBrawlers = Object.values(userRng.brawlers).flat()
 
-      // 🔥 regra correta: repeated só existe se tiver inventário
-      const canBeRepeated = allUserBrawlers.length > 0
-      const repeated = canBeRepeated
+      // 🔥 repeated só existe se tiver inventário
+      const repeated = allUserBrawlers.length > 0
         ? Math.random() < 0.3
         : false
 
       let brawler = null
 
-      // 🔴 REPEATED MODE
+      // 🔴 REPEATED MODE (só o que já tem)
       if (repeated) {
         brawler = allUserBrawlers[
           Math.floor(Math.random() * allUserBrawlers.length)
         ]
       }
 
-      // 🔵 NORMAL MODE (SEM REPETIR)
+      // 🔵 NORMAL MODE (só o que NÃO tem)
       else {
 
         const pool = []
@@ -88,12 +95,13 @@ module.exports = {
         brawler = pool[Math.floor(Math.random() * pool.length)]
       }
 
-      // 💾 salva só se for novo
+      // 💾 salva só se NÃO for repetido
       if (!repeated) {
-        await updateNewBrawler(client, interaction, userRng, brawler, icon)
+        await updateNewBrawler(client, userRng, userId, brawler, icon)
       }
 
       console.log({
+        userId,
         brawler,
         repeated
       })

@@ -9,20 +9,20 @@ const path = require('path')
 const rngBrawlersPath = path.join(__dirname, '../../../json/rngBrawlers.json')
 
 async function updateNewBrawler(userRng, newBrawler) {
-  if (!userRng?.brawlers[getBrawler.category]) {
-    userRng.brawlers[getBrawler.category] = []
+  if (!userRng?.brawlers[newBrawler.category]) {
+    userRng.brawlers[newBrawler.category] = []
   }
   
-  if (userRng.brawlers[getBrawler.category].some(
+  if (userRng.brawlers[newBrawler.category].some(
     b => b.name.toLowerCase() === newBrawler.name.toLowerCase()
   )) {
     return
   }
   
-  userRng.brawlers[getBrawler.category].push(
+  userRng.brawlers[newBrawler.category].push(
     {
-      name: getBrawler.name,
-      emoji: icon[getBrawler.name.toLowerCase()] || '❓'
+      name: newBrawler.name,
+      emoji: icon[newBrawler.name.toLowerCase()] || '❓'
     }
   )
   

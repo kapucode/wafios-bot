@@ -16,6 +16,8 @@ module.exports = {
   name: 'rng.inventario',
   
   async execute(interaction, client) {
+    if (interaction.user.id !== '1173408263920951356' && interaction.user.id !== '1005925645521534996') return
+    
     await interaction.deferReply()
     
     const user = interaction.user

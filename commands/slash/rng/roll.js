@@ -161,7 +161,7 @@ Use \`/rng rebirth\` para reiniciar sua progressão e ganhar bônus:
       const embed = new EmbedBuilder()
         .setTitle(repeated ? `👾 | BRAWLER REPETIDO` : `✨ | NOVO BRAWLER`)
         .setDescription(
-`${repeated ? 'Poxa! Você rolou um brawler repetido!' : 'Você rolou um brawler novo!'}
+`${repeated ? 'Poxa! Você rolou um brawler repetido!' : 'Você rolou um brawler novo!'} Para verificar seu inventário, utilize o comando \`/rng inventário\`
 
 - **Nome:** ${brawler.name}
 - **Classe:** ${rngDisplay[brawler.category] ?? 'Desconhecida'}`

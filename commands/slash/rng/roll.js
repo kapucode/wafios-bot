@@ -9,7 +9,7 @@ const { saveRngInfo } = require('../../utils/saveRngInfo.js')
 const { createRngInfo } = require('../../utils/createRngInfo.js')
 const { getEmojis } = require('../../utils/getEmojis.js')
 
-const { rngBrawlers } = require('../../../variables/rngBrawlers.js')
+const { rngBrawlers, rngDisplay } = require('../../../variables/rngBrawlers.js')
 const path = require('path')
 
 const rngBrawlersPath = path.join(__dirname, '../../../json/rngBrawlers.json')
@@ -139,9 +139,12 @@ Os rebirths reiniciam todos seus brawlers do RNG, mas há benefícios:
 
       // 🔥 embed padrão do roll
       embed = new EmbedBuilder()
-        .setTitle(`✨ | Você ganhou um brawler!`)
-        .setDescription(`Você recebeu **${brawler.name}**`)
+        .setTitle(`✨ | NOVO BRAWLER`)
+        .setDescription(`Você recebeu ganhou um novo brawler!
+- **Nome:** ${brawler.name}
+- **Classe**: ${rngDisplay[brawler.category]}`)
         .setColor(0x00ff99)
+        .setImage(brawler.gif)
 
       // 🔥 já tinha tudo antes e continua tendo
       if (hadAllBefore && hasAllNow) {

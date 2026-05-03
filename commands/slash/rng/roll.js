@@ -14,11 +14,13 @@ const path = require('path')
 
 const rngBrawlersPath = path.join(__dirname, '../../../json/rngBrawlers.json')
 
-// 🔥 checa se já tem brawler
-function hasBrawler(userRng, name) {
-  return Object.values(userRng.brawlers)
-    .flat()
-    .some(b => b.name.toLowerCase() === name.toLowerCase())
+// 🔥 SET = mais seguro que array + some()
+function getOwnedSet(userRng) {
+  return new Set(
+    Object.values(userRng.brawlers)
+      .flat()
+      .map(b => b.name.toLowerCase())
+  )
 }
 
 // 💾 salva + sincroniza corretamente
@@ -53,6 +55,11 @@ module.exports = {
       const icon = getEmojis()
       const userId = interaction.user.id
 
+      // 🔒 trava anti spam/race condition
+      client.rngRolling ??= new Set()
+      if (client.rngRolling.has(userId)) return
+      client.rngRolling.add(userId)
+
       // 🔥 garante userRng
       let userRng = client.rngBrawlers[userId]
 
@@ -61,14 +68,14 @@ module.exports = {
         client.rngBrawlers[userId] = userRng
       }
 
-      const allUserBrawlers = Object.values(userRng.brawlers).flat()
+      const ownedSet = getOwnedSet(userRng)
 
       const totalBrawlers = Object.values(rngBrawlers)
         .reduce((acc, list) => acc + list.length, 0)
 
-      const hasAll = allUserBrawlers.length >= totalBrawlers
+      const hasAll = ownedSet.size >= totalBrawlers
 
-      
+      // 🚨 bloqueio TOTAL correto (evita bug do Gus / Leon / etc)
       if (hasAll) {
         const embed = new EmbedBuilder()
           .setTitle(`✨ | JOGO ZERADO`)
@@ -90,6 +97,8 @@ Use \`/rng rebirth\` para reiniciar sua progressão e ganhar bônus:
 
         const row = new ActionRowBuilder().addComponents(rebirthBtn)
 
+        client.rngRolling.delete(userId)
+
         return interaction.editReply({
           embeds: [embed],
           components: [row]
@@ -97,6 +106,8 @@ Use \`/rng rebirth\` para reiniciar sua progressão e ganhar bônus:
       }
 
       // 🎲 RNG normal
+      const allUserBrawlers = [...ownedSet]
+
       const repeated =
         allUserBrawlers.length > 0
           ? Math.random() < 0.3
@@ -118,14 +129,16 @@ Use \`/rng rebirth\` para reiniciar sua progressão e ganhar bônus:
 
         for (const category in rngBrawlers) {
           for (const item of rngBrawlers[category]) {
-            if (!hasBrawler(userRng, item.name)) {
+            if (!ownedSet.has(item.name.toLowerCase())) {
               pool.push({ ...item, category })
             }
           }
         }
 
-        // (segurança extra — nunca deveria acontecer por causa do bloqueio acima)
-        if (pool.length === 0) return
+        if (pool.length === 0) {
+          client.rngRolling.delete(userId)
+          return
+        }
 
         brawler = pool[Math.floor(Math.random() * pool.length)]
       }
@@ -145,6 +158,8 @@ Use \`/rng rebirth\` para reiniciar sua progressão e ganhar bônus:
         )
         .setColor(0x00ff99)
         .setImage(brawler.gif)
+
+      client.rngRolling.delete(userId)
 
       return interaction.editReply({
         embeds: [embed]

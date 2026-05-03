@@ -10,9 +10,9 @@ const { getEmojis } = require('./getEmojis.js')
 const icon = getEmojis()
 
 class Paginator {
-  constructor({ 
-    pages, 
-    time = 3 * 60 * 1000, 
+  constructor({
+    pages,
+    time = 3 * 60 * 1000,
     disabledBtn = false,
     warnExpireBtn = true
   }) {
@@ -63,26 +63,44 @@ class Paginator {
     return result
   }
 
-  async start(interaction) {
-    this.ownerId = interaction.user.id
+  async send(target, payload) {
+    // 🔥 interaction
+    if (target.reply || target.deferred !== undefined) {
+      if (target.deferred || target.replied) {
+        return target.editReply(payload)
+      } else {
+        return target.reply(payload)
+      }
+    }
+
+    // 🔥 message
+    return target.channel.send(payload)
+  }
+
+  async fetchMessage(target, sentMsg) {
+    // interaction
+    if (target.fetchReply) {
+      return target.fetchReply()
+    }
+
+    // message já é a msg enviada
+    return sentMsg
+  }
+
+  async start(target) {
+    this.ownerId = target.user?.id || target.author?.id
 
     const embed = this.render()
 
-    if (interaction.deferred || interaction.replied) {
-      await interaction.editReply({
-        embeds: [embed],
-        components: [this.buildRow(this.disabledBtn)]
-      })
-    } else {
-      await interaction.reply({
-        embeds: [embed],
-        components: [this.buildRow(this.disabledBtn)]
-      })
+    const payload = {
+      embeds: [embed],
+      components: [this.buildRow(this.disabledBtn)]
     }
 
-    if (this.disabledBtn) return
+    const sent = await this.send(target, payload)
+    const msg = await this.fetchMessage(target, sent)
 
-    const msg = await interaction.fetchReply()
+    if (this.disabledBtn) return
 
     const collector = msg.createMessageComponentCollector({
       time: this.time
@@ -121,7 +139,6 @@ class Paginator {
       } catch (err) {
         console.error('Paginator collect error:', err)
 
-        // responde pra não dar "interaction failed"
         if (!i.replied && !i.deferred) {
           await i.reply({
             content: 'Erro ao atualizar página.',

@@ -121,7 +121,7 @@ const rngBrawlers = {
     }
   ],
 
-  ultralendario: [
+  ultra: [
     { 
       name: 'Kaze', 
       gif: 'Não_identificado' 

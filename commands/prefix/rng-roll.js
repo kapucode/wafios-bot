@@ -5,14 +5,14 @@ const {
   ActionRowBuilder
 } = require('discord.js')
 
-const { saveRngInfo } = require('../../utils/saveRngInfo.js')
-const { createRngInfo } = require('../../utils/createRngInfo.js')
-const { getEmojis } = require('../../utils/getEmojis.js')
+const { saveRngInfo } = require('../utils/saveRngInfo.js')
+const { createRngInfo } = require('../utils/createRngInfo.js')
+const { getEmojis } = require('../utils/getEmojis.js')
 
-const { rngBrawlers, rngDisplay } = require('../../../variables/rngBrawlers.js')
+const { rngBrawlers, rngDisplay } = require('../../variables/rngBrawlers.js')
 const path = require('path')
 
-const rngBrawlersPath = path.join(__dirname, '../../../json/rngBrawlers.json')
+const rngBrawlersPath = path.join(__dirname, '../../json/rngBrawlers.json')
 
 // 🔥 catálogo rápido
 function getFromCatalog(name) {

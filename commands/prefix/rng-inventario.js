@@ -2,30 +2,34 @@ const {
   EmbedBuilder
 } = require('discord.js')
 
-const { createRngInfo } = require('../../utils/createRngInfo.js')
-const { saveRngInfo } = require('../../utils/saveRngInfo.js')
-const { getEmojis } = require('../../utils/getEmojis.js')
-const Paginator = require('../../utils/Paginator.js')
+const { createRngInfo } = require('../utils/createRngInfo.js')
+const { saveRngInfo } = require('../utils/saveRngInfo.js')
+const { getEmojis } = require('../utils/getEmojis.js')
+const Paginator = require('../utils/Paginator.js')
 
-const { rngBrawlers, rngDisplay } = require('../../../variables/rngBrawlers.js')
+const { rngBrawlers, rngDisplay } = require('../../variables/rngBrawlers.js')
 
 const path = require('path')
-const rngBrawlersPath = path.join(__dirname, '../../../json/rngBrawlers.json')
+const rngBrawlersPath = path.join(__dirname, '../json/rngBrawlers.json')
 
 module.exports = {
   name: 'rng.inventario',
+  aliases: ['rng.inv'],
 
-  async execute(interaction, client) {
-    const icon = getEmojis()
+  async execute(msg, args) {
+    const client = msg.client
     
+    const icon = getEmojis()
+
+    const userId = msg.author.id
+
     if (
-      interaction.user.id !== '1173408263920951356' &&
-      interaction.user.id !== '1005925645521534996'
+      userId !== '1173408263920951356' &&
+      userId !== '1005925645521534996'
     ) return
 
-    await interaction.deferReply()
-
-    const user = interaction.user
+    // ⚠️ prefix não usa deferReply
+    const user = msg.author
 
     let userRng = client.rngBrawlers[user.id]
 
@@ -48,9 +52,9 @@ module.exports = {
           .setDescription(
 `- Veja o inventário RNG de Brawlers de ${user}!
 
-> Quer informações mais específicas do jogo? Use \`/rng info\`!
+> Quer informações mais específicas do jogo? Use \`&rng info\`!
 
-> Já zerou o jogo e quer jogar novamente? Dê rebirth (prestígio) usando \`/rng rebirth\``
+> Já zerou o jogo e quer jogar novamente? Dê rebirth (prestígio) usando \`&rng rebirth\``
           )
     ]
 
@@ -61,7 +65,7 @@ module.exports = {
           new EmbedBuilder()
             .setTitle(`🎒 | Página vazia (${actualPage}/${totalPages})`)
             .setDescription(
-`Ah, que pena! Você ainda não tem nenhum brawler! Para começar, use \`/rng roll\`!
+`Ah, que pena! Você ainda não tem nenhum brawler! Para começar, use \`&rng roll\`!
 
 -# O jogo de RNG da Mafios não concebe nenhum benefício, é apenas um sistema para diversão.`
             )
@@ -99,6 +103,8 @@ module.exports = {
     }
 
     const paginator = new Paginator({ pages })
-    await paginator.start(interaction)
+
+    // ⚠️ adapter simples para paginator (msg em vez de interaction)
+    await paginator.start(msg)
   }
 }

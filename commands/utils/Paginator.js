@@ -31,7 +31,7 @@ class Paginator {
         .setEmoji(icon.leftarrow)
         .setStyle(ButtonStyle.Primary)
         .setDisabled(disabled),
-        
+
       new ButtonBuilder()
         .setCustomId(`home:${this.ownerId}`)
         .setEmoji(icon.home)
@@ -49,37 +49,38 @@ class Paginator {
   render() {
     const page = this.pages[this.index]
 
-    if (typeof page === 'function') {
-      return page({
-        actualPage: this.index + 1,
-        totalPages: this.pages.length
-      })
+    const result = typeof page === 'function'
+      ? page({
+          actualPage: this.index + 1,
+          totalPages: this.pages.length
+        })
+      : page
+
+    if (!(result instanceof EmbedBuilder)) {
+      throw new Error('Paginator: página inválida (não é EmbedBuilder)')
     }
 
-    return page
+    return result
   }
 
   async start(interaction) {
     this.ownerId = interaction.user.id
 
-    let response
-    
+    const embed = this.render()
+
     if (interaction.deferred || interaction.replied) {
       await interaction.editReply({
-        embeds: [this.render()],
+        embeds: [embed],
         components: [this.buildRow(this.disabledBtn)]
       })
     } else {
       await interaction.reply({
-        embeds: [this.render()],
+        embeds: [embed],
         components: [this.buildRow(this.disabledBtn)]
       })
     }
-    
-    // Não adicionar collector se os botões forem desativados
-    if (this.disabledBtn) {
-      return
-    }
+
+    if (this.disabledBtn) return
 
     const msg = await interaction.fetchReply()
 
@@ -88,59 +89,68 @@ class Paginator {
     })
 
     collector.on('collect', async i => {
+      const [action, ownerId] = i.customId.split(':')
+
+      if (i.user.id !== ownerId) {
+        return i.reply({
+          content: `${icon.error} **|** Os botões não são seus!`,
+          flags: MessageFlags.Ephemeral
+        })
+      }
+
       try {
-        const [action, ownerId] = i.customId.split(':')
-
-        if (i.user.id !== ownerId) {
-          return i.reply({
-            content: `${icon.error} **|** Os botões não são seus!`,
-            flags: MessageFlags.Ephemeral
-          }).catch(() => {})
-        }
-
         if (action === 'prev') {
-          this.index--
-          if (this.index < 0) this.index = this.pages.length - 1
+          this.index = (this.index - 1 + this.pages.length) % this.pages.length
         }
-        
+
         if (action === 'home') {
           this.index = 0
         }
 
         if (action === 'next') {
-          this.index++
-          if (this.index >= this.pages.length) this.index = 0
+          this.index = (this.index + 1) % this.pages.length
         }
 
+        const embed = this.render()
+
         await i.update({
-          embeds: [this.render()],
+          embeds: [embed],
           components: [this.buildRow()]
-        }).catch(() => {})
+        })
 
       } catch (err) {
-        console.log('Paginator error:', err)
+        console.error('Paginator collect error:', err)
+
+        // responde pra não dar "interaction failed"
+        if (!i.replied && !i.deferred) {
+          await i.reply({
+            content: 'Erro ao atualizar página.',
+            flags: MessageFlags.Ephemeral
+          }).catch(() => {})
+        }
       }
     })
 
     collector.on('end', async () => {
       try {
-        let newEmbed = []
-        
-        if (this.warnExpireBtn) {
-          const currentFooter = this.pages[0].data.footer?.text || ''
+        const embed = this.render()
 
-          this.pages[0].setFooter({
+        if (this.warnExpireBtn) {
+          const currentFooter = embed.data.footer?.text || ''
+
+          embed.setFooter({
             text: currentFooter + ' | Botões expirados'
           })
-          
-          newEmbed.push(this.pages[0])
         }
-        
+
         await msg.edit({
-          embeds: newEmbed,
+          embeds: [embed],
           components: [this.buildRow(true)]
         })
-      } catch {}
+
+      } catch (err) {
+        console.error('Paginator end error:', err)
+      }
     })
   }
 }

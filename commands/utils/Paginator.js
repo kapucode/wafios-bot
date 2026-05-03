@@ -13,13 +13,15 @@ class Paginator {
   constructor({ 
     pages, 
     time = 3 * 60 * 1000, 
-    disabledBtn = false 
+    disabledBtn = false,
+    warnExpireBtn = true
   }) {
     this.pages = pages
     this.index = 0
     this.time = time
     this.ownerId = null
     this.disabledBtn = disabledBtn
+    this.warnExpireBtn = warnExpireBtn
   }
 
   buildRow(disabled = false) {
@@ -122,7 +124,20 @@ class Paginator {
 
     collector.on('end', async () => {
       try {
+        let newEmbed = []
+        
+        if (this.warnExpireBtn) {
+          const currentFooter = this.pages[0].data.footer?.text || ''
+
+          this.pages[0].setFooter({
+            text: currentFooter + ' | Botões expirados'
+          })
+          
+          newEmbed.push(this.pages[0])
+        }
+        
         await msg.edit({
+          embeds: newEmbed,
           components: [this.buildRow(true)]
         })
       } catch {}

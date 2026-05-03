@@ -14,7 +14,7 @@ function hasBrawler(userRng, name) {
   )
 }
 
-async function updateNewBrawler(client, userRng, brawler, icon) {
+async function updateNewBrawler(client, interaction, userRng, brawler, icon) {
 
   if (!userRng.brawlers[brawler.category]) {
     userRng.brawlers[brawler.category] = []
@@ -25,7 +25,7 @@ async function updateNewBrawler(client, userRng, brawler, icon) {
     emoji: icon[brawler.name.toLowerCase()] || '❓'
   })
 
-  client.rngBrawlers[userRng.id] = userRng
+  client.rngBrawlers[interacrion.user.id] = userRng
 
   await saveRngInfo(client, rngBrawlersPath)
 }
@@ -90,7 +90,7 @@ module.exports = {
 
       // 💾 salva só se for novo
       if (!repeated) {
-        await updateNewBrawler(client, userRng, brawler, icon)
+        await updateNewBrawler(client, interaction, userRng, brawler, icon)
       }
 
       console.log({

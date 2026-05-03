@@ -85,7 +85,7 @@ module.exports = {
             b => b.name.toLowerCase() === brawler.name.toLowerCase()
           )
 
-          brawlersMsg += `${has ? icon[brawler.name.toLowerCase()] || '❓' : '❌'} ${has ? brawler.name : `*${brawler.name} (não possui)*`}\n\n`
+          brawlersMsg += `${has ? icon[brawler.name.toLowerCase()] || '❓' : '❌'} ${has ? `**${brawler.name}**` : `*${brawler.name} (não possui)*`}\n\n`
         }
 
         pages.push(({ actualPage, totalPages }) =>

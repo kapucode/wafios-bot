@@ -139,7 +139,9 @@ class Paginator {
           const currentFooter = embed.data.footer?.text || ''
 
           embed.setFooter({
-            text: currentFooter + ' | Botões expirados'
+            text: currentFooter === ''
+              ? 'Botões expirados'
+              : currentFooter + ' | Botões expirados'
           })
         }
 

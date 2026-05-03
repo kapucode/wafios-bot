@@ -161,7 +161,7 @@ Use \`/rng rebirth\` para reiniciar sua progressão e ganhar bônus:
       const embed = new EmbedBuilder()
         .setTitle(repeated ? `👾 | BRAWLER REPETIDO` : `✨ | NOVO BRAWLER`)
         .setDescription(
-`Você ganhou um novo brawler!
+`${repeated ? 'Poxa! Você rolou um brawler repetido!' : 'Você rolou um brawler novo!'}
 
 - **Nome:** ${brawler.name}
 - **Classe:** ${rngDisplay[brawler.category] ?? 'Desconhecida'}`

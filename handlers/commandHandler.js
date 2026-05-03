@@ -26,7 +26,7 @@ module.exports = async (msg, client) => {
             .toLowerCase()
 
         const base = normalize(sliced.shift())
-        const sub = normalize(sliced[0])
+        const sub = sliced[0] ? normalize(sliced[0]) : null
         
         const fullCmd = sub ? `${base}.${sub}` : base
 

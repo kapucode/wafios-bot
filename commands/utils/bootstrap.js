@@ -49,7 +49,7 @@ async function bootstrap(client) {
   const items = await fs.readdir(slashPath)
 
   for (const item of items) {
-    const itemPath = path.join('../slash', item)
+    const itemPath = path.join(slashPath, item)
     const stat = await fs.stat(itemPath)
 
     // 📁 pasta

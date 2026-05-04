@@ -1,5 +1,5 @@
 const path = require('path')
-const { saveMissions } = require('../commands/utils/saveMissions')
+const { saveMissions } = require('../../commands/utils/saveMissions')
 
 const saveTimeouts = new Map()
 

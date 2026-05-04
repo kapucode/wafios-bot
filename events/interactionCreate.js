@@ -5,6 +5,8 @@ const { getEmojis } = require('../commands/utils/getEmojis.js')
 const path = require('path')
 const fs = require('fs')
 
+const loadButtons = require('../handlers/interactionCreate/loadButtons')
+
 const managersFilePath = path.join(__dirname, '../json/botManagers.json')
 
 module.exports = {
@@ -85,23 +87,7 @@ module.exports = {
       // =========================
       // BOTÕES
       // =========================
-      if (interaction.isButton()) {
-
-        const [buttonId, ownerId] = interaction.customId.split(':')
-
-        // 🔹 Proteção de dono
-        if (interaction.user.id !== ownerId) {
-          return interaction.reply({
-            content: `:x: **|** Só <@${ownerId}> pode usar isso!`,
-            flags: MessageFlags.Ephemeral
-          })
-        }
-
-        const button = client.buttons.get(buttonId)
-        if (!button) return
-
-        await button.execute(interaction, client)
-      }
+      await loadButtons(interaction, client)
 
     } catch (err) {
       console.error('❌ interactionCreate error:', err)

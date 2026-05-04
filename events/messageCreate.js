@@ -1,9 +1,9 @@
-const handlePush = require('../handlers/pushHandler')
-const handleChallenge = require('../handlers/challengeHandler')
-const handleCommands = require('../handlers/commandHandler')
-const handleGuildGuard = require('../handlers/guildGuard')
-const handleMission = require('../handlers/missionHandler')
-const handleStarDrop = require('../handlers/starDropDetect')
+const handlePush = require('../handlers/messageCreate/pushHandler')
+const handleChallenge = require('../handlers/messageCreate/challengeHandler')
+const handleCommands = require('../handlers/messageCreate/commandHandler')
+const handleGuildGuard = require('../handlers/messageCreate/guildGuard')
+const handleMission = require('../handlers/messageCreate/missionHandler')
+const handleStarDrop = require('../handlers/messageCreate/starDropDetect')
 
 module.exports = {
   name: "messageCreate",

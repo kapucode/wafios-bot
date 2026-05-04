@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 
-const allowUtilPath = path.join(__dirname, '../json/allowGuilds.json')
+const allowUtilPath = path.join(__dirname, '../../json/allowGuilds.json')
 
 module.exports = async (msg, client) => {
   let allowGuilds = []

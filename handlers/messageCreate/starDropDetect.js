@@ -3,13 +3,14 @@ const {
 } = require('discord.js')
 
 const path = require ('path')
-const starJsonPath = path.join(__dirname, '../json/starDrops.json')
+const starJsonPath = path.join(__dirname, '../../json/starDrops.json')
+const starJsonPath = path.join(__dirname, '../../json/starDrops.json')
 
-const { createStarInfo } = require('../commands/utils/createStarInfo.js')
-const { saveStarDrops } = require('../commands/utils/saveStarDrops.js')
-const { getFormattedDateBR } = require('../commands/utils/getFormattedDateBR.js')
-const { openStarDrop } = require('../commands/utils/openStarDrop.js')
-const { isValidMessage } = require('../commands/utils/isValidMessage.js')
+const { createStarInfo } = require('../../commands/utils/createStarInfo.js')
+const { saveStarDrops } = require('../../commands/utils/saveStarDrops.js')
+const { getFormattedDateBR } = require('../../commands/utils/getFormattedDateBR.js')
+const { openStarDrop } = require('../../commands/utils/openStarDrop.js')
+const { isValidMessage } = require('../../commands/utils/isValidMessage.js')
 
 function updateData(userStar) {
   if (userStar.info.date !== getFormattedDateBR()) {

@@ -17,6 +17,7 @@ module.exports = {
     if (!msg.guild) return
     if (!isManager(msg.client, msg.author.id)) return
     
+    const icon = getEmojis()
     const client = msg.client
   
     const embedCorrectUse = correctUseEmbed(

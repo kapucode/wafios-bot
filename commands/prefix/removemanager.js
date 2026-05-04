@@ -38,7 +38,7 @@ module.exports = {
       return msg.reply('🤔 **|** Ei! Esse é você, e você é o meu dono!')
     }
   
-    if (client.managers.get(user.id)) {
+    if (!client.managers.get(user.id)) {
       return msg.reply(
         `${icon.error || ':x:'} **|** O usuário de ID \`${user.id}\` não é \`MANAGER\`!`
       )

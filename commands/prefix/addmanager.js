@@ -19,6 +19,9 @@ module.exports = {
     const icon = getEmojis()
     const client = msg.client
   
+    const user = 
+      msg.mentions.users.first() ||
+      await msg.client.users.fetch(user).catch(() => null)
     const userName = args.slice(1).join(" ")
   
     const embedCorrectUse = correctUseEmbed(
@@ -29,10 +32,6 @@ module.exports = {
     if (!user || !userName) {
       return msg.reply({ embeds: [embedCorrectUse] }).catch(console.error)
     }
-  
-    const user = 
-      msg.mentions.users.first() ||
-      await msg.client.users.fetch(user).catch(() => null)
   
     if (!user) {
       return msg.reply({ embeds: [embedCorrectUse] }).catch(console.error)

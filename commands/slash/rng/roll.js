@@ -70,8 +70,8 @@ module.exports = {
       })
       const canUse = cooldown.check(client, `${interaction.user.id}:rng.roll`)
       if (!canUse.allowed) {
-        await interaction.editReply({
-          content: `⏰ » Aguarde ${canUse.remaining / 1000} segundos para usar o comando novamente!`
+        return await interaction.editReply({
+          content: `⏰ » Aguarde ${canUse.remaining} segundos para usar o comando novamente!`
         })
       } else {
         cooldown.set(client, `${interaction.user.id}:rng.roll`)

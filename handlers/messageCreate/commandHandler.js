@@ -1,3 +1,5 @@
+const { isManager } = require('../../commands/utils/isManager.js')
+
 module.exports = async (msg, client) => {
   const defaultPrefix = "&"
 
@@ -62,7 +64,7 @@ module.exports = async (msg, client) => {
 
   // 🔒 comandos em teste
   if (command.test) {
-    if (!client.managers?.some(m => m.id === msg.author.id)) {
+    if (!isManager(client, msg.user.id)) {
       const testMsg = await msg
         .reply(`🛠️ **|** Esse comando está em fase de teste!`)
         .catch(() => null)

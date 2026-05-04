@@ -39,5 +39,4 @@ module.exports = async (interaction, client) => {
   
     // 🔹 Executa comando
     await command.execute(interaction, client)
-  }
 }

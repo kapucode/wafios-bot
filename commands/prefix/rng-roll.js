@@ -14,13 +14,8 @@ const path = require('path')
 
 const rngBrawlersPath = path.join(__dirname, '../../json/rngBrawlers.json')
 
-const Cooldown = require('../utils/Cooldown.js')
-
 // Cooldown 
-const rollCooldown = new Cooldown({
-  windowMs: 60000, // 60s
-  maxUses: 10
-})
+const cooldowns = require('../cooldowns/cooldowns.js')
 
 // 🔥 catálogo rápido
 function getFromCatalog(name) {
@@ -74,7 +69,7 @@ module.exports = {
     try {
       const key = `${msg.author.id}:rng.roll`
 
-      const result = rollCooldown.check(key)
+      const result = cooldowns['rng.roll'].check(key)
       
       if (!result.allowed) {
         const seconds = Math.ceil(result.remaining / 1000)

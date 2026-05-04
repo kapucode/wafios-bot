@@ -9,18 +9,13 @@ const { saveRngInfo } = require('../../utils/saveRngInfo.js')
 const { createRngInfo } = require('../../utils/createRngInfo.js')
 const { getEmojis } = require('../../utils/getEmojis.js')
 
-const Cooldown = require('../../utils/Cooldown.js')
-
 const { rngBrawlers, rngDisplay } = require('../../../variables/rngBrawlers.js')
 const path = require('path')
 
 const rngBrawlersPath = path.join(__dirname, '../../../json/rngBrawlers.json')
 
 // Cooldown
-const rollCooldown = new Cooldown({
-  windowMs: 60000, // 60s
-  maxUses: 10
-})
+const cooldowns = require('../../cooldowns/cooldowns.js')
 
 // 🔥 catálogo rápido (evita undefined)
 function getFromCatalog(name) {
@@ -73,7 +68,7 @@ module.exports = {
       
       const key = `${interaction.user.id}:rng.roll`
 
-      const result = rollCooldown.check(key)
+      const result = cooldowns['rng.roll'].check(key)
       
       if (!result.allowed) {
         const seconds = Math.ceil(result.remaining / 1000)

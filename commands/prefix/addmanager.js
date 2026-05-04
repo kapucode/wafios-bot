@@ -17,6 +17,7 @@ module.exports = {
     if (!isKapu(msg, msg.client)) return
   
     const icon = getEmojis()
+    const client = msg.client
   
     const user = args[0]
     const userName = args.slice(1).join(" ")

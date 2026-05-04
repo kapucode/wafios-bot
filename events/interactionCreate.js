@@ -6,8 +6,6 @@ module.exports = {
   name: "interactionCreate",
 
   async execute(interaction, client) {
-    const icon = getEmojis()
-
     try {
       await commandHandler(interaction, client)
       await buttonHandler(interaction, client)

@@ -13,7 +13,7 @@ module.exports = {
   async execute(msg, args) {
 
     if (!msg.guild) return
-    if (!isManager(msg.guild, msg.author.id)) return
+    if (!isManager(msg.client, msg.author.id)) return
 
     const icon = getEmojis()
 

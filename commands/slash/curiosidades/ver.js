@@ -8,7 +8,7 @@ MessageFlags
 module.exports = {
   name: 'curiosidades.ver',
   
-  async execute(interaction) {
+  async execute(interaction, client) {
     try {
       const icon = getEmojis()
       await interaction.deferReply({

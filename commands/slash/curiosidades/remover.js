@@ -10,7 +10,7 @@ const fs = require('fs')
 module.exports = {
   name: 'curiosidades.remover',
   
-  async execute(interaction) {
+  async execute(interaction, client) {
     try {
       const icon = getEmojis()
       await interaction.deferReply({

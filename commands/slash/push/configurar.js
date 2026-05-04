@@ -15,7 +15,7 @@ const statesConfigPush = new Map()
 module.exports = {
   name: 'push.configurar',
 
-  async execute(interaction) {
+  async execute(interaction, client) {
     const icon = getEmojis()
     
     // Verificando permissões

@@ -11,7 +11,7 @@ const { getEmojis } = require('../../utils/getEmojis.js')
 module.exports = {
   name: 'desafios.configurar',
   
-  async execute(interaction) {
+  async execute(interaction, client) {
     const icon = getEmojis()
 
     await interaction.deferReply({

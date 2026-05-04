@@ -7,7 +7,7 @@ const { getEmojis } = require('../../utils/getEmojis.js')
 module.exports = {
   name: 'push.modo',
   
-  async execute(interaction) {
+  async execute(interaction, client) {
     const icon = getEmojis()
     
     if (!isManager(client, interaction.user.id)) return interaction.reply({ 

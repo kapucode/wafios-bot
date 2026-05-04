@@ -38,7 +38,12 @@ module.exports = {
     if (!userRng.brawlers) {
       userRng.brawlers = {}
     }
-
+    const brawlersLength = Object.values(userRng.brawlers)
+      .reduce((acc, categoria) => acc + categoria.length, 0)
+      
+    const totalBrawlers = Object.values(rngBrawlers)
+      .reduce((acc, categoria) => acc + categoria.length, 0)
+    
     // 📄 página inicial
     let pages = [
       ({ actualPage, totalPages }) =>
@@ -46,7 +51,7 @@ module.exports = {
           .setTitle(`🏘️ | Página inicial (${actualPage}/${totalPages})`)
           .setColor(0x51d4ff)
           .setDescription(
-`- Veja o inventário RNG de Brawlers de ${user}!
+`- Veja o inventário RNG de Brawlers de ${user}! O usuário possui **${brawlersLength}/${totalBrawlers}** brawlers
 
 > Quer informações mais específicas do jogo? Use \`/rng info\`!
 

@@ -17,7 +17,7 @@ function updateData(userStar) {
     userStar.info.messages = 0
     userStar.info.goal = 100
     userStar.info.notified = false
-    userStar.amountOpen = 0
+    userStar.info.amountOpen = 0
   }
 }
 

@@ -35,9 +35,7 @@ async function bootstrap(client) {
     client.managers.set(manager?.id, manager?.name)
   }
   
-  for (const [key, value] of client.managers) {
-    console.log(`${value}: ${key}`)
-  }
+  console.log(`⚒️ Managers carregados: ${client.managers.size}`)
 
   // =========================
   // MAINTENANCE

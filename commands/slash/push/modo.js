@@ -10,7 +10,7 @@ module.exports = {
   async execute(interaction) {
     const icon = getEmojis()
     
-    if (!isManager(interaction.user.id)) return interaction.reply({ 
+    if (!isManager(client, interaction.user.id)) return interaction.reply({ 
       content: `${icon.error || ':x:'} **|** Você precisa ser \`MANAGER\` do bot para usar esse comando!`,
       flags: MessageFlags.Ephemeral
     })

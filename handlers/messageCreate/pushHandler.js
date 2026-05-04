@@ -56,8 +56,8 @@ module.exports = async (msg, client) => {
 
   if (!wantsPlay(msg)) return
 
-  const pushFilePath = path.join(__dirname, '../json/push.json')
-  const modePath = path.join(__dirname, '../json/pushMode.json')
+  const pushFilePath = path.join(__dirname, '../../json/push.json')
+  const modePath = path.join(__dirname, '../../json/pushMode.json')
 
   const cooldownJson = JSON.parse(fs.readFileSync(pushFilePath))
   const mode = JSON.parse(fs.readFileSync(modePath))

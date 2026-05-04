@@ -10,7 +10,7 @@ const fs = require('fs')
 module.exports = {
   name: 'curiosidades.adicionar',
   
-  async execute(interaction) {
+  async execute(interaction, client) {
     try {
       const icon = getEmojis()
       const curiosityPath = path.join(__dirname, '../../../json/curiosidades.json')
@@ -19,7 +19,7 @@ module.exports = {
         flags: MessageFlags.Ephemeral
       })
       
-      if (!isManager(interaction.user.id)) return interaction.editReply({
+      if (!isManager(client, interaction.user.id)) return interaction.editReply({
         content: `${icon.error} **|** Você precisa ser \`MANAGER\` para usar esse comando!`
       })
       if (!interaction.client.curiosities) {

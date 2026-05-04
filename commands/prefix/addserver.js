@@ -10,7 +10,7 @@ module.exports = {
   async execute(msg, args) {
 
     if (!msg.guild) return
-    if (!isManager(msg.author.id)) return
+    if (!isManager(msg.client, msg.author.id)) return
   
     const embedCorrectUse = correctUseEmbed(
       'addserver',

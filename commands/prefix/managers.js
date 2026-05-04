@@ -41,7 +41,7 @@ module.exports = {
   name: "managers",
 
   async execute(msg) {
-    if (!isManager(msg.author.id) && !isKapu(msg, msg.client)) return;
+    if (!isManager(msg.client, msg.author.id) && !isKapu(msg, msg.client)) return;
 
     const icon = getEmojis();
     const managers = loadManagers();

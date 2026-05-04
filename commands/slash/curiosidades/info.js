@@ -2,7 +2,6 @@ const {
 EmbedBuilder,
 MessageFlags
 } = require('discord.js')
-const { isManager } = require('../../utils/isManager.js')
 const { getEmojis } = require('../../utils/getEmojis.js')
 
 module.exports = {

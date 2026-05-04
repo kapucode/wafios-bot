@@ -19,7 +19,7 @@ module.exports = {
     const icon = getEmojis()
     
     // Verificando permissões
-    if (!isManager(interaction.user.id)) {
+    if (!isManager(client, interaction.user.id)) {
       return interaction.reply({
         content: `${icon.error || ':x:'} | Você precisa ser \`MANAGER\` para configurar o push.`,
         flags: MessageFlags.Ephemeral

@@ -3,7 +3,7 @@ const fs = require('fs')
 const filePath = path.join(__dirname, '../../json/botManagers.json')
 
 
-function isManager(id) {
+function isManager(client, id) {
   let botManagers = []
   
   try {

@@ -11,14 +11,14 @@ const { getEmojis } = require('../../utils/getEmojis.js')
 module.exports = {
   name: 'curiosidades.configurar',
   
-  async execute(interaction) {
+  async execute(interaction, client) {
     const icon = getEmojis()
 
     await interaction.deferReply({
       flags: MessageFlags.Ephemeral
     })
 
-    if (!isManager(interaction.user.id)) {
+    if (!isManager(client, interaction.user.id)) {
       return interaction.editReply({
         content: `${icon.error} **|** Você precisa ser \`MANAGER\` para usar esse comando!`
       })

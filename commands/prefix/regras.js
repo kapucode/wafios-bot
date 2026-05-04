@@ -6,7 +6,7 @@ module.exports = {
   name: 'regras',
   
   async execute(msg) {
-    if (!isManager(msg.author.id)) return
+    if (!isManager(msg.client, msg.author.id)) return
     
     const separator = new SeparatorBuilder()
       .setDivider(true)

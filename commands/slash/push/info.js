@@ -15,7 +15,7 @@ module.exports = {
     const icon = getEmojis()
     await interaction.deferReply({ flags: MessageFlags.Ephemeral })
     
-    if (!isManager(interaction.user.id)) return await interaction.reply({
+    if (!isManager(client, interaction.user.id)) return await interaction.reply({
         content: `${icon.error || ':x:'} **|** Você precisa ser \`MANAGER\` do bot para usar esse comando.`,
         flags: MessageFlags.Ephemeral
       })

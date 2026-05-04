@@ -18,7 +18,7 @@ module.exports = {
       
       if (!interaction.client?.curiosities) interaction.client.curiosities = []
       if (interaction.client.curiosities.length === 0) return interaction.editReply({
-        content: `${icon.error} **|** Não há curiosidades na minha lista! ${isManager(interaction.user.id) ? `Adicione uma (\`/curiosidades adicionar\`)` : ''}`
+        content: `${icon.error} **|** Não há curiosidades na minha lista! ${isManager(client, interaction.user.id) ? `Adicione uma (\`/curiosidades adicionar\`)` : ''}`
       })
       
       const id = interaction.options.getInteger('id')

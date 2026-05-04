@@ -17,7 +17,7 @@ module.exports = {
         flags: MessageFlags.Ephemeral
       })
       
-      if (!isManager(interaction.user.id)) return interaction.editReply({
+      if (!isManager(client, interaction.user.id)) return interaction.editReply({
         content: `${icon.error} **|** Você precisa ser \`MANAGER\` para usar esse comando!`
       })
       if (!interaction.client.curiosities) interaction.client.curiosities = []

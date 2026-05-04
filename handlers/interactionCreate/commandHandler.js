@@ -1,6 +1,7 @@
 const { MessageFlags } = require('discord.js')
 
 const { isAllowGuild } = require('../../commands/utils/isAllowGuild.js')
+const { isManager } = require('../../commands/utils/isManager.js')
 const { getEmojis } = require('../../commands/utils/getEmojis.js')
 
 const path = require('path')
@@ -12,19 +13,13 @@ const icon = getEmojis()
 
 module.exports = async (interaction, client) => {
   if (interaction.isChatInputCommand()) {
-  
-    // 🔹 Bloqueia DM
-    if (!interaction.guild) {
-      return interaction.reply({
-        content: `${icon.error} **|** Não pode usar em DM!`,
-        flags: MessageFlags.Ephemeral
-      })
-    }
+    
+    const guildId = interaction?.guild?.id || ''
   
     // 🔹 Guild permitida
     if (!isAllowGuild(interaction.guild.id)) {
       return interaction.reply({
-        content: `${icon.error} **|** Esse não é meu servidor!`,
+        content: `${icon.error} **|** Meus comandos só podem ser usados na **Mafios**!`,
         flags: MessageFlags.Ephemeral
       })
     }
@@ -34,18 +29,9 @@ module.exports = async (interaction, client) => {
   
     // 🔹 Comando em teste
     if (command.test) {
-      let managers = []
-  
-      try {
-        const raw = fs.readFileSync(managersFilePath, 'utf8')
-        managers = raw ? JSON.parse(raw) : []
-      } catch (err) {
-        console.error('Erro ao carregar botManagers.json:', err)
-      }
-  
-      if (!managers.some(m => m.id === interaction.user.id)) {
+      if (!isManager(interaction.user.id))
         return interaction.reply({
-          content: `🛠️ **|** Comando em teste!`,
+          content: `🛠️ **|** O comando ainda não foi disponibilizado para uso dos membros!`,
           flags: MessageFlags.Ephemeral
         })
       }

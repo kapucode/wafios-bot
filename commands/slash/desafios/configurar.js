@@ -19,7 +19,7 @@ module.exports = {
     })
 
     // 🔒 Permissão
-    if (!isManager(interaction.user.id)) {
+    if (!isManager(client, interaction.user.id)) {
       return interaction.editReply({
         content: `${icon.error} **|** Você precisa ser \`MANAGER\` para usar esse comando!`
       })

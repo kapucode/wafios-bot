@@ -11,7 +11,7 @@ module.exports = {
         .setName('testando')
         .setDescription('「 tezte 」teste')
     ),
-  teste:true,
+  test:true,
   
   async execute(interaction) {
     const sub = interaction.options.getSubcommand()

@@ -8,20 +8,6 @@ const { isManager } = require("../utils/isManager.js");
 const { isKapu } = require("../utils/isKapu.js");
 const { getEmojis } = require("../utils/getEmojis.js");
 
-// função isolada só pra leitura
-function loadManagers() {
-  try {
-    const raw = fs.readFileSync(fileManagersPath, "utf8");
-    const parsed = JSON.parse(raw);
-
-    if (!Array.isArray(parsed)) return [];
-    return parsed.filter(m => m?.id && m?.name);
-  } catch (err) {
-    console.error("Erro ao ler botManagers.json:", err);
-    return [];
-  }
-}
-
 // função pra montar footer padrão
 function buildFooter(user) {
   return {
@@ -31,10 +17,12 @@ function buildFooter(user) {
 }
 
 // função pra montar lista (mais limpa)
-function formatManagers(list) {
-  return list
-    .map(m => `> **${m.name}**\n- <@${m.id}> \`(${m.id})\``)
-    .join("\n\n");
+function formatManagers(map) {
+  let managersMsg = ''
+  for (const [id, name] of map) {
+    managersMsg += `✨ › ${name} - <@${id}> (${id})\n\n`
+  }
+  return managersMsg
 }
 
 module.exports = {
@@ -44,17 +32,20 @@ module.exports = {
     if (!isManager(msg.client, msg.author.id) && !isKapu(msg, msg.client)) return;
 
     const icon = getEmojis();
-    const managers = loadManagers();
+    const client = msg.client
 
     // vazio ou erro
-    if (!managers.length) {
+    if (client.managers.size <= 0) {
       const embed = new EmbedBuilder()
         .setTitle("🛠️ | Lista vazia")
         .setDescription(
-          "> Nenhum manager encontrado.\n> Ou o arquivo está vazio, ou deu erro na leitura."
+          "> Não possuem managers registrados no meu sistema!."
         )
         .setColor(0x965200)
-        .setFooter(buildFooter(msg.author));
+        .setFooter({
+          text: msg.author.username,
+          iconURL: msg.author.displayAvatarURL({ dynamic: true })
+        });
 
       return msg.reply({ embeds: [embed] }).catch(() => null);
     }
@@ -62,10 +53,15 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setTitle(`${icon.manager} | Managers`)
       .setDescription(
-        `> Atualmente, meus managers:\n\n${formatManagers(managers)}`
+        `> Atualmente, meus managers:
+
+${formatManagers(client.managers)}`
       )
       .setColor(0xa143ff)
-      .setFooter(buildFooter(msg.author));
+      .setFooter({
+        text: msg.author.username,
+        iconURL: msg.author.displayAvatarURL({ dynamic: true })
+      });
 
     return msg.reply({ embeds: [embed] }).catch(() => null);
   }

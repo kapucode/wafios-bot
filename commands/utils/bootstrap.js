@@ -4,6 +4,10 @@ async function bootstrap(client) {
   const fs = require('fs/promises')
   const path = require('path')
   
+  // ==========================
+  // SAFE JSON LOAD
+  // ==========================
+  
   async function safeJSON(filePath, fallback) {
     try {
       const raw = await fs.readFile(filePath, 'utf8')
@@ -14,6 +18,13 @@ async function bootstrap(client) {
       return fallback
     }
   }
+  
+  const baseJsonPath = path.join(__dirname, '../../json')
+  
+  // =========================
+  // MANAGERS
+  // =========================
+  
 
   // =========================
   // MAINTENANCE
@@ -22,25 +33,21 @@ async function bootstrap(client) {
     mode: false
   }
   
-  const maintenanceJsonPath = path.join(__dirname, '../../json/maintenance.json')
   const maintenanceJson = await safeJSON(
-    maintenanceJsonPath,
+    path.join(baseJsonPath, 'maintenance.json'),
     {}
   )
-  if (maintenanceJsonPath) {
-    client.maintenance.mode = maintenanceJson.mode ?? false
-  }
+  client.maintenance.mode = maintenanceJson.mode ?? false
   
   // =========================
   // SUBCOMMANDS
   // =========================
   client.subcommands = new Map()
 
-  const basePath = path.join(__dirname, '../slash')
-  const items = await fs.readdir(basePath)
+  const items = await fs.readdir('../slash')
 
   for (const item of items) {
-    const itemPath = path.join(basePath, item)
+    const itemPath = path.join('../slash', item)
     const stat = await fs.stat(itemPath)
 
     // 📁 pasta
@@ -65,23 +72,19 @@ async function bootstrap(client) {
       }
     }
   }
-
-  // =========================
-  // JSON SAFE LOAD
-  // =========================
-
-  const baseJsonPath = path.join(__dirname, '../../json')
+  
+  // =======================
+  // DESAFIOS
+  // =======================
 
   client.challengesConfig = await safeJSON(
     path.join(baseJsonPath, 'challengesConfig.json'),
     []
   )
 
-  const missionsArray = await safeJSON(
-    path.join(baseJsonPath, 'missions.json'),
-    []
-  )
-
+  // =======================
+  // CURIOSIDADES
+  // =======================
   client.curiosities = await safeJSON(
     path.join(baseJsonPath, 'curiosidades.json'),
     []
@@ -96,6 +99,11 @@ async function bootstrap(client) {
   // MISSIONS (USER DATA)
   // =========================
   client.missions = new Map()
+  
+  const missionsArray = await safeJSON(
+    path.join(baseJsonPath, 'missions.json'),
+    []
+  )
 
   if (Array.isArray(missionsArray)) {
     for (const mission of missionsArray) {
@@ -120,32 +128,20 @@ async function bootstrap(client) {
   // =========================
   // STAR DROPS 
   // =========================
-  const starJsonPath = path.join(__dirname, '../../json/starDrops.json')
-  const starJson = await safeJSON(
-    starJsonPath,
+  client.starDrops = await safeJSON(
+    path.join(baseJsonPath, 'starDrops.json'),
     {}
   )
-  if (starJsonPath) {
-    client.starDrops = starJson ?? {}
-  } else {
-    client.starDrops = {}
-  }
   
   console.log(`🌟 › Star Drops de usuários carregados: ${Object.keys(client.starDrops).length}`)
   
   // =========================
   // RNG BRAWLERS
   // =========================
-  const rngJsonPath = path.join(__dirname, '../../json/rngBrawlers.json')
-  const rngJson = await safeJSON(
-    rngJsonPath,
+  client.rngBrawlers = await safeJSON(
+    path.join(baseJsonPath, 'rngBrawlers.json'),
     {}
   )
-  if (rngJsonPath) {
-    client.rngBrawlers = rngJson ?? {}
-  } else {
-    client.rngBrawlers = {}
-  }
   
   console.log(`🥷 › Brawlers de RNG de usuários carregados: ${Object.keys(client.rngBrawlers).length}`)
   

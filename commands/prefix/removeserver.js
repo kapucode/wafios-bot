@@ -10,7 +10,7 @@ const allowGuildsJsonPath = path.join(__dirname, '../../json/allowGuilds.json')
 
 module.exports = {
   name: 'remove.server',
-  aliases: ['removeserver', 'rem.server', 'rmv.server'],
+  aliases: ['removeserver', 'rem.server', 'rmv.server', 'remover.server', 'removerserver', 'rmv.sv', 'remover.sv', 'remove.sv', 'removesv'],
   
   async execute(msg, args) {
 

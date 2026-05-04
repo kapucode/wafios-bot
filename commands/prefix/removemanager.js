@@ -11,7 +11,7 @@ const { saveManagers } = require('../utils/saveManagers.js')
 
 module.exports = {
   name: "remove.manager",
-  aliases: ['rem.manager', 'rmv.manager', 'removemanager', 'rmvmanager'],
+  aliases: ['rem.manager', 'rmv.manager', 'removemanager', 'rmvmanager', 'remover.manager', 'rmv.mngr'],
   
   async execute(msg, args) {
     if (!msg.guild) return

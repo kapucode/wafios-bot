@@ -10,7 +10,7 @@ const allowGuildsJsonPath = path.join(__dirname, '../../json/allowGuilds.json')
 
 module.exports = {
   name: 'add.server',
-  aliases: ['addserver'],
+  aliases: ['addserver', 'adicionar.server', 'adicionarserver', 'adiciona.server', 'adicionaserver', 'add.sv', 'addsv', 'adicionar.sv'],
   
   async execute(msg, args) {
 

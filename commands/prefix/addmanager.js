@@ -10,7 +10,7 @@ const { getEmojis } = require('../utils/getEmojis.js')
 
 module.exports = {
   name: "add.manager",
-  aliases: ['addmanager'],
+  aliases: ['addmanager', 'add.mngr', 'addmngr'],
   
   async execute(msg, args) {
     if (!msg.guild) return

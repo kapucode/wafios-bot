@@ -44,7 +44,9 @@ async function bootstrap(client) {
   // =========================
   client.subcommands = new Map()
 
-  const items = await fs.readdir('../slash')
+  const slashPath = path.join(__dirname, '..', 'slash')
+
+  const items = await fs.readdir(slashPath)
 
   for (const item of items) {
     const itemPath = path.join('../slash', item)

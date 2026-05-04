@@ -25,8 +25,8 @@ module.exports = {
     const userName = args.slice(1).join(" ")
   
     const embedCorrectUse = correctUseEmbed(
-      'addmanager',
-      '&addmanager [usuario] [nome do usuario]'
+      'add manager',
+      '&add manager [usuario] [nome do usuario]'
     )
   
     if (!user || !userName) {
@@ -53,7 +53,7 @@ module.exports = {
   
     await saveManagers(client, managersJsonPath)
   
-    // await sendManagerEdit(msg, user, true)
+    await sendManagerEdit(msg, user, true)
   
     msg.reply(`${icon.success || ':white_check_mark:'} **|** O(a) usuário(a) de ID \`${user.id}\` foi adicionado(a) como \`MANAGER\`!`)
   }

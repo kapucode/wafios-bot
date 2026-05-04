@@ -1,69 +1,57 @@
 const path = require('path')
 const fs = require('fs')
-const fileJSONPath = path.join(__dirname, '../../json/botManagers.json')
+const managersJsonPath = path.join(__dirname, '../../json/botManagers.json')
 const { EmbedBuilder } = require('discord.js')
 const { isKapu } = require('../utils/isKapu.js')
 const { correctUseEmbed } = require('../utils/correctUseEmbed.js')
 const { sendManagerEdit } = require('../utils/sendManagerEdit.js')
 const { getEmojis } = require('../utils/getEmojis.js')
+const { saveManagers } = require('../utils/saveManagers.js')
 
 
 module.exports = {
-  name: "removemanager",
+  name: "remove.manager",
+  aliases: ['rem.manager', 'rmv.manager', 'removemanager', 'rmvmanager'],
+  
   async execute(msg, args) {
     if (!msg.guild) return
     if (!isKapu(msg, msg.client)) return
   
     const icon = getEmojis()
+    const client = msg.client
   
-    const user = args.shift()
+    const user =
+      msg.mentions.users.first() ||
+      await msg.client.users.fetch(user).catch(() => null)
     const reason = args.join(' ') || 'Motivo não especificado'
   
     const embedCorrectUse = correctUseEmbed(
-      'removemanager',
-      '&removemanager [usuario] <motivo>'
+      'remove manager',
+      '&remove manager [usuario] <motivo>'
     )
   
     if (!user) {
       return msg.reply({ embeds: [embedCorrectUse] }).catch(console.error)
     }
   
-    const userObj =
-      msg.mentions.users.first() ||
-      await msg.client.users.fetch(user).catch(() => null)
-  
-    if (!userObj) {
-      return msg.reply({ embeds: [embedCorrectUse] }).catch(console.error)
-    }
-  
-    if (userObj.id === '1173408263920951356') {
+    if (user.id === '1173408263920951356') {
       return msg.reply('🤔 **|** Ei! Esse é você, e você é o meu dono!')
     }
   
-    let botManagers = []
-  
-    try {
-      botManagers = JSON.parse(fs.readFileSync(fileJSONPath, "utf8"))
-    } catch {
-      botManagers = []
-    }
-  
-    if (!Array.isArray(botManagers)) botManagers = []
-  
-    if (!botManagers.some(manager => manager.id === userObj.id)) {
+    if (client.managers.get(user.id)) {
       return msg.reply(
-        `${icon.error || ':x:'} **|** O usuário de ID \`${userObj.id}\` não é \`MANAGER\`!`
+        `${icon.error || ':x:'} **|** O usuário de ID \`${user.id}\` não é \`MANAGER\`!`
       )
     }
   
-    botManagers = botManagers.filter(manager => manager.id !== userObj.id)
+    client.managers.delete(user.id)
   
-    fs.writeFileSync(fileJSONPath, JSON.stringify(botManagers, null, 2))
+    await saveManagers(client, managersJsonPath)
   
-    sendManagerEdit(msg, userObj, false, reason)
+    // await sendManagerEdit(msg, user, false, reason)
   
     msg.reply(
-      `${icon.success || ':white_check_mark:'} **|** O usuário \`${userObj.id}\` foi removido de \`MANAGER\`!`
+      `${icon.success || ':white_check_mark:'} **|** O usuário \`${user.id}\` não é mais \`MANAGER\`!`
     ).catch(console.error)
   }
   

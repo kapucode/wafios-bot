@@ -18,11 +18,6 @@ module.exports = {
   async execute(interaction, client) {
     const icon = getEmojis()
     
-    if (
-      interaction.user.id !== '1173408263920951356' &&
-      interaction.user.id !== '1005925645521534996'
-    ) return
-
     await interaction.deferReply()
 
     const user = interaction.user

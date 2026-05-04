@@ -19,6 +19,8 @@ module.exports = {
         })
         .setDescription('「 Diversão 」Ver seu inventário de Brawlers no RNG do servidor')
     ),
+    
+  test: true,
   
   async execute(interaction) {
     const sub = interaction.options.getSubcommand()

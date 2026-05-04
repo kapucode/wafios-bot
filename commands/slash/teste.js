@@ -15,7 +15,7 @@ module.exports = {
   
   async execute(interaction) {
     const sub = interaction.options.getSubcommand()
-    const subcommand = interaction.client.subcommands.get(`rng.${sub}`)
+    const subcommand = interaction.client.subcommands.get(`teste.${sub}`)
     if (!subcommand) return
     
     await subcommand.execute(interaction, interaction.client)

@@ -29,7 +29,7 @@ module.exports = async (interaction, client) => {
   
     // 🔹 Comando em teste
     if (command.test) {
-      if (!isManager(interaction.user.id))
+      if (!isManager(interaction.user.id)) {
         return interaction.reply({
           content: `🛠️ **|** O comando ainda não foi disponibilizado para uso dos membros!`,
           flags: MessageFlags.Ephemeral
@@ -39,4 +39,5 @@ module.exports = async (interaction, client) => {
   
     // 🔹 Executa comando
     await command.execute(interaction, client)
+  }
 }

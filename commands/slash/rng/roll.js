@@ -9,6 +9,8 @@ const { saveRngInfo } = require('../../utils/saveRngInfo.js')
 const { createRngInfo } = require('../../utils/createRngInfo.js')
 const { getEmojis } = require('../../utils/getEmojis.js')
 
+const Cooldown = require('../../utils/Cooldown.js')
+
 const { rngBrawlers, rngDisplay } = require('../../../variables/rngBrawlers.js')
 const path = require('path')
 
@@ -62,6 +64,18 @@ module.exports = {
 
     try {
       await interaction.deferReply()
+      
+      const cooldown = new Cooldown({
+        time: 5
+      })
+      const canUse = cooldown.check(client, `${interaction.user.id}:rng.roll`)
+      if (!canUse.allowed) {
+        await interaction.editReply({
+          content: `⏰ » Aguarde ${canUse.remaining / 1000} segundos para usar o comando novamente!`
+        })
+      } else {
+        cooldown.set(client, `${interaction.user.id}:rng.roll`)
+      }
 
       const icon = getEmojis()
       const userId = interaction.user.id

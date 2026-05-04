@@ -151,6 +151,9 @@ async function bootstrap(client) {
   
   // Last Messages
   client.lastMessages = {}
+  
+  // Cooldowns
+  client.cooldowns = new Map()
 }
 
 module.exports = bootstrap

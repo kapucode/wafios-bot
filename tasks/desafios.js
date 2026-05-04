@@ -103,7 +103,7 @@ module.exports = (client) => {
                 },
                 color: 0x7c4dff,
                 footer: {
-                  text: '⏳ Você tem 40 segundos para responder'
+                  text: '⏳ Você tem 50 segundos para responder'
                 },
                 timestamp: new Date()
               }

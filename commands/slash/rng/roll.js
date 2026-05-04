@@ -16,6 +16,12 @@ const path = require('path')
 
 const rngBrawlersPath = path.join(__dirname, '../../../json/rngBrawlers.json')
 
+// Cooldown
+const rollCooldown = new Cooldown({
+  windowMs: 60000, // 60s
+  maxUses: 10
+})
+
 // 🔥 catálogo rápido (evita undefined)
 function getFromCatalog(name) {
   for (const cat in rngBrawlers) {
@@ -65,17 +71,18 @@ module.exports = {
     try {
       await interaction.deferReply()
       
-      const cooldown = new Cooldown({
-        time: 5
-      })
-      const canUse = cooldown.check(client, `${interaction.user.id}:rng.roll`)
-      if (!canUse.allowed) {
-        return await interaction.editReply({
-          content: `⏰ » Aguarde ${Math.ceil(canUse.remaining / 1000)} segundos para usar o comando novamente!`
+      const key = `${interaction.user.id}:rng.roll`
+
+      const result = rollCooldown.check(key)
+      
+      if (!result.allowed) {
+        const seconds = Math.ceil(result.remaining / 1000)
+        
+        return interaction.editReply({
+          content: `⏰ **|** Calma lá! Você pode usar esse comando ${rollCooldown.maxUses} vezes por minuto, aguarde mais **${seconds}s**`
         })
-      } else {
-        cooldown.set(client, `${interaction.user.id}:rng.roll`)
       }
+      
 
       const icon = getEmojis()
       const userId = interaction.user.id

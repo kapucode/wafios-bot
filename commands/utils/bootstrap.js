@@ -36,6 +36,16 @@ async function bootstrap(client) {
   }
   
   console.log(`⚒️ Managers carregados: ${client.managers.size}`)
+  
+  // =========================
+  // ALLOW GUILDS
+  // =========================
+  client.allowGuilds = new Set(
+    await safeJSON(
+      path.join(baseJsonPath, 'allowGuilds.json'),
+      []
+    )
+  )
 
   // =========================
   // MAINTENANCE

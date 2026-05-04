@@ -48,7 +48,7 @@ module.exports = {
     // sendServerEdit(msg, serverId, true)
   
     msg.reply(
-      `:white_check_mark: **|** O servidor \`${serverId}\` foi adicionado à lista de **servidores permitidos**!`
+      `${icon.success} **|** O servidor \`${serverId}\` foi adicionado à lista de **servidores permitidos**!`
     ).catch(console.error)
   }
 }

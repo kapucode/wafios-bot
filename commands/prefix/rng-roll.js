@@ -57,12 +57,9 @@ module.exports = {
   name: 'rng.roll',
   aliases: ['rr'],
   prefixes: ['+', '&', '.', ','],
+  test: true,
 
   async execute(msg, args) {
-    if (
-      msg.author.id !== '1173408263920951356' &&
-      msg.author.id !== '1005925645521534996'
-    ) return
     
     const client = msg.client
 

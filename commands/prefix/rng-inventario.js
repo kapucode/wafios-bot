@@ -16,6 +16,7 @@ module.exports = {
   name: 'rng.inventario',
   aliases: ['rng.inv', 'rng.backpack', 'rng.bp'],
   prefixes: ['+', '&', '.', ','],
+  test: true,
 
   async execute(msg, args) {
     const client = msg.client
@@ -23,11 +24,6 @@ module.exports = {
     const icon = getEmojis()
 
     const userId = msg.author.id
-
-    if (
-      userId !== '1173408263920951356' &&
-      userId !== '1005925645521534996'
-    ) return
 
     // ⚠️ prefix não usa deferReply
     const user = msg.author

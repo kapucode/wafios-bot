@@ -21,7 +21,7 @@ module.exports = async (msg, client) => {
     if (!(client.missions instanceof Map)) return
     if (!(client.missionsList instanceof Map)) return
 
-    const missionsPath = path.join(__dirname, '../json/missions.json')
+    const missionsPath = path.join(__dirname, '../../json/missions.json')
 
     const userMission = client.missions.get(msg.author.id)
     if (!userMission) return

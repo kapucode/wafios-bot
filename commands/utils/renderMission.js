@@ -40,11 +40,7 @@ async function renderMission(client, userId) {
   } catch {
     return // mensagem foi deletada
   }
-
-  console.log('MESSAGE ID ATUAL:', message?.id)
-  console.log('RENDER STATUS:', mission.status)
-  console.log('RENDER TIME:', Date.now())
-
+  
   // monta components de forma segura (sem null)
   const components = [container]
 

@@ -48,7 +48,7 @@ module.exports = {
   
     await saveManagers(client, managersJsonPath)
   
-    // await sendManagerEdit(msg, user, false, reason)
+    await sendManagerEdit(msg, user, false, reason)
   
     msg.reply(
       `${icon.success || ':white_check_mark:'} **|** O usuário \`${user.id}\` não é mais \`MANAGER\`!`

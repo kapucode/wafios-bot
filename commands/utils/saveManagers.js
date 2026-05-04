@@ -24,7 +24,7 @@ async function saveManagers(client, managersPath) {
       }
 
       await fs.writeFile(
-        rngBrawlersPath,
+        managersPath,
         JSON.stringify(managers, null, 2)
       )
 

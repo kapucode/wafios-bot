@@ -38,3 +38,5 @@ class Cooldown {
     }
   }
 }
+
+module.exports = Cooldown

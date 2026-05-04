@@ -14,6 +14,14 @@ const path = require('path')
 
 const rngBrawlersPath = path.join(__dirname, '../../json/rngBrawlers.json')
 
+const Cooldown = require('../utils/Cooldown.js')
+
+// Cooldown 
+const rollCooldown = new Cooldown({
+  windowMs: 60000, // 60s
+  maxUses: 10
+})
+
 // 🔥 catálogo rápido
 function getFromCatalog(name) {
   for (const cat in rngBrawlers) {
@@ -64,6 +72,18 @@ module.exports = {
     const client = msg.client
 
     try {
+      const key = `${msg.author.id}:rng.roll`
+
+      const result = rollCooldown.check(key)
+      
+      if (!result.allowed) {
+        const seconds = Math.ceil(result.remaining / 1000)
+        
+        return msg.channel.send({
+          content: `⏰ **|** Calma lá, ${msg.author}! Você pode usar esse comando ${rollCooldown.maxUses} vezes por minuto, aguarde mais **${seconds}s**`
+        })
+      }
+      
       const icon = getEmojis()
       const userId = msg.author.id
 

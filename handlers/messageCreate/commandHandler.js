@@ -66,7 +66,7 @@ module.exports = async (msg, client) => {
   if (command.test) {
     if (!isManager(client, msg.author.id)) {
       const testMsg = await msg
-        .reply(`🛠️ **|** Esse comando está em fase de teste!`)
+        .reply(`🛠️ **|** Esse comando ainda não foi disponibilizado para uso!`)
         .catch(() => null)
 
       setTimeout(() => {

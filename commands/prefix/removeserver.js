@@ -4,11 +4,13 @@ const { sendServerEdit } = require('../utils/sendServerEdit.js')
 const path = require('path')
 const fs = require('fs')
 const { getEmojis } = require('../utils/getEmojis.js')
+const { saveAllowGuilds } = require('../utils/saveAllowGuilds.js')
 
-const filePath = path.join(__dirname, '../../json/allowGuilds.json')
+const allowGuildsJsonPath = path.join(__dirname, '../../json/allowGuilds.json')
 
 module.exports = {
-  name: 'removeserver',
+  name: 'remove.server',
+  aliases: ['removeserver', 'rem.server', 'rmv.server'],
   
   async execute(msg, args) {
 
@@ -16,12 +18,13 @@ module.exports = {
     if (!isManager(msg.client, msg.author.id)) return
 
     const icon = getEmojis()
+    const client = msg.client
 
     const serverId = args[0]?.trim()
 
     const embedCorrectUse = correctUseEmbed(
-      'removeserver',
-      '&removeserver [id do servidor]'
+      'remove server',
+      '&remove server [id do servidor]'
     )
 
     if (!serverId) {
@@ -31,39 +34,18 @@ module.exports = {
     if (!/^\d{17,20}$/.test(serverId)) {
       return msg.reply(`${icon.error || ':x:'} **|** ID de servidor inválido.`)
     }
-
-    let allowGuilds = []
-
-    try {
-      allowGuilds = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
-    } catch {
-      allowGuilds = []
-    }
-
-    if (!Array.isArray(allowGuilds)) allowGuilds = []
-
-    const exists = allowGuilds.some(id => String(id).trim() === serverId)
-
-    if (!exists) {
-
-      const errorMsg = await msg.reply(
+    
+    if (!client.allowGuilds.has(serverId)) {
+      return await msg.reply(
         `${icon.error || ':x:'} **|** O servidor não está na lista de **servidores permitidos**!`
       ).catch(() => null)
-
-      if (errorMsg) {
-        setTimeout(() => {
-          errorMsg.delete().catch(() => {})
-        }, 30000)
-      }
-
-      return
     }
 
-    allowGuilds = allowGuilds.filter(id => String(id).trim() !== serverId)
+    client.allowGuilds.delete(serverId)
 
-    fs.writeFileSync(filePath, JSON.stringify(allowGuilds, null, 2))
+    await saveAllowGuilds(client, allowGuildsJsonPath)
 
-    sendServerEdit(msg, serverId, false)
+    // await sendServerEdit(msg, serverId, false)
 
     msg.channel.send(
       `${icon.success || ':white_check_mark:'} **|** O servidor \`${serverId}\` foi retirado da lista de **servidores permitidos**!`

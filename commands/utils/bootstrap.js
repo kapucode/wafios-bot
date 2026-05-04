@@ -35,7 +35,7 @@ async function bootstrap(client) {
     client.managers.set(manager?.id, manager?.name)
   }
   
-  for (const [key, value] in client.managers) {
+  for (const [key, value] of client.managers) {
     console.log(`${value}: ${key}`)
   }
 

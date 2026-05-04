@@ -75,7 +75,7 @@ module.exports = {
         const seconds = Math.ceil(result.remaining / 1000)
         
         return msg.channel.send({
-          content: `⏰ **|** Calma lá, ${msg.author}! Você pode usar esse comando ${rollCooldown.maxUses} vezes por minuto, aguarde mais **${seconds}s**`
+          content: `⏰ **|** Calma lá, ${msg.author}! Você pode usar esse comando ${cooldowns['rng.roll'].maxUses} vezes por minuto, aguarde mais **${seconds}s**`
         })
       }
       

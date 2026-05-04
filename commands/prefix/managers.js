@@ -20,7 +20,7 @@ function buildFooter(user) {
 function formatManagers(map) {
   let managersMsg = ''
   for (const [id, name] of map) {
-    managersMsg += `✨ › ${name} - <@${id}> (${id})\n\n`
+    managersMsg += `✨ › ${name} - <@${id}> \`(${id})\`\n\n`
   }
   return managersMsg
 }

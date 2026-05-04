@@ -128,7 +128,7 @@ module.exports = (client) => {
                 description: `Adivinhe o número entre **${start} e ${end}**.`,
                 color: 0x00c2ff,
                 footer: {
-                  text: '⏳ Você tem 40 segundos para responder'
+                  text: '⏳ Você tem 50 segundos para responder'
                 },
                 timestamp: new Date()
               }

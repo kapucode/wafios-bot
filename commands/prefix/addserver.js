@@ -41,7 +41,7 @@ module.exports = {
       ).catch(() => null)
     }
   
-    client.allowGuilds.set(serverId)
+    client.allowGuilds.add(serverId)
   
     await saveAllowGuilds(client, allowGuildsJsonPath)
   

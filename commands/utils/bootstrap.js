@@ -24,7 +24,20 @@ async function bootstrap(client) {
   // =========================
   // MANAGERS
   // =========================
+  client.managers = new Map()
   
+  const managersJson = await safeJSON(
+    path.join(baseJsonPath, 'botManagers.json'),
+    []
+  )
+  
+  for (const manager of managersJson) {
+    client.managers.set(manager?.id, manager?.name)
+  }
+  
+  for (const [key, value] in client.managers) {
+    console.log(`${value}: ${key}`)
+  }
 
   // =========================
   // MAINTENANCE

@@ -9,7 +9,7 @@ class Cooldown {
       : cooldown * 1000
   }
   
-  this.set(client, key) {
+  set(client, key) {
     client.cooldowns.set(key, Date.now())
     
     this.timeout = setTimeout(() => {
@@ -24,7 +24,7 @@ class Cooldown {
     const lastUse = client.cooldowns.get(key) || 0
     
     if (now - lastUse >= this.cooldown) {
-      set(client, key)
+      this.set(client, key)
       clearTimeout(this.timeout);
       return {
         allowed: true,

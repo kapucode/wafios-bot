@@ -1,4 +1,4 @@
-const Cooldown = rrquire('../utils/Cooldown.js')
+const Cooldown = require('../utils/Cooldown.js')
 
 module.exports = {
   'rng.roll': new Cooldown({

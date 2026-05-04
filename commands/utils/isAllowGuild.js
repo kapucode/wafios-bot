@@ -1,9 +1,8 @@
 const path = require('path')
-const filePath = path.join(__dirname, '../../json/allowGuilds.json')
 
-function isAllowGuild(guildId) {
-  let allowGuilds = require(filePath)
-  return allowGuilds.includes(guildId)
+function isAllowGuild(client, guildId) {
+  
+  return client.allowGuilds.has(guildId) || false 
 }
 
 module.exports = { isAllowGuild }

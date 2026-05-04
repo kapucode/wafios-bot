@@ -1,29 +1,17 @@
 const fs = require('fs')
 const path = require('path')
 
-const allowUtilPath = path.join(__dirname, '../../json/allowGuilds.json')
+const { isAllowGuild } = require('../../commands/utils/isAllowGuild.js')
+const { getEmojis } = require('../../commands/utils/getEmojis.js')
 
 module.exports = async (msg, client) => {
-  let allowGuilds = []
+  const icon = getEmojis()
+  
+  if (isAllowGuild(client, msg.guild.id)) return true
 
-  try {
-    allowGuilds = JSON.parse(fs.readFileSync(allowUtilPath, 'utf-8'))
-  } catch {
-    allowGuilds = []
-  }
-
-  const isAllowed = allowGuilds.includes(msg.guild.id)
-
-  if (isAllowed) return true
-
-  const errorMsg = await msg.channel.send(
-    '💥 **|** Espera aí, o que eu estou fazendo aqui?! Eu sou um bot da **MAFIOS**!'
+  await msg.reply(
+    `${icon.error} **|** Meus comandos só podem ser usados na **Mafios**!`
   ).catch(() => null)
-
-  setTimeout(async () => {
-    await errorMsg?.delete().catch(() => {})
-    await msg.guild.leave().catch(() => {})
-  }, 10000)
 
   return false
 }

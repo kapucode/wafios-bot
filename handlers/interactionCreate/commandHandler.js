@@ -17,7 +17,7 @@ module.exports = async (interaction, client) => {
     const guildId = interaction?.guild?.id || ''
   
     // 🔹 Guild permitida
-    if (!isAllowGuild(interaction.guild.id)) {
+    if (!isAllowGuild(client, interaction.guild.id)) {
       return interaction.reply({
         content: `${icon.error} **|** Meus comandos só podem ser usados na **Mafios**!`,
         flags: MessageFlags.Ephemeral

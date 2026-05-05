@@ -41,7 +41,7 @@ module.exports = {
         new ButtonBuilder()
           .setLabel(`Confirmar`)
           .setEmoji(icon.success)
-          .setCustomId(`confirm-rebirth-rng:${interaction.user.id}`)
+          .setCustomId(`confirm-rebirth-rng:${user.id}`)
           .setStyle(ButtonStyle.Success)
       )
     

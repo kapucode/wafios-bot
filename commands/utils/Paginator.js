@@ -128,21 +128,26 @@ class Paginator {
     })
 
     collector.on('collect', async i => {
-      const [action, ownerId] = i.customId.split(':')
-
-      if (i.user.id !== ownerId) {
-        return i.reply({
-          content: `${icon.error} **|** Os botões não são seus!`,
-          flags: MessageFlags.Ephemeral
-        })
-      }
-      
       await i.deferUpdate()
+      
+      const [, action, ownerId] = i.customId.split(':')
       
       const parts = i.customId.split(':')
 
       // se não for botão do paginator → ignora
       if (parts[0] !== 'paginator') return
+
+      if (i.user.id !== ownerId) {
+        if (ownerId && interaction.user.id !== ownerId) {
+          if (!interaction.deferred && !interaction.replied) {
+            await interaction.deferReply({ flags: MessageFlags.Ephemeral })
+          }
+        
+          return interaction.editReply({
+            content: `${icon.error} **|** Esse botão não é seu.`
+          })
+        }
+      }
 
       try {
         if (action === 'prev') {

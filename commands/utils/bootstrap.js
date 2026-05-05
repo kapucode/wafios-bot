@@ -175,7 +175,10 @@ async function bootstrap(client) {
   client.cooldowns = new Map()
   
   // RNG Ranking
-  client.rankingRngCache = new Map()
+  client.rankingRngCache = {
+    sorted: [],
+    position: new Map()
+  }
 }
 
 module.exports = bootstrap

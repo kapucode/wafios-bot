@@ -13,9 +13,12 @@ const {
 
 module.exports = {
   name: 'rng.info', 
+  prefixes: ['+', '.', ',', '&'],
   
   async execute(msg, args) {
     try {
+      const client = msg.client
+      
       const arg1 = args[0]
       
       let user = 

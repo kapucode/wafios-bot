@@ -79,7 +79,7 @@ module.exports = {
       if (!result.allowed) {
         const seconds = Math.ceil(result.remaining / 1000)
         return msg.reply(
-          `⏰ | Calma lá, ${user}! Aguarde **${seconds}s**`
+          `⏰ | Calma lá, ${user}! Aguarde **${seconds}s**, você só pode usar esse comando ${result.maxUses} por minuto!`
         )
       }
 

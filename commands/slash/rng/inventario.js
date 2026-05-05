@@ -97,7 +97,8 @@ module.exports = {
     }
     
     const paginator = new Paginator({ 
-      pages
+      pages,
+      buttons
     })
     await paginator.start(interaction)
   }

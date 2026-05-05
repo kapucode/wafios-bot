@@ -16,7 +16,9 @@ function updateRngRanking(client) {
 }
 
 module.exports = (client) => {
+  updateRngRanking(client) // roda na hora
+
   setInterval(() => {
     updateRngRanking(client)
-  }, 10 * 1000);
+  }, 60 * 1000)
 }

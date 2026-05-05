@@ -1,7 +1,8 @@
 const {
   ButtonBuilder,
   ButtonStyle,
-  ActionRowBuilder
+  ActionRowBuilder,
+  MessageFlags
 } = require('discord.js')
 const { getEmojis } = require('../commands/utils/getEmojis.js')
 
@@ -31,7 +32,8 @@ module.exports = {
 - 2x de sorte
 - Cargos exclusivos
 - Chance de entrar no ranking (\`/rng rebirth ranking\`)`,
-      components: [row]
+      components: [row],
+      flags: MessageFlags.Ephemeral
     })
   }
 }

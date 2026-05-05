@@ -23,7 +23,7 @@ class Paginator {
     this.ownerId = null
     this.disabledBtn = disabledBtn
     this.warnExpireBtn = warnExpireBtn
-    this.buttons = buttons.slice(1, 3) 
+    this.buttons = buttons.slice(0, 2) 
   }
 
   buildRow(disabled = false) {

@@ -62,8 +62,6 @@ async function updateNewBrawler(client, userRng, userId, brawler) {
     name: brawler.name
   })
 
-  userRng.totalOpen++
-
   client.rngBrawlers[userId] = userRng
 
   await saveRngInfo(client, rngBrawlersPath)
@@ -208,6 +206,8 @@ Use \`/rng rebirth\` para resetar e ganhar bônus.`
       if (!repeated) {
         await updateNewBrawler(client, userRng, userId, brawler)
       }
+      
+      userRng.totalOpen++
 
       const embed = new EmbedBuilder()
         .setTitle(repeated ? `👾 | BRAWLER REPETIDO` : `✨ | BRAWLER NOVO`)

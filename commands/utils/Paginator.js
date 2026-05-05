@@ -47,7 +47,7 @@ class Paginator {
           .setStyle(ButtonStyle.Primary)
           .setDisabled(disabled),
           
-          [...this.buttons]
+        ...this.buttons
       )
   }
 

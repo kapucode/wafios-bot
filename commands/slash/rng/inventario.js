@@ -52,7 +52,7 @@ module.exports = {
 
 > Quer informações mais específicas do jogo? Use \`/rng info\`!
 
-> Já zerou o jogo e quer jogar novamente? Dê rebirth (prestígio) usando \`/rng rebirth\``
+> Já zerou o jogo e quer jogar novamente? Dê rebirth (prestígio) usando \`/rng rebirth\` ${brawlersLength >= totalBrawlers ? `ou clicando no botão abaixo` : ''}`
           )
     ]
 

@@ -57,7 +57,7 @@ module.exports = {
 
 > Quer informações mais específicas do jogo? Use \`&rng info\`!
 
-> Já zerou o jogo e quer jogar novamente? Dê rebirth (prestígio) usando \`&rng rebirth\``
+> Já zerou o jogo e quer jogar novamente? Dê rebirth (prestígio) usando \`&rng rebirth\` ${brawlersLength >= totalBrawlers ? `ou clicando no botão abaixo` : ''}`
           )
     ]
 
@@ -88,10 +88,23 @@ module.exports = {
       )
     }
   
-
-    const paginator = new Paginator({ pages })
-
-    // ⚠️ adapter simples para paginator (msg em vez de interaction)
+    let buttons = []
+    
+    if (brawlersLength >= totalBrawlers) {
+      buttons.push(
+        new ButtonBuilder()
+          .setCustomId(`rebirth-rng:${interaction.user.id}`)
+          .setLabel(`Rebirth`)
+          .setEmoji('🎯')
+          .setStyle(ButtonStyle.Danger)
+      )
+    }
+    
+    const paginator = new Paginator({ 
+      pages,
+      buttons
+    })
+    
     await paginator.start(msg)
   }
 }

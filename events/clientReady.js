@@ -1,130 +1,114 @@
-const { Collection } = require('discord.js')
-const { loadMissions } = require('../commands/utils/loadMissions.js')
-const { getButtons } = require('../commands/utils/getButtons.js')
-const fs = require('fs')
-const path = require('path')
+const { Collection } = require('discord.js') const { loadMissions } = require('../commands/utils/loadMissions.js') const { getButtons } = require('../commands/utils/getButtons.js') const fs = require('fs').promises const path = require('path') const fsSync = require('fs') // só pra existsSync (rápido e simples)
 
-module.exports = {
-  name: "clientReady",
-  once: true,
+module.exports = { name: "clientReady", once: true,
 
-  async execute(client) {
-    console.log(`☑️ | Logged - As ${client.user.tag}`)
+async execute(client) { console.log(☑️ | Logged - As ${client.user.tag})
 
-    // =========================
-    // BUTTONS
-    // =========================
-    await getButtons(client)
+// =========================
+// PARALLEL INIT (core boost)
+// =========================
+await Promise.all([
+  initButtons(client),
+  initPresence(client),
+  initSubcommands(client),
+  initTasks(client),
+  initMissions(client),
+  initCuriosities(client)
+])
 
-    // =========================
-    // PRESENCE
-    // =========================
-    client.user.setPresence({
-      status: "dnd",
-      activities: [{ name: 'Mafios', type: 0 }]
+// =========================
+// STATES (sync cheap stuff)
+// =========================
+client.challengeState = {
+  active: false,
+  phrase: null,
+  number: null,
+  timeout: null
+}
+
+client.messageTimestamps = []
+
+client.challenge = {
+  active: false,
+  type: null,
+  answer: null,
+  channelId: null,
+  timeout: null
+}
+
+console.log('✅ Client ready fully initialized')
+
+} }
+
+// ========================= // INIT FUNCTIONS // =========================
+
+async function initButtons(client) { await getButtons(client) }
+
+async function initPresence(client) { client.user.setPresence({ status: "dnd", activities: [{ name: 'Mafios', type: 0 }] }) }
+
+async function initSubcommands(client) { client.subcommands = new Collection()
+
+const basePath = path.join(__dirname, '../commands/slash')
+
+const folders = (await fs.readdir(basePath, { withFileTypes: true })) .filter(d => d.isDirectory()) .map(d => d.name)
+
+await Promise.all( folders.map(async (folder) => { const folderPath = path.join(basePath, folder)
+
+const files = (await fs.readdir(folderPath))
+    .filter(f => f.endsWith('.js'))
+
+  await Promise.all(
+    files.map(async (file) => {
+      const filePath = path.join(folderPath, file)
+      const command = require(filePath)
+
+      if (!command?.name) return
+
+      client.subcommands.set(command.name, command)
     })
+  )
+})
 
-    // =========================
-    // SUBCOMMANDS
-    // =========================
-    client.subcommands = new Collection()
+) }
 
-    const basePath = path.join(__dirname, '../commands/slash')
+async function initTasks(client) { const taskPath = path.join(__dirname, '../tasks')
 
-    const folders = fs
-      .readdirSync(basePath)
-      .filter(file => fs.lstatSync(path.join(basePath, file)).isDirectory())
+const taskFiles = (await fs.readdir(taskPath)) .filter(f => f.endsWith('.js'))
 
-    for (const folder of folders) {
-      const folderPath = path.join(basePath, folder)
+await Promise.all( taskFiles.map(async (file) => { const task = require(path.join(taskPath, file)) if (typeof task === 'function') task(client) }) ) }
 
-      const files = fs
-        .readdirSync(folderPath)
-        .filter(file => file.endsWith('.js'))
+async function initMissions(client) { const missionsPath = path.join(__dirname, '../json/missions.json')
 
-      for (const file of files) {
-        const filePath = path.join(folderPath, file)
-        const command = require(filePath)
+client.missions = new Map()
 
-        if (!command.name) continue
+try { if (fsSync.existsSync(missionsPath)) { const data = await fs.readFile(missionsPath, 'utf8') const missionsArray = JSON.parse(data)
 
-        client.subcommands.set(command.name, command)
+if (Array.isArray(missionsArray)) {
+    for (const mission of missionsArray) {
+      if (mission?.userId) {
+        client.missions.set(mission.userId, mission)
       }
     }
-
-    // =========================
-    // CHALLENGE STATE (SAFE)
-    // =========================
-    client.challengeState = {
-      active: false,
-      phrase: null,
-      number: null,
-      timeout: null
-    }
-
-    // =========================
-    // TASKS
-    // =========================
-    const taskPath = path.join(__dirname, '../tasks')
-    const taskFiles = fs.readdirSync(taskPath).filter(f => f.endsWith('.js'))
-
-    for (const file of taskFiles) {
-      const task = require(path.join(taskPath, file))
-      task(client)
-    }
-
-    // =========================
-    // MISSIONS (MAP SAFE)
-    // =========================
-    const missionsPath = path.join(__dirname, '../json/missions.json')
-
-    client.missions = new Map()
-
-    try {
-      if (fs.existsSync(missionsPath)) {
-        const missionsArray = JSON.parse(
-          fs.readFileSync(missionsPath, 'utf8')
-        )
-
-        if (Array.isArray(missionsArray)) {
-          for (const mission of missionsArray) {
-            if (mission?.userId) {
-              client.missions.set(mission.userId, mission)
-            }
-          }
-        }
-      }
-    } catch (err) {
-      console.error('Erro ao carregar missions.json:', err)
-    }
-
-    client.missionsList = await loadMissions()
-
-    // =========================
-    // CURIOSITIES
-    // =========================
-    const curiosityFile = JSON.parse(
-      fs.readFileSync(
-        path.join(__dirname, '../json/curiosidadesConfig.json'),
-        'utf8'
-      )
-    )
-
-    const curiosityPath = path.join(__dirname, '../json/curiosidades.json')
-    const curiosities = JSON.parse(fs.readFileSync(curiosityPath, 'utf8'))
-
-    client.curiosities = curiosities
-    client.curiosityConfig = curiosityFile || []
-
-    client.messageTimestamps = []
-    client.challenge = {
-      active: false,
-      type: null,
-      answer: null,
-      channelId: null,
-      timeout: null
-    }
-
-    console.log('✅ Client ready fully initialized')
   }
 }
+
+} catch (err) { console.error('Erro ao carregar missions.json:', err) }
+
+client.missionsList = await loadMissions() }
+
+async function initCuriosities(client) { try { const configPath = path.join(__dirname, '../json/curiosidadesConfig.json') const curiosityPath = path.join(__dirname, '../json/curiosidades.json')
+
+const [configRaw, curiositiesRaw] = await Promise.all([
+  fs.readFile(configPath, 'utf8'),
+  fs.readFile(curiosityPath, 'utf8')
+])
+
+client.curiosityConfig = JSON.parse(configRaw || '[]')
+client.curiosities = JSON.parse(curiositiesRaw)
+
+} catch (err) { console.error('Erro ao carregar curiosities:', err)
+
+client.curiosityConfig = []
+client.curiosities = []
+
+} }

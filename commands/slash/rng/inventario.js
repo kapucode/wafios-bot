@@ -55,32 +55,31 @@ module.exports = {
     ]
 
     // 📦 páginas por categoria
-    else {
-      for (const rarity in rngBrawlers) {
+    
+    for (const rarity in rngBrawlers) {
 
-        const display = rngDisplay[rarity]
-        if (!display) continue
+      const display = rngDisplay[rarity]
+      if (!display) continue
 
-        const userBrawlersRarity = userRng.brawlers[rarity] || []
+      const userBrawlersRarity = userRng.brawlers[rarity] || []
 
-        let brawlersMsg = ''
+      let brawlersMsg = ''
 
-        for (const brawler of rngBrawlers[rarity]) {
+      for (const brawler of rngBrawlers[rarity]) {
 
-          const has = userBrawlersRarity.some(
-            b => b.name.toLowerCase() === brawler.name.toLowerCase()
-          )
-
-          brawlersMsg += `${has ? icon[brawler.name.toLowerCase()] || '❓' : '❌'} ${has ? `**${brawler.name}**` : `*${brawler.name} (não possui)*`}\n\n`
-        }
-
-        pages.push(({ actualPage, totalPages }) =>
-          new EmbedBuilder()
-            .setTitle(`🎒 | ${display.toUpperCase()} (${actualPage}/${totalPages})`)
-            .setDescription(brawlersMsg || 'Nenhum brawler nessa categoria.')
-            .setColor(0x924c19)
+        const has = userBrawlersRarity.some(
+          b => b.name.toLowerCase() === brawler.name.toLowerCase()
         )
+
+        brawlersMsg += `${has ? icon[brawler.name.toLowerCase()] || '❓' : '❌'} ${has ? `**${brawler.name}**` : `*${brawler.name} (não possui)*`}\n\n`
       }
+
+      pages.push(({ actualPage, totalPages }) =>
+        new EmbedBuilder()
+          .setTitle(`🎒 | ${display.toUpperCase()} (${actualPage}/${totalPages})`)
+          .setDescription(brawlersMsg || 'Nenhum brawler nessa categoria.')
+          .setColor(0x924c19)
+      )
     }
 
     const paginator = new Paginator({ pages })

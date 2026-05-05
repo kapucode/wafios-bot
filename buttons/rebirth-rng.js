@@ -23,7 +23,7 @@ module.exports = {
           .setStyle(ButtonStyle.Success)
       )
     
-    await interaction.followUp({
+    await interaction.reply({
       content: `> ⚠️ **|** Você tem certeza que deseja dar rebirth? Isso reiniciará todo o seu progresso de brawlers.
 
 - Quantidade de rebirths atualmente: **${userRng.rebirths}**

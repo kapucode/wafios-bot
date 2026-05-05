@@ -7,25 +7,26 @@ module.exports = {
   name: 'rng.ranking',
 
   async execute(interaction, client) {
+    // 1. pegar e ordenar
+    const sorted = Object.entries(client.rngBrawlers || {})
+      .sort((a, b) => b[1].rebirths - a[1].rebirths)
+      .slice(0, 100)
 
-    const list = client.rankingRngCache?.list || []
+    // 2. montar páginas (strings)
+    const pagesRanking = []
 
-    const top100 = list.slice(0, 100)
-    
-    const pagesTxt = []
-    
-    for (let i = 0; i < top100.length; i += 10) {
-      const chunk = top100.slice(i, i + 10)
-    
-      const text = chunk.map(([id, data], index) => {
+    for (let i = 0; i < sorted.length; i += 10) {
+      const chunk = sorted.slice(i, i + 10)
+
+      const pageText = chunk.map(([id, data], index) => {
         const position = i + index + 1
         return `${position}. <@${id}> — ${data.rebirths} rebirths`
       }).join('\n')
-    
-      pagesTxt.push(text)
+
+      pagesRanking.push(pageText)
     }
     
-    const pages = pagesTxt.map((str) =>
+    const pages = pagesRanking.map((str) =>
       ({ actualPage, totalPages }) =>
         new EmbedBuilder()
           .setTitle(`🎯 | Rebirth Ranking (${actualPage}/${totalPages})`)

@@ -24,11 +24,11 @@ module.exports = {
       )
     
     await interaction.reply({
-      content: `> ⚠️ **|** Você tem certeza que deseja dar rebirth? Isso reiniciará todo o seu progresso de brawlers.
+      content: `> ⚠️ Você tem certeza que deseja dar rebirth? Isso reiniciará todo o seu progresso de brawlers.
 
-- Quantidade de rebirths atualmente: **${userRng.rebirths}**
+- 🎯 Quantidade de rebirths atualmente: **${userRng.rebirths}**
 
-> Bônus de rebirth:
+> 💫 Bônus de rebirth:
 - 2x de sorte
 - Cargos exclusivos
 - Chance de entrar no ranking (\`/rng rebirth ranking\`)`,

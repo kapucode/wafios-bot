@@ -29,6 +29,11 @@ module.exports = {
             .setDescription('Usuário que você quer ver as informações')
             .setRequired(false)
         )
+    )
+    .addSubcommand(sub =>
+      sub
+        .setName('rebirth')
+        .setDescription('「 Diversão 」Dar rebirth no seu RNG')
     ),
     
   test: true,

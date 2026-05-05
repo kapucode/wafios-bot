@@ -2,10 +2,13 @@ const {
   ButtonBuilder,
   ButtonStyle,
   ActionRowBuilder,
-  MessageFlags
+  MessageFlags,
+  EmbedBuilder
 } = require('discord.js')
 const { getEmojis } = require('../commands/utils/getEmojis.js')
 const { getLuckRng } = require('../commands/utils/getLuckRng.js')
+const { createRngInfo } = require('../commands/utils/createRngInfo.js')
+const { rngBrawlers } = require('../variables/rngBrawlers.js')
 
 module.exports = {
   id: 'rebirth-rng',
@@ -13,7 +16,22 @@ module.exports = {
   execute: async (interaction, client) => {
     const icon = getEmojis()
     
-    const userRng = client.rngBrawlers[interaction.user.id]
+    let userRng = client.rngBrawlers[interaction.user.id]
+    if (!userRng) {
+      userRng = createRngInfo(client, interaction.user.id)
+    }
+    
+    const brawlersLength = Object.values(userRng.brawlers)
+      .reduce((acc, categoria) => acc + categoria.length, 0)
+      
+    const totalBrawlers = Object.values(rngBrawlers)
+      .reduce((acc, categoria) => acc + categoria.length, 0)
+    
+    if (brawlersLength < totalBrawlers) {
+      return interaction.reply({
+        content: `${icon.error} **|** Você precisa ter todos brawlers para dar rebirth, e você tem apenas **${brawlersLength}/${totalBrawlers}**`
+      })
+    }
     
     const row = new ActionRowBuilder()
       .addComponents(
@@ -24,15 +42,19 @@ module.exports = {
           .setStyle(ButtonStyle.Success)
       )
     
-    await interaction.reply({
-      content: `> ⚠️ Você tem certeza que deseja dar rebirth? Isso reiniciará todo o seu progresso de brawlers.
+    const embed = new EmbedBuilder()
+      .setColor(0xdf815b)
+      .setDescription(`> ⚠️ Você tem certeza que deseja dar rebirth? Isso reiniciará todo o seu progresso de brawlers.
 
 - 🎯 Quantidade de rebirths atualmente: **${userRng.rebirths}**
 
 > 💫 Bônus de rebirth:
 - ${getLuckRng(userRng).multiplier + 1} sorte
 - Cargos exclusivos
-- Chance de entrar no ranking (\`/rng rebirth ranking\`)`,
+- Chance de entrar no ranking (\`/rng rebirth ranking\`)`)
+    
+    await interaction.reply({
+      embeds: [embed],
       components: [row],
       flags: MessageFlags.Ephemeral
     })

@@ -10,7 +10,9 @@ module.exports = {
   id: 'rebirth-rng',
   
   execute: async (interaction, client) => {
-    await interaction.deferReply()
+    await interaction.deferReply({
+      flags: MessageFlags.Ephemeral
+    })
     
     const icon = getEmojis()
     
@@ -34,8 +36,7 @@ module.exports = {
 - 2x de sorte
 - Cargos exclusivos
 - Chance de entrar no ranking (\`/rng rebirth ranking\`)`,
-      components: [row],
-      flags: MessageFlags.Ephemeral
+      components: [row]
     })
   }
 }

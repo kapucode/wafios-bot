@@ -27,7 +27,7 @@ class Paginator {
   }
 
   buildRow(disabled = false) {
-    const row = new ActionRowBuilder()
+    return new ActionRowBuilder()
       .addComponents(
         new ButtonBuilder()
           .setCustomId(`prev:${this.ownerId}`)

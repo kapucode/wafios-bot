@@ -46,7 +46,7 @@ function normalize(chances) {
   return result
 }
 
-async function updateNewBrawler(userRng, userId, brawler) {
+async function updateNewBrawler(client, userRng, userId, brawler) {
   if (!userRng.brawlers[brawler.category]) {
     userRng.brawlers[brawler.category] = []
   }
@@ -190,7 +190,7 @@ module.exports = {
       }
 
       if (!repeated) {
-        await updateNewBrawler(userRng, userId, brawler)
+        await updateNewBrawler(client, userRng, userId, brawler)
       }
 
       const embed = new EmbedBuilder()

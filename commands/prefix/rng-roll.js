@@ -7,28 +7,14 @@ const {
 
 const { saveRngInfo } = require('../utils/saveRngInfo.js')
 const { createRngInfo } = require('../utils/createRngInfo.js')
-const { getEmojis } = require('../utils/getEmojis.js')
+const { getRandomBrawler } = require('../utils/getRandomBrawler.js')
 
-const { rngBrawlers, rngDisplay } = require('../../variables/rngBrawlers.js')
+const { rngBrawlers, rngDisplay, rngChances } = require('../../variables/rngBrawlers.js')
 const path = require('path')
 
 const rngBrawlersPath = path.join(__dirname, '../../json/rngBrawlers.json')
-
-// Cooldown 
 const cooldowns = require('../cooldowns/cooldowns.js')
 
-// 🔥 catálogo rápido
-function getFromCatalog(name) {
-  for (const cat in rngBrawlers) {
-    const found = rngBrawlers[cat].find(
-      b => b.name.toLowerCase() === name.toLowerCase()
-    )
-    if (found) return { ...found, category: cat }
-  }
-  return null
-}
-
-// 🔥 inventário seguro
 function getOwnedSet(userRng) {
   return new Set(
     Object.values(userRng.brawlers)
@@ -37,8 +23,30 @@ function getOwnedSet(userRng) {
   )
 }
 
-// 💾 salva
-async function updateNewBrawler(client, userRng, userId, brawler, icon) {
+function applyLuck(chances, rebirths = 0) {
+  const newChances = { ...chances }
+  const multiplier = 1 + rebirths
+
+  newChances.epico *= multiplier
+  newChances.mitico *= multiplier
+  newChances.lendario *= multiplier
+  newChances.ultra *= multiplier
+
+  return normalize(newChances)
+}
+
+function normalize(chances) {
+  const total = Object.values(chances).reduce((a, b) => a + b, 0)
+
+  const result = {}
+  for (const key in chances) {
+    result[key] = (chances[key] / total) * 100
+  }
+
+  return result
+}
+
+async function updateNewBrawler(userRng, userId, brawler) {
   if (!userRng.brawlers[brawler.category]) {
     userRng.brawlers[brawler.category] = []
   }
@@ -46,7 +54,7 @@ async function updateNewBrawler(client, userRng, userId, brawler, icon) {
   userRng.brawlers[brawler.category].push({
     name: brawler.name
   })
-  
+
   userRng.totalOpen++
 
   client.rngBrawlers[userId] = userRng
@@ -61,24 +69,21 @@ module.exports = {
   test: true,
 
   async execute(msg, args) {
-    
     const client = msg.client
-
     try {
-      const key = `${msg.author.id}:rng.roll`
+      const user = msg.author
+      const userId = user.id
 
+      // cooldown
+      const key = `${userId}:rng.roll`
       const result = cooldowns['rng.roll'].check(key)
-      
+
       if (!result.allowed) {
         const seconds = Math.ceil(result.remaining / 1000)
-        
-        return msg.channel.send({
-          content: `⏰ **|** Calma lá, ${msg.author}! Você pode usar esse comando ${cooldowns['rng.roll'].maxUses} vezes por minuto, aguarde mais **${seconds}s**`
-        })
+        return msg.reply(
+          `⏰ | Calma lá, ${user}! Aguarde **${seconds}s**`
+        )
       }
-      
-      const icon = getEmojis()
-      const userId = msg.author.id
 
       client.rngRolling ??= new Set()
       if (client.rngRolling.has(userId)) return
@@ -96,29 +101,18 @@ module.exports = {
       const totalBrawlers = Object.values(rngBrawlers)
         .reduce((a, b) => a + b.length, 0)
 
-      const hasAll = ownedSet.size >= totalBrawlers
-
-      // 🚨 JOGO ZERADO
-      if (hasAll) {
+      if (ownedSet.size >= totalBrawlers) {
         const embed = new EmbedBuilder()
           .setTitle(`✨ | JOGO ZERADO`)
-          .setDescription(
-`Você já possui **todos** os brawlers.
-
-Use \`/rng rebirth\` para reiniciar sua progressão e ganhar bônus:
-- 2x mais sorte
-- Cargos exclusivos
-- Ranking de rebirths (\`/rng rebirth ranking\`)`
-          )
+          .setDescription(`Use \`&rng rebirth\` para resetar.`)
           .setColor(0xefff51)
 
-        const rebirthBtn = new ButtonBuilder()
+        const btn = new ButtonBuilder()
           .setLabel('Resetar')
           .setCustomId(`rebirth:rebirth-rng:${userId}`)
-          .setEmoji('🎯')
           .setStyle(ButtonStyle.Danger)
 
-        const row = new ActionRowBuilder().addComponents(rebirthBtn)
+        const row = new ActionRowBuilder().addComponents(btn)
 
         client.rngRolling.delete(userId)
 
@@ -128,59 +122,89 @@ Use \`/rng rebirth\` para reiniciar sua progressão e ganhar bônus:
         })
       }
 
+      const repeatedChance = Math.max(
+        0.1,
+        0.4 - (userRng.rebirths || 0) * 0.05
+      )
+
       const list = [...ownedSet]
-      const repeated = list.length > 0 ? Math.random() < 0.7 : false
+      const repeated = list.length > 0
+        ? Math.random() < repeatedChance
+        : false
 
       let brawler
 
-      // 🔴 REPEATED
       if (repeated) {
         const name = list[Math.floor(Math.random() * list.length)]
-        brawler = getFromCatalog(name)
-      }
-
-      // 🔵 NORMAL MODE
-      else {
-        const pool = []
 
         for (const cat in rngBrawlers) {
-          for (const item of rngBrawlers[cat]) {
-            if (!ownedSet.has(item.name.toLowerCase())) {
-              pool.push({ ...item, category: cat })
-            }
+          const found = rngBrawlers[cat].find(
+            b => b.name.toLowerCase() === name
+          )
+
+          if (found) {
+            brawler = { ...found, category: cat }
+            break
           }
         }
+      } else {
+        const luckChances = applyLuck(
+          rngChances,
+          userRng.rebirths || 0
+        )
 
-        if (pool.length === 0) {
-          client.rngRolling.delete(userId)
-          return
+        let attempts = 0
+
+        do {
+          brawler = getRandomBrawler(
+            rngBrawlers,
+            luckChances,
+            true
+          )
+          attempts++
+        } while (
+          ownedSet.has(brawler.name.toLowerCase()) &&
+          attempts < 10
+        )
+
+        if (ownedSet.has(brawler.name.toLowerCase())) {
+          const pool = []
+
+          for (const cat in rngBrawlers) {
+            for (const item of rngBrawlers[cat]) {
+              if (!ownedSet.has(item.name.toLowerCase())) {
+                pool.push({ ...item, category: cat })
+              }
+            }
+          }
+
+          if (pool.length > 0) {
+            brawler = pool[Math.floor(Math.random() * pool.length)]
+          }
         }
-
-        brawler = pool[Math.floor(Math.random() * pool.length)]
       }
 
-      if (!brawler || !brawler.name) {
-        console.error('Brawler inválido:', brawler)
+      if (!brawler) {
         client.rngRolling.delete(userId)
-
         return msg.reply('Erro ao gerar brawler.')
       }
 
       if (!repeated) {
-        await updateNewBrawler(client, userRng, userId, brawler, icon)
+        await updateNewBrawler(userRng, userId, brawler)
       }
 
       const embed = new EmbedBuilder()
-        .setTitle(repeated ? `👾 | BRAWLER REPETIDO` : `✨ | NOVO BRAWLER`)
+        .setTitle(repeated ? `👾 | BRAWLER REPETIDO` : `✨ | BRAWLER NOVO`)
         .setDescription(
-`${repeated ? 'Poxa! Você rolou um brawler repetido!' : 'Você rolou um brawler novo!'} Para verificar seu inventário, utilize o comando \`/rng inventário\`
+`${repeated ? 'Poxa! Você rolou um brawler repetido!.' : `Você rolou um brawler novo!`} Para verificar seu inventário, utilize o comando \`/rng inventário\`
 -# Dica: quer rolar brawlers mais rápidos? Ao invés de &rng roll, use &rr
 
-- **Nome:** ${brawler.name}
-- **Classe:** ${rngDisplay[brawler.category] ?? 'Desconhecida'}`
+- Nome: ${brawler.name}
+- Classe: ${rngDisplay[brawler.category] ?? 'Desconhecida'}`
         )
         .setColor(repeated ? 0x8925a2 : 0x00ff99)
-        .setImage(brawler.gif ?? null)
+
+      if (brawler.gif) embed.setImage(brawler.gif)
 
       client.rngRolling.delete(userId)
 

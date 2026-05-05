@@ -71,6 +71,7 @@ async function updateNewBrawler(client, userRng, userId, brawler) {
 
 module.exports = {
   name: 'rng.roll',
+  test: true,
 
   async execute(interaction, client) {
     try {
@@ -209,9 +210,10 @@ Use \`/rng rebirth\` para resetar e ganhar bônus.`
       }
 
       const embed = new EmbedBuilder()
-        .setTitle(repeated ? `👾 | REPETIDO` : `✨ | NOVO`)
+        .setTitle(repeated ? `👾 | BRAWLER REPETIDO` : `✨ | BRAWLER NOVO`)
         .setDescription(
-`${repeated ? 'Você pegou repetido.' : 'Você pegou um novo.'}
+`${repeated ? 'Poxa! Você rolou um brawler repetido!.' : `Você rolou um brawler novo!`} Para verificar seu inventário, utilize o comando \`/rng inventário\`
+-# Dica: quer rolar brawlers mais rápidos? Ao invés de &rng roll, use &rr
 
 - Nome: ${brawler.name}
 - Classe: ${rngDisplay[brawler.category] ?? 'Desconhecida'}`

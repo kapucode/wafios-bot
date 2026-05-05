@@ -1,5 +1,6 @@
-function getLuckRng(userRng) {
-  const rebirths = userRng.rebirths || 0
+function getLuckRng(userRng, future) {
+  let rebirths = userRng.rebirths || 0
+  if (future) rebirths++
 
   const baseLuck = 1
   const rebirthBonus = rebirths * 1

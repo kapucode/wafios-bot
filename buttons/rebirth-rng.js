@@ -52,7 +52,7 @@ module.exports = {
 - 🎯 Quantidade de rebirths atualmente: **${userRng.rebirths}**
 
 > 💫 Bônus de rebirth:
-- ${getLuckRng(...userRng.rebirths++).multiplier} sorte
+- ${getLuckRng(userRng, true).multiplier} sorte
 - Cargos exclusivos
 - Chance de entrar no ranking (\`/rng rebirth ranking\`)`)
     

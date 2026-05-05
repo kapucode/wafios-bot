@@ -23,19 +23,6 @@ module.exports = {
       userRng = createRngInfo(client, user.id)
     }
     
-    const brawlersLength = Object.values(userRng.brawlers)
-      .reduce((acc, categoria) => acc + categoria.length, 0)
-      
-    const totalBrawlers = Object.values(rngBrawlers)
-      .reduce((acc, categoria) => acc + categoria.length, 0)
-    
-    if (brawlersLength < totalBrawlers) {
-      return ctx.reply({
-        content: `${icon.error} **|** Você precisa ter todos brawlers para dar rebirth, e você tem apenas **${brawlersLength} de um total de ${totalBrawlers} brawlers**. Ganhe brawlers usando \`&rng roll\``,
-        flags: MessageFlags.Ephemeral
-      })
-    }
-    
     const row = new ActionRowBuilder()
       .addComponents(
         new ButtonBuilder()

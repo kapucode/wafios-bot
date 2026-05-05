@@ -32,10 +32,11 @@ module.exports = {
         .setTitle(`📋 | RNG Info`)
         .setDescription(`> Informações do RNG de ${user}
 
-- **Brawlers**: ${brawlersLength}/${totalBrawlers} ${percent}
-- **Sorte**: ${getLuckRng(userRng).multiplier}
-- **Rebirths**: ${userRng.rebirths}
-- **Rolls**: ${userRng.totalOpen}`)
+- 🥷 **Brawlers**: ${brawlersLength}/${totalBrawlers}| ${percent}%
+- 🍀 **Sorte**: ${getLuckRng(userRng).multiplier}
+- 🎯 **Rebirths**: ${userRng.rebirths}
+- 🎰 **Rolls**: ${userRng.totalOpen}`)
+        .setColor(0x5bcddf)
       
       interaction.reply({
         embeds: [embed]

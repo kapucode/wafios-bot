@@ -61,21 +61,6 @@ module.exports = {
           )
     ]
 
-    // 🎒 vazio
-    if (Object.keys(userRng.brawlers).length <= 0) {
-      pages.push(
-        ({ actualPage, totalPages }) =>
-          new EmbedBuilder()
-            .setTitle(`🎒 | Página vazia (${actualPage}/${totalPages})`)
-            .setDescription(
-`Ah, que pena! Você ainda não tem nenhum brawler! Para começar, use \`&rng roll\`!
-
--# O jogo de RNG da Mafios não concebe nenhum benefício, é apenas um sistema para diversão.`
-            )
-            .setColor(0xc01b1b)
-      )
-    }
-
     // 📦 páginas por categoria
     else {
       for (const rarity in rngBrawlers) {

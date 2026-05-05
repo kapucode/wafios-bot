@@ -39,7 +39,7 @@ module.exports = {
 - 🍀 **Sorte**: ${getLuckRng(userRng).multiplier}
 - 🎯 **Rebirths**: ${userRng.rebirths}
 - 🎰 **Rolls**: ${userRng.totalOpen}
-- ⭐ **Posição no ranking**: ${client.rankingRngCache.position.get(user.id)}`)
+- ⭐ **Posição no ranking**: ${client.rankingRngCache.position.get(user.id) || 'Não encontrado'}`)
         .setColor(0x5bcddf)
       
       interaction.reply({

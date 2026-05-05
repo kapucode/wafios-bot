@@ -136,6 +136,8 @@ class Paginator {
           flags: MessageFlags.Ephemeral
         })
       }
+      
+      await i.deferUpdate()
 
       try {
         if (action === 'prev') {
@@ -151,8 +153,6 @@ class Paginator {
         }
 
         const embed = this.render()
-        
-        await i.deferUpdate()
         
         await i.editReply({
           embeds: [embed],

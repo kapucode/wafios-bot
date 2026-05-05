@@ -10,10 +10,6 @@ module.exports = {
   id: 'rebirth-rng',
   
   execute: async (interaction, client) => {
-    await interaction.deferReply({
-      flags: MessageFlags.Ephemeral
-    })
-    
     const icon = getEmojis()
     
     const userRng = client.rngBrawlers[interaction.user.id]

@@ -10,22 +10,18 @@ module.exports = async (interaction, client) => {
 
   let buttonId
   let ownerId
-
-  // 🔹 botão simples (sem owner)
-  if (parts.length === 1) {
+  
+  if (parts.length === 3) {
+    // namespace:action:owner
+    buttonId = parts[1]
+    ownerId = parts[2]
+  } else if (parts.length === 2) {
+    // action:owner
     buttonId = parts[0]
-  }
-
-  // 🔹 botão com owner (ou namespace:action:owner)
-  else if (parts.length >= 2) {
-    // se tiver namespace (3 partes), ignora o primeiro
-    if (parts.length >= 3) {
-      buttonId = parts[1]
-      ownerId = parts[2]
-    } else {
-      buttonId = parts[0]
-      ownerId = parts[1]
-    }
+    ownerId = parts[1]
+  } else {
+    // só action
+    buttonId = parts[0]
   }
 
   // 🔥 botão não registrado → ignora

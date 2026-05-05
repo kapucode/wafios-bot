@@ -10,6 +10,8 @@ module.exports = {
   id: 'rebirth-rng',
   
   execute: async (interaction, client) => {
+    await interaction.deferReply()
+    
     const icon = getEmojis()
     
     const userRng = client.rngBrawlers[interaction.user.id]
@@ -23,7 +25,6 @@ module.exports = {
           .setStyle(ButtonStyle.Success)
       )
     
-    // followUp, pois ja foi dado defer no Paginator
     await interaction.followUp({
       content: `> ⚠️ **|** Você tem certeza que deseja dar rebirth? Isso reiniciará todo o seu progresso de brawlers.
 

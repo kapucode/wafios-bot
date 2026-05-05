@@ -5,7 +5,7 @@ const {
   MessageFlags
 } = require('discord.js')
 const { getEmojis } = require('../commands/utils/getEmojis.js')
-const { getLuckRng } = require('../commands/utils/getLuckRng.js.js')
+const { getLuckRng } = require('../commands/utils/getLuckRng.js')
 
 module.exports = {
   id: 'rebirth-rng',

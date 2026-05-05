@@ -8,7 +8,6 @@ ButtonStyle
 } = require('discord.js')
 const { randint } = require('../utils/randint.js')
 const { isManager } = require('../utils/isManager.js')
-const { saveButtonsArray } = require('../utils/saveButtonsArray.js');
 const path = require('path')
 const fs = require('fs')
 const fileMapsPath = path.join(__dirname, '../../json/mapasBrawl.json')
@@ -150,11 +149,7 @@ module.exports = {
       embeds: [embedMaps(maps, interaction, 0)],
       components: [row]
     })
-    saveButtonsArray(
-      interaction.channel.id,
-      msg.id,
-      [rerollButton, finishButton]
-    );
+
     
     states.set(msg.id, { rerolls: 0, repetidos: repetidos, filterMode: filterMode })
     if (msgErrorLimit.status) {

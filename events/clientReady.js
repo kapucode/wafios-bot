@@ -16,7 +16,6 @@ module.exports = {
     // PARALLEL INIT (core boost)
     // =========================
     await Promise.all([
-      initButtons(client),
       initPresence(client),
       initSubcommands(client),
       initTasks(client),
@@ -51,10 +50,6 @@ module.exports = {
 // =========================
 // INIT FUNCTIONS
 // =========================
-
-async function initButtons(client) {
-  await getButtons(client)
-}
 
 async function initPresence(client) {
   client.user.setPresence({

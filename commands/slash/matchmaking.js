@@ -7,7 +7,6 @@ const {
   ButtonStyle
 } = require('discord.js')
 const { getEmojis } = require('../utils/getEmojis.js')
-const { saveButton } = require('../utils/saveButton.js');
 
 function getTrophyValue(member) {
   const role = member.roles.cache.find(r =>

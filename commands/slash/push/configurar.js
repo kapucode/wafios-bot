@@ -8,7 +8,6 @@ const { isManager } = require('../../utils/isManager.js')
 const fs = require('fs')
 const path = require('path')
 const { getEmojis } = require('../../utils/getEmojis.js')
-const { saveButtonsArray } = require('../../utils/saveButtonsArray.js');
 
 const statesConfigPush = new Map()
 
@@ -82,11 +81,6 @@ module.exports = {
         components: [row]
       })
       
-      saveButtonsArray(
-        interaction.channel.id,
-        sentMessage.id,
-        [btnCancel, btnConfirm]
-      )
       return
     }
     

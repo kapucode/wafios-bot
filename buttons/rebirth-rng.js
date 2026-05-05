@@ -23,7 +23,8 @@ module.exports = {
           .setStyle(ButtonStyle.Success)
       )
     
-    await interaction.reply({
+    // followUp, pois ja foi dado defer no Paginator
+    await interaction.followUp({
       content: `> ⚠️ **|** Você tem certeza que deseja dar rebirth? Isso reiniciará todo o seu progresso de brawlers.
 
 - Quantidade de rebirths atualmente: **${userRng.rebirths}**

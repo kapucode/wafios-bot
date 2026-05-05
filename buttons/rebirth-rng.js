@@ -13,12 +13,14 @@ const { rngBrawlers } = require('../variables/rngBrawlers.js')
 module.exports = {
   id: 'rebirth-rng',
   
-  execute: async (interaction, client) => {
+  execute: async (ctx, client) => {
     const icon = getEmojis()
     
-    let userRng = client.rngBrawlers[interaction.user.id]
+    const user = ctx?.user || ctx?.author
+    
+    let userRng = client.rngBrawlers[user.id]
     if (!userRng) {
-      userRng = createRngInfo(client, interaction.user.id)
+      userRng = createRngInfo(client, user.id)
     }
     
     const brawlersLength = Object.values(userRng.brawlers)
@@ -28,7 +30,7 @@ module.exports = {
       .reduce((acc, categoria) => acc + categoria.length, 0)
     
     if (brawlersLength < totalBrawlers) {
-      return interaction.reply({
+      return ctx.reply({
         content: `${icon.error} **|** Você precisa ter todos brawlers para dar rebirth, e você tem apenas **${brawlersLength} de um total de ${totalBrawlers} brawlers**. Ganhe brawlers usando \`&rng roll\``,
         flags: MessageFlags.Ephemeral
       })
@@ -54,7 +56,7 @@ module.exports = {
 - Cargos exclusivos
 - Chance de entrar no ranking (\`/rng rebirth ranking\`)`)
     
-    await interaction.reply({
+    await ctx.reply({
       embeds: [embed],
       components: [row],
       flags: MessageFlags.Ephemeral

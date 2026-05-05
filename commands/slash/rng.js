@@ -18,6 +18,17 @@ module.exports = {
           'pt-BR': 'inventário' // aqui você pode mudar se quiser acento
         })
         .setDescription('「 Diversão 」Ver seu inventário de Brawlers no RNG do servidor')
+    )
+    .addSubcommand(sub =>
+      sub
+        .setName('info')
+        .setDescription('「 Diversão 」Ver informações do jogo RNG de alguém')
+        .addUserOption(option =>
+          option
+            .setName('usuario')
+            .setDescription('Usuário que você quer ver as informações')
+            .setRequired(false)
+        )
     ),
     
   test: true,

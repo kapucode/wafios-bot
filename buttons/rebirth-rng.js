@@ -5,21 +5,7 @@ const {
   MessageFlags
 } = require('discord.js')
 const { getEmojis } = require('../commands/utils/getEmojis.js')
-
-function getLuck(userRng) {
-  const rebirths = userRng.rebirths || 0
-
-  const baseLuck = 1
-  const rebirthBonus = rebirths * 1
-
-  const totalLuck = baseLuck + rebirthBonus
-
-  return {
-    score: totalLuck,
-    multiplier: totalLuck + "x",
-    rebirths
-  }
-}
+const { getLuckRng } = require('../commands/utils/getLuckRng.js.js')
 
 module.exports = {
   id: 'rebirth-rng',
@@ -44,7 +30,7 @@ module.exports = {
 - 🎯 Quantidade de rebirths atualmente: **${userRng.rebirths}**
 
 > 💫 Bônus de rebirth:
-- ${getLuck(userRng).multiplier} sorte
+- ${getLuckRng(userRng).multiplier} sorte
 - Cargos exclusivos
 - Chance de entrar no ranking (\`/rng rebirth ranking\`)`,
       components: [row],

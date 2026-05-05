@@ -82,7 +82,7 @@ module.exports = {
         const seconds = Math.ceil(result.remaining / 1000)
 
         return interaction.editReply({
-          content: `⏰ **|** Calma lá, ${interaction.user}! Aguarde **${seconds}s**, você só pode usar esse comando ${result.maxUses} por minuto!`
+          content: `⏰ **|** Calma lá, ${interaction.user}! Aguarde **${seconds}s**, você só pode usar esse comando ${cooldowns['rng.roll'].maxUses} vezes por minuto!`
         })
       }
 

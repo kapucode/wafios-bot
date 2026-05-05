@@ -70,7 +70,7 @@ module.exports = {
 
     for (const file of taskFiles) {
       const task = require(path.join(taskPath, file))
-      await task(client)
+      task(client)
     }
 
     // =========================

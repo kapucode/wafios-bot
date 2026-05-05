@@ -6,6 +6,14 @@ const icon = getEmojis()
 
 module.exports = async (interaction, client) => {
   if (interaction.isButton()) {
+    
+    if (
+      interaction.customId.startsWith('prev:') ||
+      interaction.customId.startsWith('next:') ||
+      interaction.customId.startsWith('home:')
+    ) {
+      return
+    }
 
     const [buttonId, ownerId] = interaction.customId.split(':')
   

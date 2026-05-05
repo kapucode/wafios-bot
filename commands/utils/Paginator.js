@@ -52,6 +52,8 @@ class Paginator {
   }
   
   disableAllRows(rows) {
+    if (!Array.isArray(rows)) return []
+    
     return rows.map(row => {
       const newRow = new ActionRowBuilder()
   

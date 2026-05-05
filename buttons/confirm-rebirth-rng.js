@@ -29,7 +29,7 @@ module.exports = {
       .reduce((acc, categoria) => acc + categoria.length, 0)
     
     if (brawlersLength < totalBrawlers) {
-      return ctx.reply({
+      return interaction.reply({
         content: `${icon.error} **|** Você precisa ter todos brawlers para dar rebirth, e você tem apenas **${brawlersLength} de um total de ${totalBrawlers} brawlers**. Ganhe brawlers usando \`&rng roll\``,
         flags: MessageFlags.Ephemeral
       })

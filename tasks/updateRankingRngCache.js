@@ -17,7 +17,7 @@ function updateRngRanking(client) {
 
 module.exports = async (client) => {
   setInterval(() => {
-    updateRngRanking(client)
     console.log(`updatou`)
+    updateRngRanking(client)
   }, 10 * 1000);
 }

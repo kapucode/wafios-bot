@@ -34,6 +34,11 @@ module.exports = {
       sub
         .setName('rebirth')
         .setDescription('「 Diversão 」Dar rebirth no seu RNG')
+    )
+    .addSubcommand(sub =>
+      sub
+        .setName('ranking')
+        .setDescription('「 Diversão 」Ver o ranking de rebirths do RNG')
     ),
     
   test: true,

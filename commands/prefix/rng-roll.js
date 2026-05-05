@@ -109,7 +109,7 @@ module.exports = {
 > 💫 Bônus de rebirth:
 - 2x de sorte
 - Cargos exclusivos
-- Chance de entrar no ranking (\`/rng rebirth ranking\`)`)
+- Chance de entrar no ranking (\`/rng ranking\`)`)
           .setColor(0xefff51)
 
         const btn = new ButtonBuilder()

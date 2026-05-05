@@ -41,7 +41,7 @@ module.exports = {
 > 💫 Bônus de rebirth:
 - ${getLuckRng(userRng, true).multiplier} sorte
 - Cargos exclusivos
-- Chance de entrar no ranking (\`/rng rebirth ranking\`)`)
+- Chance de entrar no ranking (\`/rng ranking\`)`)
     
     await ctx.reply({
       embeds: [embed],

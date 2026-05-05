@@ -2,6 +2,9 @@ const { createRngInfo } = require('../../../commands/utils/createRngInfo.js')
 const { saveRngInfo } = require('../../../commands/utils/saveRngInfo.js')
 const { getLuckRng } = require('../../../commands/utils/getLuckRng.js')
 
+const path = require('path')
+const rngJsonPath = path.join(__dirname, '../../../json/rngBrawlers.json')
+
 const { rngBrawlers } = require('../../../variables/rngBrawlers.js')
 
 const {

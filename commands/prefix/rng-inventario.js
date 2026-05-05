@@ -34,8 +34,6 @@ module.exports = {
 
     if (!userRng) {
       userRng = createRngInfo(client, user.id)
-      client.rngBrawlers[user.id] = userRng
-      await saveRngInfo(client, rngBrawlersPath)
     }
 
     if (!userRng.brawlers) {

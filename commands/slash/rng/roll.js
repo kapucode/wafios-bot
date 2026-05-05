@@ -69,7 +69,6 @@ async function updateNewBrawler(client, userRng, userId, brawler) {
 
 module.exports = {
   name: 'rng.roll',
-  test: true,
 
   async execute(interaction, client) {
     try {
@@ -96,7 +95,6 @@ module.exports = {
 
       if (!userRng) {
         userRng = createRngInfo(client, userId)
-        client.rngBrawlers[userId] = userRng
       }
 
       const ownedSet = getOwnedSet(userRng)

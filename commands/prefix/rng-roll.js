@@ -12,7 +12,6 @@ const { getRandomBrawler } = require('../utils/getRandomBrawler.js')
 const { rngBrawlers, rngDisplay, rngChances } = require('../../variables/rngBrawlers.js')
 const path = require('path')
 
-const rngBrawlersPath = path.join(__dirname, '../../json/rngBrawlers.json')
 const cooldowns = require('../cooldowns/cooldowns.js')
 
 function getOwnedSet(userRng) {
@@ -91,7 +90,6 @@ module.exports = {
 
       if (!userRng) {
         userRng = createRngInfo(client, userId)
-        client.rngBrawlers[userId] = userRng
       }
 
       const ownedSet = getOwnedSet(userRng)

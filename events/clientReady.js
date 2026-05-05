@@ -1,6 +1,5 @@
 const { Collection } = require('discord.js')
 const { loadMissions } = require('../commands/utils/loadMissions.js')
-const { getButtons } = require('../commands/utils/getButtons.js')
 const fs = require('fs').promises
 const path = require('path')
 const fsSync = require('fs') // só pra existsSync (rápido e simples)

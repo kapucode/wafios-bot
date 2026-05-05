@@ -6,7 +6,7 @@ const {
 const { getEmojis } = require('../commands/utils/getEmojis.js')
 
 module.exports = {
-  name: 'rebirth-rng',
+  id: 'rebirth-rng',
   
   execute: async (interaction, client) => {
     const icon = getEmojis()

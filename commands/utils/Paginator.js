@@ -183,7 +183,7 @@ class Paginator {
 
         await msg.edit({
           embeds: [embed],
-          components: this.disableAllRows(this.buildRow())
+          components: this.disableAllRows(msg.components)
         })
 
       } catch (err) {

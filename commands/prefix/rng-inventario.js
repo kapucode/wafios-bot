@@ -104,7 +104,8 @@ module.exports = {
     
     const paginator = new Paginator({ 
       pages,
-      buttons
+      buttons,
+      time: 3000
     })
     
     await paginator.start(msg)

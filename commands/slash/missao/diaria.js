@@ -8,7 +8,6 @@ const {
 const { randint } = require('../../utils/randint.js')
 const { getEmojis } = require('../../utils/getEmojis.js')
 const { saveMissions } = require('../../utils/saveMissions.js')
-const { saveButtonsArray } = require('../../utils/saveButtonsArray.js')
 const { getNextMidnight } = require('../../utils/getNextMidnight.js')
 const { setMissionState } = require('../../utils/missionState.js')
 const { renderMission } = require('../../utils/renderMission.js')
@@ -225,9 +224,6 @@ module.exports = {
         (userId) => renderMission(client, userId)
       )
 
-      if (isSelf) {
-        saveButtonsArray(interaction.channel.id, sentMessage.id, buttonsToSave)
-      }
 
     } catch (e) {
       console.error(e)

@@ -21,7 +21,6 @@ module.exports = {
     
     const icon = getEmojis()
     
-    const prevMsg = interaction.message
     const newRow = new ActionRowBuilder()
       .addComponents(
         new ButtonBuilder()
@@ -32,7 +31,7 @@ module.exports = {
           .setDisabled(true)
       )
     
-    await prevMsg.update({
+    await interaction.update({
       components: [newRow]
     })
     
@@ -44,6 +43,6 @@ module.exports = {
     userRng.brawlers = {}
     await saveRngInfo(client, rngJsonPath)
     
-    interaction.reply(`${icon.success} Você deu rebirth! Agora você possui **${userRng.rebirths}** e **${getLuckRng(userRng).multiplier} sorte**`)
+    interaction.editReply(`${icon.success} Você deu rebirth! Agora você possui **${userRng.rebirths}** e **${getLuckRng(userRng).multiplier} sorte**`)
   }
 }

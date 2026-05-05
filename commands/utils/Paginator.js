@@ -151,8 +151,10 @@ class Paginator {
         }
 
         const embed = this.render()
-
-        await i.update({
+        
+        await i.deferUpdate()
+        
+        await i.editReply({
           embeds: [embed],
           components: [this.buildRow()]
         })

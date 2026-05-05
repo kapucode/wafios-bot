@@ -173,6 +173,9 @@ async function bootstrap(client) {
   
   // Cooldowns
   client.cooldowns = new Map()
+  
+  // RNG Ranking
+  client.rankingRngCache = new Map()
 }
 
 module.exports = bootstrap

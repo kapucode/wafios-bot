@@ -47,7 +47,8 @@ module.exports = {
 - 🥷 **Brawlers**: ${brawlersLength}/${totalBrawlers} | **${percent}%**
 - 🍀 **Sorte**: ${getLuckRng(userRng).multiplier}
 - 🎯 **Rebirths**: ${userRng.rebirths}
-- 🎰 **Rolls**: ${userRng.totalOpen}`)
+- 🎰 **Rolls**: ${userRng.totalOpen}
+- ⭐ **Posição no ranking**: ${client.rankingRngCache.position.get(user.id)}`)
         .setColor(0x5bcddf)
       
       msg.reply({

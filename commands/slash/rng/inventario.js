@@ -89,7 +89,7 @@ module.exports = {
     if (brawlersLength >= totalBrawlers) {
       buttons.push(
         new ButtonBuilder()
-          .setCustomId(`rebirth-rng:${interaction.user.id}`)
+          .setCustomId(`rebirth:rebirth-rng:${interaction.user.id}`)
           .setLabel(`Rebirth`)
           .setEmoji('🎯')
           .setStyle(ButtonStyle.Danger)

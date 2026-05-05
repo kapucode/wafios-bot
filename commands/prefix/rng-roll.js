@@ -114,7 +114,7 @@ Use \`/rng rebirth\` para reiniciar sua progressão e ganhar bônus:
 
         const rebirthBtn = new ButtonBuilder()
           .setLabel('Resetar')
-          .setCustomId(`rebirth-rng:${userId}`)
+          .setCustomId(`rebirth:rebirth-rng:${userId}`)
           .setEmoji('🎯')
           .setStyle(ButtonStyle.Danger)
 

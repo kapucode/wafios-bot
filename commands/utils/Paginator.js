@@ -30,19 +30,19 @@ class Paginator {
     return new ActionRowBuilder()
       .addComponents(
         new ButtonBuilder()
-          .setCustomId(`prev:${this.ownerId}`)
+          .setCustomId(`paginator:prev:${this.ownerId}`)
           .setEmoji(icon.leftarrow)
           .setStyle(ButtonStyle.Primary)
           .setDisabled(disabled),
   
         new ButtonBuilder()
-          .setCustomId(`home:${this.ownerId}`)
+          .setCustomId(`paginator:home:${this.ownerId}`)
           .setEmoji(icon.home)
           .setStyle(ButtonStyle.Primary)
           .setDisabled(disabled),
   
         new ButtonBuilder()
-          .setCustomId(`next:${this.ownerId}`)
+          .setCustomId(`paginator:next:${this.ownerId}`)
           .setEmoji(icon.rightarrow)
           .setStyle(ButtonStyle.Primary)
           .setDisabled(disabled),
@@ -138,6 +138,11 @@ class Paginator {
       }
       
       await i.deferUpdate()
+      
+      const parts = i.customId.split(':')
+
+      // se não for botão do paginator → ignora
+      if (parts[0] !== 'paginator') return
 
       try {
         if (action === 'prev') {

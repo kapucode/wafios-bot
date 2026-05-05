@@ -1,5 +1,7 @@
 const {
-  EmbedBuilder
+  EmbedBuilder,
+  ButtonBuilder,
+  ButtonStyle
 } = require('discord.js')
 
 const { createRngInfo } = require('../../utils/createRngInfo.js')
@@ -81,8 +83,22 @@ module.exports = {
           .setColor(0x924c19)
       )
     }
-
-    const paginator = new Paginator({ pages })
+    
+    let buttons = []
+    
+    if (brawlersLength >= totalBrawlers) {
+      buttons.push(
+        new ButtonBuilder()
+          .setCustomId(`rebirth-rng:${interaction.user.id}`)
+          .setLabel(`Rebirth`)
+          .setEmoji('🎯')
+          .setStyle(ButtonStyle.Danger)
+      )
+    }
+    
+    const paginator = new Paginator({ 
+      pages
+    })
     await paginator.start(interaction)
   }
 }

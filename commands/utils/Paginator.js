@@ -14,7 +14,8 @@ class Paginator {
     pages,
     time = 3 * 60 * 1000,
     disabledBtn = false,
-    warnExpireBtn = true
+    warnExpireBtn = true,
+    buttons = []
   }) {
     this.pages = pages
     this.index = 0
@@ -22,28 +23,32 @@ class Paginator {
     this.ownerId = null
     this.disabledBtn = disabledBtn
     this.warnExpireBtn = warnExpireBtn
+    this.buttons = buttons.slice(1, 3) 
   }
 
   buildRow(disabled = false) {
-    return new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setCustomId(`prev:${this.ownerId}`)
-        .setEmoji(icon.leftarrow)
-        .setStyle(ButtonStyle.Primary)
-        .setDisabled(disabled),
-
-      new ButtonBuilder()
-        .setCustomId(`home:${this.ownerId}`)
-        .setEmoji(icon.home)
-        .setStyle(ButtonStyle.Primary)
-        .setDisabled(disabled),
-
-      new ButtonBuilder()
-        .setCustomId(`next:${this.ownerId}`)
-        .setEmoji(icon.rightarrow)
-        .setStyle(ButtonStyle.Primary)
-        .setDisabled(disabled)
-    )
+    const row = new ActionRowBuilder()
+      .addComponents(
+        new ButtonBuilder()
+          .setCustomId(`prev:${this.ownerId}`)
+          .setEmoji(icon.leftarrow)
+          .setStyle(ButtonStyle.Primary)
+          .setDisabled(disabled),
+  
+        new ButtonBuilder()
+          .setCustomId(`home:${this.ownerId}`)
+          .setEmoji(icon.home)
+          .setStyle(ButtonStyle.Primary)
+          .setDisabled(disabled),
+  
+        new ButtonBuilder()
+          .setCustomId(`next:${this.ownerId}`)
+          .setEmoji(icon.rightarrow)
+          .setStyle(ButtonStyle.Primary)
+          .setDisabled(disabled),
+          
+          [...this.buttons]
+      )
   }
 
   render() {

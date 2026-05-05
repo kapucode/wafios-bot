@@ -21,7 +21,7 @@ module.exports = {
 
       const pageText = chunk.map(([id, data], index) => {
         const position = i + index + 1
-        return `${position}. <@${id}> - ${data.rebirths} rebirths`
+        return `${position}. <@${id}> — ${data.rebirths} rebirths`
       }).join('\n')
 
       pagesRanking.push(pageText)

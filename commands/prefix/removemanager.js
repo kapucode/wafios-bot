@@ -19,10 +19,12 @@ module.exports = {
   
     const icon = getEmojis()
     const client = msg.client
+    
+    const arg1 = args[0]
   
     const user =
       msg.mentions.users.first() ||
-      await msg.client.users.fetch(user).catch(() => null)
+      await msg.client.users.fetch(arg1).catch(() => null)
     const reason = args.join(' ') || 'Motivo não especificado'
   
     const embedCorrectUse = correctUseEmbed(

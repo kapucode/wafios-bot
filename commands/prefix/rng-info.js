@@ -16,9 +16,11 @@ module.exports = {
   
   async execute(msg, args) {
     try {
+      const arg1 = args[0]
+      
       let user = 
         msg.mentions.users.first() ||
-        await msg.client.users.fetch(user).catch(() => null)
+        await msg.client.users.fetch(arg1).catch(() => null)
       
       if (!user) user = msg.author
       

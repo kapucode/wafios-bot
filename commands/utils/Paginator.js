@@ -23,46 +23,45 @@ class Paginator {
     this.ownerId = null
     this.disabledBtn = disabledBtn
     this.warnExpireBtn = warnExpireBtn
-    this.buttons = buttons.slice(0, 2) 
+    this.buttons = buttons.slice(0, 2)
   }
 
   buildRow(disabled = false) {
-    return new ActionRowBuilder()
-      .addComponents(
-        new ButtonBuilder()
-          .setCustomId(`paginator:prev:${this.ownerId}`)
-          .setEmoji(icon.leftarrow)
-          .setStyle(ButtonStyle.Primary)
-          .setDisabled(disabled),
-  
-        new ButtonBuilder()
-          .setCustomId(`paginator:home:${this.ownerId}`)
-          .setEmoji(icon.home)
-          .setStyle(ButtonStyle.Primary)
-          .setDisabled(disabled),
-  
-        new ButtonBuilder()
-          .setCustomId(`paginator:next:${this.ownerId}`)
-          .setEmoji(icon.rightarrow)
-          .setStyle(ButtonStyle.Primary)
-          .setDisabled(disabled),
-          
-        ...this.buttons
-      )
+    return new ActionRowBuilder().addComponents(
+      new ButtonBuilder()
+        .setCustomId(`paginator:prev:${this.ownerId}`)
+        .setEmoji(icon.leftarrow)
+        .setStyle(ButtonStyle.Primary)
+        .setDisabled(disabled),
+
+      new ButtonBuilder()
+        .setCustomId(`paginator:home:${this.ownerId}`)
+        .setEmoji(icon.home)
+        .setStyle(ButtonStyle.Primary)
+        .setDisabled(disabled),
+
+      new ButtonBuilder()
+        .setCustomId(`paginator:next:${this.ownerId}`)
+        .setEmoji(icon.rightarrow)
+        .setStyle(ButtonStyle.Primary)
+        .setDisabled(disabled),
+
+      ...this.buttons
+    )
   }
-  
+
   disableAllRows(rows) {
     if (!Array.isArray(rows)) return []
-    
+
     return rows.map(row => {
       const newRow = new ActionRowBuilder()
-  
+
       row.components.forEach(comp => {
         newRow.addComponents(
           ButtonBuilder.from(comp).setDisabled(true)
         )
       })
-  
+
       return newRow
     })
   }
@@ -78,14 +77,13 @@ class Paginator {
       : page
 
     if (!(result instanceof EmbedBuilder)) {
-      throw new Error('Paginator: página inválida (não é EmbedBuilder)')
+      throw new Error('Paginator: página inválida')
     }
 
     return result
   }
 
   async send(target, payload) {
-    // 🔥 interaction
     if (target.reply || target.deferred !== undefined) {
       if (target.deferred || target.replied) {
         return target.editReply(payload)
@@ -94,27 +92,22 @@ class Paginator {
       }
     }
 
-    // 🔥 message
     return target.channel.send(payload)
   }
 
   async fetchMessage(target, sentMsg) {
-    // interaction
     if (target.fetchReply) {
       return target.fetchReply()
     }
 
-    // message já é a msg enviada
     return sentMsg
   }
 
   async start(target) {
     this.ownerId = target.user?.id || target.author?.id
 
-    const embed = this.render()
-
     const payload = {
-      embeds: [embed],
+      embeds: [this.render()],
       components: [this.buildRow(this.disabledBtn)]
     }
 
@@ -128,26 +121,23 @@ class Paginator {
     })
 
     collector.on('collect', async i => {
-      await i.deferUpdate()
-      
-      const [, action, ownerId] = i.customId.split(':')
-      
       const parts = i.customId.split(':')
 
-      // se não for botão do paginator → ignora
+      // 🔥 só trata paginator
       if (parts[0] !== 'paginator') return
 
+      const [, action, ownerId] = parts
+
+      // 🔥 usuário errado
       if (i.user.id !== ownerId) {
-        if (ownerId && interaction.user.id !== ownerId) {
-          if (!interaction.deferred && !interaction.replied) {
-            await interaction.deferReply({ flags: MessageFlags.Ephemeral })
-          }
-        
-          return interaction.editReply({
-            content: `${icon.error} **|** Esse botão não é seu.`
-          })
-        }
+        return i.reply({
+          content: `${icon.error} **|** Esse botão não é seu.`,
+          flags: MessageFlags.Ephemeral
+        }).catch(() => {})
       }
+
+      // 🔥 responde rápido
+      await i.deferUpdate()
 
       try {
         if (action === 'prev') {
@@ -162,22 +152,13 @@ class Paginator {
           this.index = (this.index + 1) % this.pages.length
         }
 
-        const embed = this.render()
-        
         await i.editReply({
-          embeds: [embed],
+          embeds: [this.render()],
           components: [this.buildRow()]
         })
 
       } catch (err) {
         console.error('Paginator collect error:', err)
-
-        if (!i.replied && !i.deferred) {
-          await i.reply({
-            content: 'Erro ao atualizar página.',
-            flags: MessageFlags.Ephemeral
-          }).catch(() => {})
-        }
       }
     })
 
@@ -189,9 +170,9 @@ class Paginator {
           const currentFooter = embed.data.footer?.text || ''
 
           embed.setFooter({
-            text: currentFooter === ''
-              ? 'Botões expirados'
-              : currentFooter + ' | Botões expirados'
+            text: currentFooter
+              ? currentFooter + ' | Botões expirados'
+              : 'Botões expirados'
           })
         }
 

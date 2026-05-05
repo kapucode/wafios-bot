@@ -47,6 +47,8 @@ async function updateNewBrawler(client, userRng, userId, brawler, icon) {
     name: brawler.name,
     emoji: icon[brawler.name.toLowerCase()] || '❓'
   })
+  
+  userRng.totalOpen++
 
   client.rngBrawlers[userId] = userRng
 

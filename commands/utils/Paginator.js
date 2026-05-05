@@ -50,6 +50,20 @@ class Paginator {
         ...this.buttons
       )
   }
+  
+  disableAllRows(rows) {
+    return rows.map(row => {
+      const newRow = new ActionRowBuilder()
+  
+      row.components.forEach(comp => {
+        newRow.addComponents(
+          ButtonBuilder.from(comp).setDisabled(true)
+        )
+      })
+  
+      return newRow
+    })
+  }
 
   render() {
     const page = this.pages[this.index]
@@ -169,7 +183,7 @@ class Paginator {
 
         await msg.edit({
           embeds: [embed],
-          components: [this.buildRow(true)]
+          components: this.disableAllRows(this.buildRow())
         })
 
       } catch (err) {

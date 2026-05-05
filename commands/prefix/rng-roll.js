@@ -102,11 +102,19 @@ module.exports = {
       if (ownedSet.size >= totalBrawlers) {
         const embed = new EmbedBuilder()
           .setTitle(`✨ | JOGO ZERADO`)
-          .setDescription(`Use \`&rng rebirth\` para resetar.`)
+          .setDescription(`> Você já zerou o jogo, mas pode reiniciar seu progresso para ganhar bônus.
+
+- 🎯 Quantidade de rebirths atualmente: **${userRng.rebirths}**
+
+> 💫 Bônus de rebirth:
+- 2x de sorte
+- Cargos exclusivos
+- Chance de entrar no ranking (\`/rng rebirth ranking\`)`)
           .setColor(0xefff51)
 
         const btn = new ButtonBuilder()
-          .setLabel('Resetar')
+          .setLabel('Rebirth')
+          .setEmoji('🎯')
           .setCustomId(`rebirth:rebirth-rng:${userId}`)
           .setStyle(ButtonStyle.Danger)
 

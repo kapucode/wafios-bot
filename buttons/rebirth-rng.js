@@ -29,7 +29,8 @@ module.exports = {
     
     if (brawlersLength < totalBrawlers) {
       return interaction.reply({
-        content: `${icon.error} **|** Você precisa ter todos brawlers para dar rebirth, e você tem apenas **${brawlersLength}/${totalBrawlers}**`
+        content: `${icon.error} **|** Você precisa ter todos brawlers para dar rebirth, e você tem apenas **${brawlersLength} de um total de ${totalBrawlers} brawlers**. Ganhe brawlers usando \`&rng roll\``,
+        flags: MessageFlags.Ephemeral
       })
     }
     

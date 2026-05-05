@@ -4,6 +4,7 @@ const {
   ActionRowBuilder,
   MessageFlags
 } = require('discord.js')
+
 const { saveRngInfo } = require('../commands/utils/saveRngInfo.js')
 const { getEmojis } = require('../commands/utils/getEmojis.js')
 const { getLuckRng } = require('../commands/utils/getLuckRng.js')
@@ -13,36 +14,41 @@ const rngJsonPath = path.join(__dirname, '../json/rngBrawlers.json')
 
 module.exports = {
   id: 'confirm-rebirth-rng',
-  
+
   execute: async (interaction, client) => {
-    await interaction.deferReply({
-      flags: MessageFlags.Ephemeral
-    })
-    
     const icon = getEmojis()
-    
+
+    // 🔥 desativa botão primeiro (feedback visual imediato)
     const newRow = new ActionRowBuilder()
       .addComponents(
         new ButtonBuilder()
-          .setLabel(`Confirmar`)
+          .setLabel(`Confirmado`)
           .setEmoji(icon.success)
           .setCustomId(`confirm-rebirth-rng:${interaction.user.id}`)
           .setStyle(ButtonStyle.Success)
           .setDisabled(true)
       )
-    
+
     await interaction.update({
       components: [newRow]
     })
-    
-    
+
     let userRng = client.rngBrawlers[interaction.user.id]
-    
+
+    if (!userRng) return
+
     userRng.rebirths++
     userRng.totalOpen = 0
     userRng.brawlers = {}
+
     await saveRngInfo(client, rngJsonPath)
-    
-    interaction.editReply(`${icon.success} Você deu rebirth! Agora você possui **${userRng.rebirths}** e **${getLuckRng(userRng).multiplier} sorte**`)
+
+    const luck = getLuckRng(userRng)
+
+    // 🔥 manda nova mensagem (ephemeral via followUp)
+    await interaction.followUp({
+      content: `${icon.success} Rebirth feito! Agora você tem **${userRng.rebirths} rebirths** e **${luck.multiplier} de sorte**`,
+      flags: MessageFlags.Ephemeral
+    })
   }
 }

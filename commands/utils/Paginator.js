@@ -87,8 +87,10 @@ class Paginator {
     if (target.reply || target.deferred !== undefined) {
       if (target.deferred || target.replied) {
         return target.editReply(payload)
+          .catch((err) => {console.error(err)})
       } else {
         return target.reply(payload)
+          .catch((err) => {console.error(err)})
       }
     }
 
@@ -98,6 +100,7 @@ class Paginator {
   async fetchMessage(target, sentMsg) {
     if (target.fetchReply) {
       return target.fetchReply()
+        .catch((err) => {console.error(err)})
     }
 
     return sentMsg
@@ -112,13 +115,16 @@ class Paginator {
     }
 
     const sent = await this.send(target, payload)
+      .catch((err) => {console.error(err)})  
     const msg = await this.fetchMessage(target, sent)
+      .catch((err) => {console.error(err)})
 
     if (this.disabledBtn) return
 
     const collector = msg.createMessageComponentCollector({
       time: this.time
     })
+        .catch((err) => {console.error(err)})
 
     collector.on('collect', async i => {
       const parts = i.customId.split(':')
@@ -155,7 +161,7 @@ class Paginator {
         await i.editReply({
           embeds: [this.render()],
           components: [this.buildRow()]
-        })
+        }).catch(() => {})
 
       } catch (err) {
         console.error('Paginator collect error:', err)
@@ -179,7 +185,7 @@ class Paginator {
         await msg.edit({
           embeds: [embed],
           components: this.disableAllRows(msg.components)
-        })
+        }).catch(() => {})
 
       } catch (err) {
         console.error('Paginator end error:', err)

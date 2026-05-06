@@ -29,7 +29,8 @@ module.exports = {
     const user =
       msg.mentions.users.first() ||
       client.users.cache.get(args[0]?.replace(/[<@!>]/g, '')) ||
-      await client.users.fetch(args[0]?.replace(/[<@!>]/g, '')).catch(() => null)
+      await client.users.fetch(args[0]?.replace(/[<@!>]/g, '')).catch(() => null) ||
+      msg.author
 
     let userRng = client.rngBrawlers[user.id]
 

@@ -25,10 +25,11 @@ module.exports = {
     
     const icon = getEmojis()
 
-    const userId = msg.author.id
-
     // ⚠️ prefix não usa deferReply
-    const user = msg.author
+    const user =
+      msg.mentions.users.first() ||
+      client.users.cache.get(args[0]?.replace(/[<@!>]/g, '')) ||
+      await client.users.fetch(args[0]?.replace(/[<@!>]/g, '')).catch(() => null)
 
     let userRng = client.rngBrawlers[user.id]
 

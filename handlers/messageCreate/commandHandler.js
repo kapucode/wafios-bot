@@ -7,9 +7,15 @@ module.exports = async (msg, client) => {
 
   const content = msg.content
 
-  let command, args, cmd
+  let command, args
 
-  // 🔍 tenta encontrar comando com prefixo próprio primeiro
+  const normalize = (str) =>
+    str
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+
+  // 🔍 procura comandos com prefixo custom
   for (const cmdData of client.prefixCommands.values()) {
     if (!cmdData.prefixes) continue
 
@@ -18,28 +24,35 @@ module.exports = async (msg, client) => {
       : [cmdData.prefixes]
 
     for (const p of prefixes) {
-      if (content.startsWith(p)) {
-        const sliced = content.slice(p.length).trim().split(/ +/)
-        
-        const normalize = (str) =>
-          str
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLowerCase()
+      if (!content.startsWith(p)) continue
 
-        const base = normalize(sliced.shift())
-        const sub = sliced[0] ? normalize(sliced[0]) : null
-        
-        const fullCmd = sub ? `${base}.${sub}` : base
+      const sliced = content.slice(p.length).trim().split(/ +/)
+      if (!sliced.length) return
 
-        cmd = fullCmd
+      const base = normalize(sliced[0])
+      const possibleSub = sliced[1] ? normalize(sliced[1]) : null
 
-        if (cmd === cmdData.name || cmdData.aliases?.includes(cmd)) {
-          command = cmdData
-          args = sliced.slice(1) // remove subcmd se existir
-          break
-        }
+      let fullCmd = base
+      let isSubcommand = false
+
+      // ✅ só usa subcomando se existir
+      if (possibleSub && client.prefixCommands.has(`${base}.${possibleSub}`)) {
+        fullCmd = `${base}.${possibleSub}`
+        isSubcommand = true
       }
+
+      command =
+        client.prefixCommands.get(fullCmd) ||
+        [...client.prefixCommands.values()].find(
+          (c) => c.name === fullCmd || c.aliases?.includes(fullCmd)
+        )
+
+      if (!command) return
+
+      // ✅ args corretos agora
+      args = isSubcommand ? sliced.slice(2) : sliced.slice(1)
+
+      break
     }
 
     if (command) break
@@ -50,16 +63,23 @@ module.exports = async (msg, client) => {
     if (!content.startsWith(defaultPrefix)) return
 
     const sliced = content.slice(defaultPrefix.length).trim().split(/ +/)
-    const base = sliced.shift().toLowerCase()
-    const sub = sliced[0]?.toLowerCase()
+    if (!sliced.length) return
 
-    const fullCmd = sub ? `${base}.${sub}` : base
+    const base = sliced[0].toLowerCase()
+    const possibleSub = sliced[1]?.toLowerCase()
+
+    let fullCmd = base
+    let isSubcommand = false
+
+    if (possibleSub && client.prefixCommands.has(`${base}.${possibleSub}`)) {
+      fullCmd = `${base}.${possibleSub}`
+      isSubcommand = true
+    }
 
     command = client.prefixCommands.get(fullCmd)
-
     if (!command) return
 
-    args = sliced.slice(1)
+    args = isSubcommand ? sliced.slice(2) : sliced.slice(1)
   }
 
   // 🔒 comandos em teste
@@ -77,5 +97,9 @@ module.exports = async (msg, client) => {
     }
   }
 
-  command.execute(msg, args)
+  try {
+    await command.execute(msg, args)
+  } catch (err) {
+    console.error('Erro ao executar comando:', err)
+  }
 }

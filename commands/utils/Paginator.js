@@ -124,7 +124,6 @@ class Paginator {
     const collector = msg.createMessageComponentCollector({
       time: this.time
     })
-        .catch((err) => {console.error(err)})
 
     collector.on('collect', async i => {
       const parts = i.customId.split(':')

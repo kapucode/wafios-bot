@@ -27,31 +27,71 @@ async function renderMission(client, userId) {
     mission.translatedStatus || 'Desconhecido'
   )
 
-  let channel
-  try {
-    channel = await client.channels.fetch(mission.channelId)
-  } catch {
-    return // canal não existe mais
-  }
-
-  let message
-  try {
-    message = await channel.messages.fetch(mission.messageId)
-  } catch {
-    return // mensagem foi deletada
-  }
-  
-  // monta components de forma segura (sem null)
+  // monta components de forma segura
   const components = [container]
 
   if (mission.row && mission.row.components?.length > 0) {
     components.push(mission.row)
   }
 
-  await message.edit({
-    flags: MessageFlags.IsComponentsV2,
-    components
-  })
+  // 🔎 busca canal
+  let channel
+  try {
+    channel = await client.channels.fetch(mission.channelId)
+  } catch (err) {
+    console.log('⚠️ Canal não encontrado, abortando missão')
+    return
+  }
+
+  // 🔎 tenta buscar mensagem
+  let message = null
+  try {
+    message = await channel.messages.fetch(mission.messageId)
+  } catch {
+    // mensagem não existe mais
+  }
+
+  // 📌 se não existe, cria nova
+  if (!message) {
+    try {
+      const newMsg = await channel.send({
+        flags: MessageFlags.IsComponentsV2,
+        components
+      })
+
+      mission.messageId = newMsg.id
+      return
+    } catch (err) {
+      console.error('❌ Erro ao criar nova mensagem:', err)
+      return
+    }
+  }
+
+  // ✏️ tenta editar
+  try {
+    await message.edit({
+      flags: MessageFlags.IsComponentsV2,
+      components
+    })
+  } catch (err) {
+    if (err.code === 10008) {
+      // mensagem sumiu ENTRE fetch e edit → recria
+      try {
+        const newMsg = await channel.send({
+          flags: MessageFlags.IsComponentsV2,
+          components
+        })
+
+        mission.messageId = newMsg.id
+        return
+      } catch (err2) {
+        console.error('❌ Erro ao recriar mensagem:', err2)
+        return
+      }
+    }
+
+    console.error('❌ Erro ao editar missão:', err)
+  }
 }
 
 module.exports = { renderMission }

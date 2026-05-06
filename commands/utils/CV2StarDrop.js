@@ -21,7 +21,7 @@ function CV2StarDrop(msg, userStar, disabled = false) {
   if (disabled) toOpenAmount = userStar.info.amountOpen
   
   const collectBtn = new ButtonBuilder()
-    .setCustomId(`collect-stardrop:${msg.author.id}:${Date.now()}`)
+    .setCustomId(`collect-stardrop:${msg.author.id}`)
     .setLabel(disabled ? 'Coletado' : 'Abrir')
     .setStyle(ButtonStyle.Success)
     .setEmoji('🪙')

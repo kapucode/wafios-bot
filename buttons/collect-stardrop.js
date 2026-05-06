@@ -49,14 +49,6 @@ module.exports = {
   execute: async (interaction, client) => {
     if (!interaction.member) return
     
-    const [, userId, timestamp] = interaction.customId.split(':')
-
-    if (Date.now() - Number(timestamp) > 10 * 60 * 1000) {
-      return interaction.reply({
-        content: `:x: **|** Dados do botão expiraram. Use \`/star_drop abrir\` para abrir o Star Drop.`,
-        flags: MessageFlags.Ephemeral
-      })
-    }
 
     const userStar = client.starDrops[interaction.user.id]
     if (!userStar) return

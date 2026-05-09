@@ -64,7 +64,7 @@ async function updateNewBrawler(client, userRng, userId, brawler) {
 module.exports = {
   name: 'rng.roll',
   aliases: ['rr'],
-  prefixes: ['+', '&', '.', ',']
+  prefixes: ['+', '&', '.', ','],
 
   async execute(msg, args) {
     const client = msg.client

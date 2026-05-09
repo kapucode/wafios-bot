@@ -6,7 +6,7 @@ const {
 module.exports = {
   name: 'rng.ranking',
   aliases: ['rng.rank', 'rng.rebirth.ranking', 'rngrank', 'rngranking', 'rng.ranke', 'rng.ranki'],
-  prefixes: ['+', '.', ',', '&']
+  prefixes: ['+', '.', ',', '&'],
 
   async execute(msg) {
     const client = msg.client

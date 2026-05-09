@@ -1,7 +1,6 @@
 module.exports = {
   name: 'rng.rebirth',
-  prefixes: ['.', ',', '&', '+'],
-  test: true,
+  prefixes: ['.', ',', '&', '+']
   
   async execute(msg) {
     const rebirth = require('../../buttons/rebirth-rng.js')

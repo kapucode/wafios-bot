@@ -40,8 +40,7 @@ module.exports = {
         .setName('ranking')
         .setDescription('「 Diversão 」Ver o ranking de rebirths do RNG')
     ),
-    
-  test: true,
+  
   
   async execute(interaction) {
     const sub = interaction.options.getSubcommand()
